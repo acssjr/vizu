@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sh:*)",
+      "Bash(sqlite3:*)",
+      "Skill(continuity_ledger)",
+      "Bash(ls:*)",
+      "Skill(create_handoff)",
+      "Bash(uv run python:*)",
+      "Bash(echo:*)",
+      "Bash(source ~/.claude/.env)",
+      "Bash(bash:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(node dist/session-start-continuity.mjs:*)",
+      "Bash(CLAUDE_PROJECT_DIR=\"/c/vizu/claude-continuity-kit\" echo '{\"\"type\"\":\"\"clear\"\"}')",
+      "Bash(export CLAUDE_PROJECT_DIR=\"/c/vizu/claude-continuity-kit\")",
+      "Bash(npx tsx:*)",
+      "Bash(node -e:*)",
+      "Bash(export CLAUDE_PROJECT_DIR=\"C:/vizu/claude-continuity-kit\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(python3:*)",
+      "Bash(node dist/skill-activation-prompt.mjs:*)",
+      "Bash(grep:*)"
+    ]
+  }
+}
