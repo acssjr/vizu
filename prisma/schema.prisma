@@ -15,6 +15,7 @@ model User {
   id              String    @id @default(cuid())
   email           String    @unique
   emailVerified   DateTime?
+  password        String?   // Hashed password for credentials auth
   name            String?
   image           String?
   birthDate       DateTime?
@@ -131,7 +132,7 @@ model Vote {
   photoId                 String
   voterId                 String
 
-  // Notas brutas (1-10)
+  // Notas brutas (0-3 scale: 0=Não, 1=Pouco, 2=Sim, 3=Muito)
   attraction              Int
   trust                   Int
   intelligence            Int
@@ -144,6 +145,15 @@ model Vote {
   // Metadados para normalização
   voterBias               Float?
   voterWeight             Float    @default(1.0)
+
+  // Feedback opcional
+  feedbackFeelingTags     String[] @default([])
+  feedbackSuggestionTags  String[] @default([])
+  feedbackNote            String?  @db.VarChar(200)
+
+  // Metadados de votação
+  votingDurationMs        Int?
+  deviceType              String?  @db.VarChar(20)
 
   createdAt               DateTime @default(now())
 

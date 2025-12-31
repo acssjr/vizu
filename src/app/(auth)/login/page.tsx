@@ -12,6 +12,8 @@ const trustSignals = [
   { icon: Lock, text: 'LGPD' },
 ];
 
+const isDev = process.env.NODE_ENV === 'development';
+
 // Custom V Icon component
 function VizuIcon({ className }: { className?: string }) {
   return (
@@ -34,6 +36,29 @@ export default function LoginPage() {
   const handleGoogleSignIn = () => {
     setIsLoading(true);
     signIn('google', { callbackUrl: '/dashboard' });
+  };
+
+  const handleDevLogin = async () => {
+    setIsLoading(true);
+    setError('');
+    try {
+      const result = await signIn('credentials', {
+        email: 'dev@vizu.local',
+        password: 'dev123',
+        redirect: false,
+      });
+      console.log('Dev login result:', result);
+      if (result?.ok) {
+        window.location.href = '/dashboard';
+      } else {
+        setError(result?.error || 'Erro no login dev');
+        setIsLoading(false);
+      }
+    } catch (err) {
+      console.error('Dev login error:', err);
+      setError('Erro ao conectar');
+      setIsLoading(false);
+    }
   };
 
   const handleEmailContinue = async (e: React.FormEvent) => {
@@ -194,6 +219,17 @@ export default function LoginPage() {
             {/* Step: Initial - Google + Email */}
             {step === 'initial' && (
               <>
+                {/* Dev Login Button - Only in development */}
+                {isDev && (
+                  <button
+                    onClick={handleDevLogin}
+                    disabled={isLoading}
+                    className="w-full mb-4 flex items-center justify-center gap-3 bg-green-600 hover:bg-green-500 text-white font-black py-4 px-4 rounded-xl transition-all shadow-[4px_4px_0px_0px_rgba(0,100,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,100,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] disabled:opacity-50 disabled:hover:translate-x-0 disabled:hover:translate-y-0 uppercase text-sm border-2 border-green-400"
+                  >
+                    DEV LOGIN (dev@vizu.local)
+                  </button>
+                )}
+
                 {/* Google Button */}
                 <button
                   onClick={handleGoogleSignIn}

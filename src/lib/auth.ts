@@ -2,8 +2,11 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
 import type { Adapter } from 'next-auth/adapters';
 import GoogleProvider from 'next-auth/providers/google';
-import EmailProvider from 'next-auth/providers/email';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { compare } from 'bcryptjs';
 import { prisma } from './prisma';
+
+const isDev = process.env.NODE_ENV === 'development';
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -12,16 +15,72 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env['GOOGLE_CLIENT_ID'] ?? '',
       clientSecret: process.env['GOOGLE_CLIENT_SECRET'] ?? '',
     }),
-    EmailProvider({
-      server: {
-        host: process.env['EMAIL_SERVER_HOST'],
-        port: process.env['EMAIL_SERVER_PORT'],
-        auth: {
-          user: process.env['EMAIL_SERVER_USER'],
-          pass: process.env['EMAIL_SERVER_PASSWORD'],
-        },
+    CredentialsProvider({
+      id: 'credentials',
+      name: 'Credentials',
+      credentials: {
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
-      from: process.env['EMAIL_FROM'] ?? 'noreply@vizu.com.br',
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        const email = credentials.email.toLowerCase();
+        const password = credentials.password;
+
+        // Development-only: Check for dev user credentials
+        if (isDev) {
+          const devEmail = process.env['DEV_USER_EMAIL'];
+          const devPassword = process.env['DEV_USER_PASSWORD'];
+
+          if (devEmail && devPassword && email === devEmail && password === devPassword) {
+            // Find or create dev user
+            let user = await prisma.user.findUnique({
+              where: { email: devEmail },
+            });
+
+            if (!user) {
+              user = await prisma.user.create({
+                data: {
+                  email: devEmail,
+                  name: 'Dev User',
+                  karma: 50,
+                  credits: 100,
+                },
+              });
+            }
+
+            return {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+            };
+          }
+        }
+
+        // Regular credentials auth: find user and verify password
+        const user = await prisma.user.findUnique({
+          where: { email },
+        });
+
+        if (!user || !user.password) {
+          return null;
+        }
+
+        const isPasswordValid = await compare(password, user.password);
+
+        if (!isPasswordValid) {
+          return null;
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        };
+      },
     }),
   ],
   session: {
