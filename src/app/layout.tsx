@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'Vizu' }],
   creator: 'Vizu',
   metadataBase: new URL(process.env['NEXT_PUBLIC_APP_URL'] ?? 'http://localhost:3000'),
+  appleWebApp: {
+    title: 'VIZU',
+  },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
