@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { useToast } from '@/components/ui/toast';
+import { useToastActions } from '@/stores/ui-store';
 
 interface UploadData {
   file: File;
@@ -23,7 +23,7 @@ interface UploadResult {
 export function usePhotoUpload() {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const { addToast } = useToast();
+  const { addToast } = useToastActions();
 
   const uploadPhoto = useCallback(
     async (data: UploadData): Promise<UploadResult> => {

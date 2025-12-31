@@ -64,7 +64,7 @@ export default function LandingBoldGeometric() {
                 RECURSOS
               </a>
               <a href="#precos" className="text-sm font-medium text-neutral-400 hover:text-white transition-colors">
-                PRECOS
+                PREÇOS
               </a>
             </div>
 
@@ -79,7 +79,7 @@ export default function LandingBoldGeometric() {
                 href="/login"
                 className="px-5 py-2.5 text-sm font-bold text-neutral-950 bg-primary-500 rounded-xl hover:bg-primary-400 transition-colors"
               >
-                COMECAR
+                COMEÇAR
               </Link>
 
               {/* Mobile menu button */}
@@ -103,7 +103,7 @@ export default function LandingBoldGeometric() {
                   RECURSOS
                 </a>
                 <a href="#precos" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-neutral-400 hover:text-white py-2">
-                  PRECOS
+                  PREÇOS
                 </a>
                 <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-sm font-medium text-neutral-400 hover:text-white py-2 sm:hidden">
                   ENTRAR
@@ -126,19 +126,19 @@ export default function LandingBoldGeometric() {
             {/* Content */}
             <div className="text-center lg:text-left">
               <div className="inline-block px-4 py-2 bg-neutral-950 rounded-full text-sm font-bold mb-6 md:mb-8">
-                FEEDBACK REAL E ANONIMO
+                FEEDBACK REAL E ANÔNIMO
               </div>
 
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tight text-neutral-950">
                 DESCUBRA
                 <br />
-                COMO VOCE
+                COMO VOCÊ
                 <br />
-                <span className="text-white">E VISTO</span>
+                <span className="text-white">É VISTO</span>
               </h1>
 
               <p className="mt-6 md:mt-8 text-lg md:text-xl text-neutral-950/80 max-w-md mx-auto lg:mx-0 font-medium">
-                Avaliacoes anonimas de pessoas reais. Melhore sua presenca em apps de relacionamento e redes sociais.
+                Avaliações anônimas de pessoas reais. Melhore sua presença em apps de relacionamento e redes sociais.
               </p>
 
               <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -146,7 +146,7 @@ export default function LandingBoldGeometric() {
                   href="/login"
                   className="group inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-black text-primary-500 bg-neutral-950 rounded-2xl hover:bg-neutral-900 transition-colors"
                 >
-                  COMECAR GRATIS
+                  COMEÇAR GRÁTIS
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
@@ -184,14 +184,14 @@ export default function LandingBoldGeometric() {
 
                     {/* Rating bars */}
                     <div className="absolute bottom-4 left-4 right-4 space-y-2">
-                      {/* Atracao */}
+                      {/* Atração */}
                       <div className="bg-neutral-950/90 backdrop-blur-sm rounded-xl p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                               <Heart className="w-4 h-4 text-white" />
                             </div>
-                            <span className="text-xs font-bold text-white">ATRACAO</span>
+                            <span className="text-xs font-bold text-white">ATRAÇÃO</span>
                           </div>
                           <span className="text-lg font-black text-primary-500">8.7</span>
                         </div>
@@ -200,14 +200,14 @@ export default function LandingBoldGeometric() {
                         </div>
                       </div>
 
-                      {/* Confianca */}
+                      {/* Confiança */}
                       <div className="bg-neutral-950/90 backdrop-blur-sm rounded-xl p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-secondary-500 rounded-lg flex items-center justify-center">
                               <Shield className="w-4 h-4 text-neutral-950" />
                             </div>
-                            <span className="text-xs font-bold text-white">CONFIANCA</span>
+                            <span className="text-xs font-bold text-white">CONFIANÇA</span>
                           </div>
                           <span className="text-lg font-black text-secondary-500">9.2</span>
                         </div>
@@ -216,14 +216,14 @@ export default function LandingBoldGeometric() {
                         </div>
                       </div>
 
-                      {/* Inteligencia */}
+                      {/* Inteligência */}
                       <div className="bg-neutral-950/90 backdrop-blur-sm rounded-xl p-3">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-accent-500 rounded-lg flex items-center justify-center">
                               <Sparkles className="w-4 h-4 text-white" />
                             </div>
-                            <span className="text-xs font-bold text-white">INTELIGENCIA</span>
+                            <span className="text-xs font-bold text-white">INTELIGÊNCIA</span>
                           </div>
                           <span className="text-lg font-black text-accent-500">8.4</span>
                         </div>
@@ -263,8 +263,8 @@ export default function LandingBoldGeometric() {
             {[
               { value: '50K+', label: 'FOTOS AVALIADAS', color: 'text-primary-500' },
               { value: '1M+', label: 'VOTOS REALIZADOS', color: 'text-secondary-500' },
-              { value: '25K+', label: 'USUARIOS ATIVOS', color: 'text-accent-500' },
-              { value: '4.8', label: 'AVALIACAO MEDIA', color: 'text-primary-500' },
+              { value: '25K+', label: 'USUÁRIOS ATIVOS', color: 'text-accent-500' },
+              { value: '4.8', label: 'AVALIAÇÃO MÉDIA', color: 'text-primary-500' },
             ].map((stat, i) => (
               <div key={i} className="text-center">
                 <div className={`text-4xl md:text-6xl font-black ${stat.color}`}>
@@ -288,7 +288,7 @@ export default function LandingBoldGeometric() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 md:mb-20">
             <span className="inline-block px-4 py-2 bg-neutral-950 rounded-full text-sm font-bold text-white mb-6">
-              SIMPLES E RAPIDO
+              SIMPLES E RÁPIDO
             </span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-neutral-950 leading-tight">
               COMO FUNCIONA
@@ -301,7 +301,7 @@ export default function LandingBoldGeometric() {
                 icon: Camera,
                 step: '01',
                 title: 'ENVIE SUA FOTO',
-                description: 'Faca upload da foto que deseja avaliar. Escolha a categoria: profissional, namoro ou social.',
+                description: 'Faça upload da foto que deseja avaliar. Escolha a categoria: profissional, namoro ou social.',
                 bg: 'bg-neutral-950',
                 iconBg: 'bg-primary-500',
               },
@@ -309,15 +309,15 @@ export default function LandingBoldGeometric() {
                 icon: Users,
                 step: '02',
                 title: 'RECEBA VOTOS',
-                description: 'Pessoas reais avaliam sua foto de forma anonima em 3 criterios: Atracao, Confianca e Inteligencia.',
+                description: 'Pessoas reais avaliam sua foto de forma anônima em 3 critérios: Atração, Confiança e Inteligência.',
                 bg: 'bg-white',
                 iconBg: 'bg-secondary-600',
               },
               {
                 icon: BarChart3,
                 step: '03',
-                title: 'ANALISE RESULTADOS',
-                description: 'Veja estatisticas detalhadas com notas normalizadas que eliminam vieses dos avaliadores.',
+                title: 'ANALISE OS RESULTADOS',
+                description: 'Veja estatísticas detalhadas com notas normalizadas que eliminam vieses dos avaliadores.',
                 bg: 'bg-neutral-950',
                 iconBg: 'bg-accent-500',
               },
@@ -351,7 +351,7 @@ export default function LandingBoldGeometric() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 md:mb-20">
             <span className="inline-block px-4 py-2 bg-primary-500 rounded-full text-sm font-bold text-white mb-6">
-              RECURSOS UNICOS
+              RECURSOS ÚNICOS
             </span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
               POR QUE VIZU?
@@ -362,43 +362,43 @@ export default function LandingBoldGeometric() {
             {[
               {
                 icon: Target,
-                title: 'ALGORITMO DE NORMALIZACAO',
-                description: 'Notas ajustadas para eliminar vieses. Avaliadores rigorosos e generosos sao calibrados.',
+                title: 'ALGORITMO DE NORMALIZAÇÃO',
+                description: 'Notas ajustadas para eliminar vieses. Avaliadores rigorosos e generosos são calibrados.',
                 bg: 'bg-primary-500',
                 textColor: 'text-white',
               },
               {
                 icon: Shield,
                 title: 'PRIVACIDADE GARANTIDA',
-                description: 'Compativel com LGPD. Seus dados protegidos e voce tem controle total.',
+                description: 'Compatível com LGPD. Seus dados protegidos e você tem controle total.',
                 bg: 'bg-white',
                 textColor: 'text-neutral-950',
               },
               {
                 icon: Zap,
                 title: 'SISTEMA DE KARMA',
-                description: 'Vote em outras fotos para ganhar karma e ter suas fotos avaliadas mais rapido.',
+                description: 'Vote em outras fotos para ganhar karma e ter suas fotos avaliadas mais rápido.',
                 bg: 'bg-secondary-500',
                 textColor: 'text-neutral-950',
               },
               {
                 icon: Eye,
-                title: 'MODERACAO AUTOMATICA',
-                description: 'Tecnologia AWS Rekognition garante ambiente seguro, bloqueando conteudo inapropriado.',
+                title: 'MODERAÇÃO AUTOMÁTICA',
+                description: 'Tecnologia AWS Rekognition garante ambiente seguro, bloqueando conteúdo inapropriado.',
                 bg: 'bg-neutral-800',
                 textColor: 'text-white',
               },
               {
                 icon: BarChart3,
                 title: 'INSIGHTS DETALHADOS',
-                description: 'Veja como diferentes demograficos percebem sua foto. Dados por idade e genero.',
+                description: 'Veja como diferentes demográficos percebem sua foto. Dados por idade e gênero.',
                 bg: 'bg-accent-500',
                 textColor: 'text-white',
               },
               {
                 icon: Star,
                 title: 'VOTOS DE QUALIDADE',
-                description: 'Avaliadores com historico consistente tem mais peso. Feedback relevante e confiavel.',
+                description: 'Avaliadores com histórico consistente têm mais peso. Feedback relevante e confiável.',
                 bg: 'bg-primary-500',
                 textColor: 'text-white',
               },
@@ -431,7 +431,7 @@ export default function LandingBoldGeometric() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 md:mb-20">
             <span className="inline-block px-4 py-2 bg-neutral-950 rounded-full text-sm font-bold text-white mb-6">
-              PRECOS ACESSIVEIS
+              PREÇOS ACESSÍVEIS
             </span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
               ESCOLHA SEU PLANO
@@ -441,16 +441,16 @@ export default function LandingBoldGeometric() {
           <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
             {/* Free Plan */}
             <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]">
-              <h3 className="text-xl font-black text-neutral-950">GRATIS</h3>
+              <h3 className="text-xl font-black text-neutral-950">GRÁTIS</h3>
               <div className="mt-4">
                 <span className="text-5xl md:text-6xl font-black text-neutral-950">R$0</span>
                 <span className="text-neutral-500 ml-2 font-bold">/sempre</span>
               </div>
               <p className="mt-4 text-neutral-600 text-sm font-medium">
-                Perfeito para comecar e testar o servico
+                Perfeito para começar e testar o serviço
               </p>
               <ul className="mt-8 space-y-4">
-                {['50 karma inicial', 'Ganhe karma votando', 'Upload ilimitado', 'Resultados basicos'].map((item, i) => (
+                {['50 karma inicial', 'Ganhe karma votando', 'Upload ilimitado', 'Resultados básicos'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-700">
                     <CheckCircle2 className="w-5 h-5 text-accent-500 flex-shrink-0" />
                     <span>{item}</span>
@@ -461,7 +461,7 @@ export default function LandingBoldGeometric() {
                 href="/login"
                 className="mt-8 block w-full py-4 text-center font-black text-neutral-950 bg-neutral-100 border-2 border-neutral-950 rounded-xl hover:bg-neutral-200 transition-colors"
               >
-                COMECAR GRATIS
+                COMEÇAR GRÁTIS
               </Link>
             </div>
 
@@ -473,13 +473,13 @@ export default function LandingBoldGeometric() {
               <h3 className="text-xl font-black text-white mt-2">TURBO</h3>
               <div className="mt-4">
                 <span className="text-5xl md:text-6xl font-black text-primary-500">R$9,90</span>
-                <span className="text-neutral-500 ml-2 font-bold">/100 creditos</span>
+                <span className="text-neutral-500 ml-2 font-bold">/100 créditos</span>
               </div>
               <p className="mt-4 text-neutral-400 text-sm font-medium">
-                Para quem quer resultados rapidos
+                Para quem quer resultados rápidos
               </p>
               <ul className="mt-8 space-y-4">
-                {['100 creditos para votos', 'Prioridade na fila', 'Insights demograficos', 'Pagamento via Pix'].map((item, i) => (
+                {['100 créditos para votos', 'Prioridade na fila', 'Insights demográficos', 'Pagamento via Pix'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-300">
                     <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
                     <span>{item}</span>
@@ -490,7 +490,7 @@ export default function LandingBoldGeometric() {
                 href="/login"
                 className="mt-8 block w-full py-4 text-center font-black text-neutral-950 bg-primary-500 rounded-xl hover:bg-primary-400 transition-colors"
               >
-                COMPRAR CREDITOS
+                COMPRAR CRÉDITOS
               </Link>
             </div>
 
@@ -499,13 +499,13 @@ export default function LandingBoldGeometric() {
               <h3 className="text-xl font-black text-neutral-950">PACOTE PRO</h3>
               <div className="mt-4">
                 <span className="text-5xl md:text-6xl font-black text-neutral-950">R$4,90</span>
-                <span className="text-neutral-500 ml-2 font-bold">/50 creditos</span>
+                <span className="text-neutral-500 ml-2 font-bold">/50 créditos</span>
               </div>
               <p className="mt-4 text-neutral-600 text-sm font-medium">
-                Ideal para testes rapidos
+                Ideal para testes rápidos
               </p>
               <ul className="mt-8 space-y-4">
-                {['50 creditos para votos', 'Prioridade na fila', 'Resultados detalhados', 'Pagamento via Pix'].map((item, i) => (
+                {['50 créditos para votos', 'Prioridade na fila', 'Resultados detalhados', 'Pagamento via Pix'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-700">
                     <CheckCircle2 className="w-5 h-5 text-accent-500 flex-shrink-0" />
                     <span>{item}</span>
@@ -516,7 +516,7 @@ export default function LandingBoldGeometric() {
                 href="/login"
                 className="mt-8 block w-full py-4 text-center font-black text-neutral-950 bg-neutral-100 border-2 border-neutral-950 rounded-xl hover:bg-neutral-200 transition-colors"
               >
-                COMPRAR CREDITOS
+                COMPRAR CRÉDITOS
               </Link>
             </div>
           </div>
@@ -540,19 +540,19 @@ export default function LandingBoldGeometric() {
             <span className="text-white">DESCOBRIR?</span>
           </h2>
           <p className="mt-6 md:mt-8 text-lg md:text-xl text-neutral-950/80 max-w-2xl mx-auto font-medium">
-            Junte-se a milhares de pessoas que ja melhoraram sua presenca online com feedback real e anonimo.
+            Junte-se a milhares de pessoas que já melhoraram sua presença online com feedback real e anônimo.
           </p>
           <div className="mt-10">
             <Link
               href="/login"
               className="group inline-flex items-center justify-center gap-3 px-10 py-5 text-lg font-black text-primary-500 bg-neutral-950 rounded-2xl hover:bg-neutral-900 transition-colors shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]"
             >
-              CRIAR CONTA GRATIS
+              CRIAR CONTA GRÁTIS
               <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
           </div>
           <p className="mt-6 text-sm text-neutral-950/60 font-bold">
-            SEM CARTAO DE CREDITO. COMECE EM SEGUNDOS.
+            SEM CARTÃO DE CRÉDITO. COMECE EM SEGUNDOS.
           </p>
         </div>
       </section>
@@ -569,14 +569,14 @@ export default function LandingBoldGeometric() {
                 <span className="text-2xl font-black">VIZU</span>
               </div>
               <p className="text-neutral-500 text-sm font-medium leading-relaxed">
-                Otimize sua imagem social com feedback anonimo e honesto de pessoas reais.
+                Otimize sua imagem social com feedback anônimo e honesto de pessoas reais.
               </p>
             </div>
 
             <div>
               <h4 className="font-black mb-6 text-sm">PRODUTO</h4>
               <ul className="space-y-3">
-                {['Como Funciona', 'Recursos', 'Precos'].map((item, i) => (
+                {['Como Funciona', 'Recursos', 'Preços'].map((item, i) => (
                   <li key={i}>
                     <a href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-neutral-500 hover:text-white text-sm font-medium transition-colors">
                       {item}

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getAuthenticatedUser } from '@/lib/safe-action';
 import { prisma } from '@/lib/prisma';
 
 const MAX_KARMA = 50;
@@ -9,13 +8,13 @@ const KARMA_REGEN_INTERVAL_MS = 60 * 60 * 1000; // 1 hour
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const authUser = await getAuthenticatedUser();
+    if (!authUser) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: authUser.id },
       select: {
         karma: true,
         credits: true,
@@ -48,13 +47,13 @@ export async function GET() {
 
 export async function POST() {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const authUser = await getAuthenticatedUser();
+    if (!authUser) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: authUser.id },
       select: {
         karma: true,
         lastKarmaRegen: true,
@@ -85,7 +84,7 @@ export async function POST() {
     const karmaToAdd = Math.min(KARMA_REGEN_AMOUNT, MAX_KARMA - user.karma);
 
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: authUser.id },
       data: {
         karma: { increment: karmaToAdd },
         lastKarmaRegen: new Date(),

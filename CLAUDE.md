@@ -1,180 +1,210 @@
-# CLAUDE.md - Claude Code Operational Guide
+# CLAUDE.md - Vizu Project Guide
 
-**Terminology:**
-- **Skills** = Claude Code native format (.claude/skills/ with SKILL.md) - Auto-discovered
-- **Scripts** = CLI-based Python workflows (./scripts/) - Agent-agnostic
+## Project Overview
 
-**Dual-Mode MCP pattern**: Reusable scripts (PREFERRED, 99.6% reduction) with CLI arguments, OR direct script writing (98.7% reduction) for novel tasks. Progressive disclosure via filesystem. Multi-transport support (stdio + SSE + HTTP).
+**Vizu** is a Brazilian social image optimization platform (similar to Photofeeler) where users submit photos for anonymous evaluation by real people. Users rate photos on three axes: Attraction, Trust, and Intelligence (1-10 scale).
 
-## Execution Modes
+**Target Market:** Brazilian users of dating apps (Tinder, Bumble, etc.)
+**Language:** Portuguese (pt-BR) for UI, English for code
 
-### PRIMARY: Scripts-Based Execution (>2 tools, complex logic)
+## Tech Stack
 
-**When to use:**
-- Multi-step research workflows
-- Cross-validation needed
-- Data processing pipelines
-- Chaining multiple MCP servers
-- 99.6% token reduction, 96% time reduction
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript 5.x (strict mode) |
+| Styling | Tailwind CSS 3.x |
+| Database | PostgreSQL (Prisma ORM) |
+| Cache | Redis (Upstash) |
+| Auth | NextAuth.js (Google OAuth + Credentials) |
+| Images | Cloudinary (upload/transform) |
+| Moderation | AWS Rekognition |
+| Payments | Abacate Pay (Pix) |
+| Testing | Vitest |
 
-**Pattern:**
-1. `ls scripts/` - Discover available scripts
-2. `cat scripts/{script}.py` - Read script docstring and CLI arguments
-3. Execute with args (DO NOT edit file):
-   ```bash
-   # Example: Web scraping
-   uv run python -m runtime.harness scripts/firecrawl_scrape.py \
-       --url "https://example.com"
+## Project Structure
 
-   # Example: Multi-tool pipeline
-   uv run python -m runtime.harness scripts/multi_tool_pipeline.py \
-       --repo-path "." \
-       --max-commits 5
-   ```
-
-**Example Scripts:**
-
-Reusable CLI workflows (./scripts/):
-- `firecrawl_scrape.py` - Web scraping pattern (`--url`)
-- `multi_tool_pipeline.py` - Multi-tool chaining pattern (`--repo-path`, `--max-commits`)
-
-**Note:** These are **templates** - use as examples to create custom scripts for your specific MCP servers and use cases.
-
-**Claude Code Users:** These scripts are also available as native Skills in `.claude/skills/` (SKILL.md format, auto-discovered).
-
-### ALTERNATIVE: Direct Script Writing (1 tool, simple fetch)
-
-**When to use:**
-- Single tool call
-- Straightforward data retrieval
-- Novel workflows not covered by existing scripts
-- Prototyping new patterns
-
-**Pattern:** (existing documentation)
-1. Explore `servers/` to discover tools
-2. Write Python script using tool imports
-3. Execute: `uv run python -m runtime.harness workspace/script.py`
-
-## MCP Server Configuration
-
-The runtime checks for config in this order:
-1. `.mcp.json` (Claude Code project convention)
-2. `mcp_config.json` (visible example, tracked in repo)
-
-**Environment variables:** Add API keys to `.env` (copy from `.env.example`). The config uses `${VAR}` placeholders.
-
-## Commands
-- `uv run mcp-generate` - Gen Python wrappers from `.mcp.json` or `mcp_config.json`
-- `uv run mcp-discover` - Gen Pydantic types from actual API responses (see `discovery_config.json`)
-- `uv run mcp-exec <script.py>` - Run script w/ MCP
-- `uv run mcp-exec <script> --args` - Run script with CLI arguments
-- Example scripts: `workspace/example_progressive_disclosure.py`, `tests/integration/test_*.py`
-- User scripts go in: `workspace/` (gitignored)
-
-## Core Files
-- `src/runtime/mcp_client.py` - `McpClientManager`: lazy loading, `initialize()` loads config only, `call_tool()` connects on-demand, tool format `"serverName__toolName"`, singleton via `get_mcp_client_manager()`
-- `src/runtime/harness.py` - Exec harness: asyncio, MCP init, signal handlers, cleanup
-- `src/runtime/generate_wrappers.py` - Auto-gen: connects all servers (stdio/SSE/HTTP), introspects schemas, generates `servers/<server>/<tool>.py` + `__init__.py`
-- `src/runtime/discover_schemas.py` - Schema discovery: calls safe read-only tools, generates `servers/<server>/discovered_types.py` from real responses
-- `src/runtime/normalize_fields.py` - Field normalization: auto-converts inconsistent API field casing (e.g., ADO: `system.parent` → `System.Parent`)
-
-## Structure
-`servers/` (gitignored, regen w/ `uv run mcp-generate`):
 ```
-servers/<serverName>/<toolName>.py         # Pydantic models, async wrapper
-servers/<serverName>/__init__.py           # Barrel exports
-servers/<serverName>/discovered_types.py   # Optional: Pydantic types from actual API responses
+vizu/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── (auth)/             # Auth pages (login, register, verify)
+│   │   ├── (app)/              # Authenticated pages (dashboard, vote, results, credits, settings)
+│   │   ├── api/                # API routes
+│   │   ├── terms/              # Terms of Service page
+│   │   ├── privacy/            # Privacy Policy page
+│   │   └── page.tsx            # Landing page
+│   ├── components/
+│   │   ├── ui/                 # Base components (button, card, modal, slider, toast)
+│   │   ├── forms/              # Form components (photo-upload, rating-form, checkout-form)
+│   │   ├── features/           # Feature components (photo-card, results-chart, karma-display, pix-qrcode)
+│   │   └── layout/             # Layout components (navbar, footer, mobile-nav)
+│   ├── hooks/                  # Custom React hooks
+│   ├── lib/                    # Utilities and integrations
+│   │   ├── utils/              # Business logic (normalization, karma, validation)
+│   │   └── payments/           # Payment integrations
+│   └── types/                  # TypeScript types
+├── prisma/
+│   └── schema.prisma           # Database schema
+├── public/                     # Static assets
+└── specs/                      # Feature specifications
 ```
 
-`scripts/` (CLI-based parameter templates - edit logic freely):
-```
-scripts/<script_name>.py                    # Workflow with argparse, USAGE docstring
-scripts/README.md                           # Scripts documentation
-scripts/SCRIPTS.md                          # Complete framework guide
-```
+## Key Commands
 
-`mcp_config.json` format (multi-transport):
-```json
-{
-  "mcpServers": {
-    "name_stdio": {
-      "type": "stdio",
-      "command": "command",
-      "args": ["arg1"],
-      "env": {}
-    },
-    "name_sse": {
-      "type": "sse",
-      "url": "https://...",
-      "headers": {"Authorization": "Bearer ..."}
-    },
-    "name_http": {
-      "type": "http",
-      "url": "https://...",
-      "headers": {"x-api-key": "..."}
-    }
-  }
-}
+```bash
+# Development
+npm run dev              # Start dev server
+npm run build            # Production build
+npm run lint             # Run ESLint
+npm run typecheck        # TypeScript check
+
+# Database
+npm run db:generate      # Generate Prisma client
+npm run db:push          # Push schema to database
+npm run db:migrate       # Run migrations
+npm run db:seed          # Seed database
+npm run db:studio        # Open Prisma Studio
+
+# Testing
+npm run test             # Run Vitest
+npm run test:ui          # Run Vitest with UI
 ```
 
-`discovery_config.json` format (optional, for schema discovery):
-```json
-{"servers": {"name": {"safeTools": {"tool_name": {"param1": "value"}}}}}
+## Code Conventions
+
+### TypeScript
+- Strict mode enabled with `noUncheckedIndexedAccess`
+- Use `@/*` path alias for imports from `src/`
+- Prefer explicit types over `any`
+- Use Zod for runtime validation (see `src/lib/utils/validation.ts`)
+
+### React/Next.js
+- Use App Router conventions (page.tsx, layout.tsx, loading.tsx, error.tsx)
+- Client components: `'use client'` directive at top
+- Server components by default
+- Use `next/image` for all images
+- Use `next/link` for internal navigation
+
+### Styling
+- Tailwind CSS with custom color palette (see `tailwind.config.ts`)
+- **Design Style:** Bold Geometric (not glassmorphism)
+  - Solid backgrounds (primary-500, neutral-950)
+  - Offset shadows: `shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]`
+  - Bold typography: `font-black`, `uppercase`
+  - High contrast colors
+- Custom colors: `primary` (rose), `secondary` (orange), `accent` (fuchsia), `neutral` (warm gray)
+- Mobile-first responsive design
+
+### Database
+- Use Prisma for all database operations
+- Import client from `@/lib/prisma`
+- Key models: User, Photo, Vote, Transaction, Consent
+
+## Business Logic
+
+### Dual Economy System
+- **Karma** (free, regenerates): Earned by voting, spent on free photo tests
+- **Credits** (paid, purchased): Bought via Pix, used for premium tests with audience filters
+
+### Photo Testing Flow
+1. User uploads photo → Cloudinary
+2. AWS Rekognition moderates content
+3. If approved, photo enters voting queue
+4. Other users vote (1-10 on 3 axes)
+5. System normalizes votes (adjusts for voter bias)
+6. Results shown after minimum votes reached
+
+### Vote Normalization Algorithm
+Located in `src/lib/utils/normalization.ts`:
+- Calculates voter bias from historical votes
+- Adjusts vote weight based on voter rigor
+- Provides confidence score based on vote count
+
+## API Routes
+
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/api/auth/[...nextauth]` | * | NextAuth handlers |
+| `/api/photos` | GET/POST | List/upload photos |
+| `/api/photos/[id]` | GET/DELETE | Single photo operations |
+| `/api/votes` | POST | Submit vote |
+| `/api/votes/next` | GET | Get next photo to vote |
+| `/api/votes/skip` | POST | Skip current photo |
+| `/api/user/karma` | GET | Get user karma |
+| `/api/user/stats` | GET | Get user statistics |
+| `/api/user/export` | POST | LGPD data export |
+| `/api/user/delete` | POST | LGPD account deletion |
+| `/api/payments/pix` | POST | Generate Pix payment |
+| `/api/payments/webhook` | POST | Payment webhook |
+
+## LGPD Compliance
+
+The platform handles biometric data (facial characteristics) and must comply with Brazilian LGPD:
+- Explicit consent required before data collection
+- Data export available within 48 hours
+- Account deletion available within 72 hours
+- All user data must be anonymizable
+
+## Environment Variables
+
+Required in `.env.local`:
+```
+DATABASE_URL=
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
+ABACATE_API_KEY=
 ```
 
-## Workflow
+## Specs and Planning
 
-### Scripts-Based (PREFERRED)
-1. Discover: `ls scripts/` → see available script templates
-2. Read: `cat scripts/firecrawl_scrape.py` → see CLI arguments and USAGE
-3. Execute: `uv run python -m runtime.harness scripts/firecrawl_scrape.py --url "https://example.com"`
-4. Change parameters via CLI args - edit scripts freely to fix bugs or improve logic
-5. Create your own scripts for your specific workflows using the template
+Feature specifications are in `specs/001-photo-rating-platform/`:
+- `spec.md` - User stories, requirements, acceptance criteria
+- `plan.md` - Technical architecture, database schema, system design
 
-### Script-Based (ALTERNATIVE)
-1. Add server: edit `mcp_config.json` or `.mcp.json` → specify type (stdio/sse/http)
-2. Generate wrappers: `uv run mcp-generate` → auto-detect transports
-3. Import in script: `from servers.name import tool_name`
-4. Execute: `uv run mcp-exec workspace/script.py` (auto-connect on first call)
+## Common Tasks
 
-Optional schema discovery: copy `discovery_config.example.json` → edit w/ safe read-only tools + real params → `uv run mcp-discover` → `from servers.name.discovered_types import ToolNameResult`
+### Adding a new API route
+1. Create file in `src/app/api/{route}/route.ts`
+2. Export async functions: GET, POST, PUT, DELETE
+3. Use `getServerSession` for auth
+4. Validate input with Zod
+5. Return `NextResponse.json()`
 
-Script pattern (`workspace/` for user scripts, `tests/` for examples):
-```python
-from servers.name import tool_name
-from servers.name.discovered_types import ToolNameResult  # optional
+### Adding a new page
+1. Create file in `src/app/{route}/page.tsx`
+2. Add `'use client'` if using hooks/state
+3. For protected routes, add to `(app)` folder
+4. Follow Bold Geometric design style
 
-result = await tool_name(params)  # Pydantic model
-# Use defensive coding: result.field or fallback
-# Return data - LLM can process/summarize in follow-up interactions
-# Not all processing needs to happen in-script
+### Working with database
+1. Update `prisma/schema.prisma`
+2. Run `npm run db:migrate` (or `db:push` for dev)
+3. Run `npm run db:generate`
+4. Import from `@/lib/prisma`
+
+## Testing Strategy (Planned)
+
+```
+tests/
+├── unit/                # Pure functions (normalization, karma calculations)
+├── integration/         # API routes with database
+└── e2e/                 # Critical user flows
 ```
 
-## Key Details
-- **Scripts pattern** - Change parameters via CLI args, edit scripts freely to fix bugs or improve logic
-- **Skills (Claude Code)** - Native SKILL.md format in .claude/skills/ (auto-discovered by Claude Code)
-- Tool ID: `"serverName__toolName"` (double underscore)
-- Progressive disclosure:
-  - Scripts with CLI args: 110 tokens, 99.6% reduction (PREFERRED)
-  - Writing scripts from scratch: 2K tokens, 98.7% reduction (ALTERNATIVE)
-  - Claude Code Skills: Wrapper for script discovery (auto-discovered)
-- Multi-transport: stdio (subprocess), SSE (events), HTTP (streamable)
-- **Processing flexibility**: Scripts can return raw data for LLM to process, pre-process for efficiency, or reshape for chaining tool calls - choose based on use case
-- Type gen: Pydantic models for all schemas, handles primitives, unions, nested objects, required/optional, docstrings
-- Schema discovery: only use safe read-only tools (never mutations), types are hints (fields marked Optional), still use defensive coding
-- Field normalization: auto-applied per server (e.g., ADO normalizes all fields to PascalCase for consistency)
-- Python: asyncio for concurrency, Pydantic for validation, mypy for type safety
-
-## Troubleshooting
-- "No config file found": create `.mcp.json` or ensure `mcp_config.json` exists
-- "MCP server not configured": check config file keys and ensure `.env` has required API keys
-- "Connection closed": verify server command with `which <command>`
-- Missing wrappers: `uv run mcp-generate`
-- Import errors: ensure `src/` in sys.path (harness handles this)
-- Type checking: `uv run mypy src/` for validation
-- Script --help: `python scripts/{script}.py --help` shows CLI arguments
-
-## Refs
-- [Code Execution with MCP](https://www.anthropic.com/engineering/code-execution-with-mcp)
-- [MCP spec](https://modelcontextprotocol.io/)
-- [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+Priority tests:
+1. Vote normalization algorithm
+2. Karma calculations
+3. Authentication flows
+4. Payment webhooks
+5. LGPD data export/deletion

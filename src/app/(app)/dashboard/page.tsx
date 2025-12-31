@@ -2,10 +2,21 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { PhotoCard } from '@/components/features/photo-card';
-import { KarmaDisplay } from '@/components/features/karma-display';
+import Image from 'next/image';
 import { useAuth } from '@/hooks/use-auth';
+import { cn } from '@/lib/utils';
+import {
+  Plus,
+  Sparkles,
+  TrendingUp,
+  Image as ImageIcon,
+  Star,
+  ArrowRight,
+  Zap,
+  Clock,
+  CheckCircle2,
+  XCircle,
+} from 'lucide-react';
 
 interface Photo {
   id: string;
@@ -30,12 +41,48 @@ interface UserStats {
   voteCount: number;
 }
 
+const statusConfig = {
+  PENDING_MODERATION: {
+    label: 'EM ANÁLISE',
+    icon: Clock,
+    bgLight: 'bg-amber-500',
+    bgDark: 'dark:bg-amber-500',
+    text: 'text-neutral-950',
+  },
+  APPROVED: {
+    label: 'ATIVA',
+    icon: CheckCircle2,
+    bgLight: 'bg-emerald-500',
+    bgDark: 'dark:bg-emerald-500',
+    text: 'text-neutral-950',
+  },
+  REJECTED: {
+    label: 'REJEITADA',
+    icon: XCircle,
+    bgLight: 'bg-red-500',
+    bgDark: 'dark:bg-red-500',
+    text: 'text-white',
+  },
+  EXPIRED: {
+    label: 'EXPIRADA',
+    icon: Clock,
+    bgLight: 'bg-neutral-400',
+    bgDark: 'dark:bg-neutral-600',
+    text: 'text-neutral-950 dark:text-white',
+  },
+};
+
+const categoryLabels = {
+  PROFESSIONAL: 'PRO',
+  DATING: 'DATING',
+  SOCIAL: 'SOCIAL',
+};
+
 export default function DashboardPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [stats, setStats] = useState<UserStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<string>('all');
 
   useEffect(() => {
     async function fetchData() {
@@ -47,7 +94,7 @@ export default function DashboardPage() {
 
         if (photosRes.ok) {
           const data = await photosRes.json();
-          setPhotos(data.photos);
+          setPhotos(data.photos || []);
         }
 
         if (statsRes.ok) {
@@ -63,155 +110,280 @@ export default function DashboardPage() {
 
     if (user) {
       fetchData();
+    } else {
+      setIsLoading(false);
     }
   }, [user]);
 
-  const filteredPhotos = photos.filter((photo) => {
-    if (filter === 'all') return true;
-    return photo.status === filter;
-  });
-
   if (authLoading || isLoading) {
     return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="relative">
+          {/* Bold Geometric Loading Spinner */}
+          <div className="w-16 h-16 bg-primary-500 rounded-2xl animate-pulse shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]" />
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-secondary-500 rounded-full animate-bounce" />
+          <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-accent-500 rotate-45" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Olá, {user?.name?.split(' ')[0] || 'usuário'}!</h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Gerencie suas fotos e acompanhe suas avaliações
-          </p>
+    <div className="space-y-6 md:space-y-8 animate-fade-in">
+
+      {/* Hero Section - Bold Geometric */}
+      <section className="relative overflow-hidden">
+        <div className="bg-primary-500 rounded-3xl p-6 md:p-10 border-4 border-neutral-950 dark:border-neutral-800 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.2)]">
+          {/* Decorative shapes */}
+          <div className="absolute top-0 right-0 w-32 h-32 md:w-48 md:h-48 bg-secondary-500 rounded-full translate-x-1/3 -translate-y-1/3 opacity-60" />
+          <div className="absolute bottom-0 left-0 w-16 h-16 md:w-24 md:h-24 bg-neutral-950/10 -translate-x-1/4 translate-y-1/4" />
+          <div className="absolute top-1/2 right-1/4 w-6 h-6 bg-white/20 rotate-45 hidden md:block" />
+
+          <div className="relative flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div className="space-y-2">
+              <h1 className="text-3xl md:text-4xl font-black text-neutral-950 uppercase tracking-tight">
+                OLÁ, {user?.name?.split(' ')[0]?.toUpperCase() || 'DEV'}!
+              </h1>
+              <p className="text-neutral-950/70 font-bold text-lg">
+                Gerencie suas fotos e acompanhe suas avaliações
+              </p>
+            </div>
+
+            <Link
+              href="/upload"
+              className="group inline-flex items-center gap-3 px-6 py-4 bg-neutral-950 text-white font-black uppercase rounded-2xl transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px]"
+            >
+              <Plus className="w-5 h-5" />
+              <span>NOVA FOTO</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
-        <Link href="/upload">
-          <Button size="lg">
-            <svg className="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Nova Foto
-          </Button>
+      </section>
+
+      {/* Stats Grid - Bold Geometric Cards */}
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        {/* Karma Card */}
+        <div className="bg-amber-500 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+          <div className="flex items-center gap-2 text-neutral-950/70 text-xs font-black uppercase mb-2">
+            <Sparkles className="w-4 h-4" />
+            KARMA
+          </div>
+          <div className="text-3xl md:text-4xl font-black text-neutral-950">
+            {stats?.karma ?? 50}
+          </div>
+          <div className="mt-1 text-xs font-bold text-neutral-950/50 uppercase">
+            de 50 max
+          </div>
+        </div>
+
+        {/* Credits Card */}
+        <div className="bg-theme-card dark:bg-neutral-900 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+          <div className="flex items-center gap-2 text-theme-muted text-xs font-black uppercase mb-2">
+            <Zap className="w-4 h-4 text-primary-500" />
+            CRÉDITOS
+          </div>
+          <div className="text-3xl md:text-4xl font-black text-theme-primary">
+            {stats?.credits ?? 0}
+          </div>
+          <Link
+            href="/credits"
+            className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-primary-500 hover:text-primary-600 uppercase transition-colors"
+          >
+            COMPRAR
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+
+        {/* Photos Card */}
+        <div className="bg-secondary-500 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+          <div className="flex items-center gap-2 text-neutral-950/70 text-xs font-black uppercase mb-2">
+            <ImageIcon className="w-4 h-4" />
+            FOTOS
+          </div>
+          <div className="text-3xl md:text-4xl font-black text-neutral-950">
+            {stats?.photoCount ?? photos.length}
+          </div>
+          <div className="mt-1 text-xs font-bold text-neutral-950/50 uppercase">
+            enviadas
+          </div>
+        </div>
+
+        {/* Votes Card */}
+        <div className="bg-theme-card dark:bg-neutral-900 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
+          <div className="flex items-center gap-2 text-theme-muted text-xs font-black uppercase mb-2">
+            <Star className="w-4 h-4 text-emerald-500" />
+            VOTOS
+          </div>
+          <div className="text-3xl md:text-4xl font-black text-theme-primary">
+            {stats?.voteCount ?? 0}
+          </div>
+          <Link
+            href="/vote"
+            className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 uppercase transition-colors"
+          >
+            VOTAR
+            <ArrowRight className="w-3 h-3" />
+          </Link>
+        </div>
+      </section>
+
+      {/* Quick Actions - Bold Geometric */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link
+          href="/vote"
+          className="group relative overflow-hidden bg-emerald-500 rounded-2xl p-6 border-4 border-neutral-950 dark:border-neutral-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+        >
+          {/* Decorative circle */}
+          <div className="absolute top-0 right-0 w-24 h-24 bg-white/20 rounded-full translate-x-1/3 -translate-y-1/3" />
+
+          <div className="relative flex items-center justify-between">
+            <div>
+              <h3 className="text-lg md:text-xl font-black text-neutral-950 uppercase mb-1">
+                GANHAR KARMA
+              </h3>
+              <p className="text-neutral-950/70 font-bold text-sm">
+                Vote em fotos de outros usuários
+              </p>
+            </div>
+            <div className="w-14 h-14 rounded-xl bg-neutral-950 flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(0,0,0,0.2)] group-hover:rotate-6 transition-transform">
+              <Star className="w-7 h-7 text-emerald-500" />
+            </div>
+          </div>
         </Link>
-      </div>
 
-      {/* Stats Cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-900">
-          <div className="text-sm text-gray-600 dark:text-gray-400">Saldo</div>
-          <div className="mt-2">
-            {stats && <KarmaDisplay karma={stats.karma} credits={stats.credits} size="lg" />}
+        <Link
+          href="/results"
+          className="group relative overflow-hidden bg-theme-card dark:bg-neutral-900 rounded-2xl p-6 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+        >
+          {/* Decorative square */}
+          <div className="absolute top-4 right-4 w-8 h-8 bg-primary-500/20 rotate-12" />
+
+          <div className="relative flex items-center justify-between">
+            <div>
+              <h3 className="text-lg md:text-xl font-black text-theme-primary uppercase mb-1">
+                VER RESULTADOS
+              </h3>
+              <p className="text-theme-secondary font-bold text-sm">
+                Confira suas avaliações detalhadas
+              </p>
+            </div>
+            <div className="w-14 h-14 rounded-xl bg-primary-500 flex items-center justify-center shadow-[3px_3px_0px_0px_rgba(163,230,53,0.3)] group-hover:-rotate-6 transition-transform">
+              <TrendingUp className="w-7 h-7 text-neutral-950" />
+            </div>
           </div>
-        </div>
-
-        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-900">
-          <div className="text-sm text-gray-600 dark:text-gray-400">Fotos Enviadas</div>
-          <div className="mt-2 text-2xl font-bold">{stats?.photoCount || 0}</div>
-        </div>
-
-        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-900">
-          <div className="text-sm text-gray-600 dark:text-gray-400">Votos Dados</div>
-          <div className="mt-2 text-2xl font-bold">{stats?.voteCount || 0}</div>
-        </div>
-
-        <div className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-900">
-          <div className="text-sm text-gray-600 dark:text-gray-400">Ações Rápidas</div>
-          <div className="mt-2 flex gap-2">
-            <Link href="/vote">
-              <Button variant="outline" size="sm">
-                Avaliar
-              </Button>
-            </Link>
-            <Link href="/credits">
-              <Button variant="outline" size="sm">
-                Créditos
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
+        </Link>
+      </section>
 
       {/* Photos Section */}
-      <div>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Suas Fotos</h2>
-          <div className="flex gap-2">
-            {['all', 'APPROVED', 'PENDING_MODERATION', 'REJECTED'].map((status) => (
-              <button
-                key={status}
-                onClick={() => setFilter(status)}
-                className={`rounded-full px-3 py-1 text-sm transition-colors ${
-                  filter === status
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
-                }`}
-              >
-                {status === 'all'
-                  ? 'Todas'
-                  : status === 'APPROVED'
-                    ? 'Ativas'
-                    : status === 'PENDING_MODERATION'
-                      ? 'Em análise'
-                      : 'Rejeitadas'}
-              </button>
-            ))}
-          </div>
+      <section>
+        <div className="flex items-center justify-between mb-4 md:mb-6">
+          <h2 className="text-xl md:text-2xl font-black text-theme-primary uppercase">
+            SUAS FOTOS
+          </h2>
+          {photos.length > 0 && (
+            <span className="px-3 py-1 bg-neutral-950 dark:bg-neutral-800 text-white text-xs font-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]">
+              {photos.length} FOTO{photos.length !== 1 ? 'S' : ''}
+            </span>
+          )}
         </div>
 
-        {filteredPhotos.length === 0 ? (
-          <div className="rounded-xl bg-white p-12 text-center shadow-sm dark:bg-gray-900">
-            <svg
-              className="mx-auto h-12 w-12 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-            </svg>
-            <h3 className="mt-4 text-lg font-medium">Nenhuma foto encontrada</h3>
-            <p className="mt-2 text-gray-500">
-              {filter === 'all'
-                ? 'Envie sua primeira foto para começar a receber avaliações'
-                : 'Nenhuma foto com esse status'}
-            </p>
-            {filter === 'all' && (
-              <Link href="/upload" className="mt-4 inline-block">
-                <Button>Enviar Foto</Button>
+        {photos.length === 0 ? (
+          /* Empty State - Bold Geometric */
+          <div className="relative overflow-hidden bg-theme-card dark:bg-neutral-900 rounded-3xl border-4 border-dashed border-neutral-300 dark:border-neutral-700 p-8 md:p-12 text-center">
+            {/* Decorative elements */}
+            <div className="absolute top-4 left-4 w-8 h-8 bg-primary-500/20 rotate-12" />
+            <div className="absolute bottom-4 right-4 w-6 h-6 bg-secondary-500/30 rounded-full" />
+            <div className="absolute top-1/2 right-8 w-4 h-4 bg-accent-500/20 -rotate-12 hidden md:block" />
+
+            <div className="relative">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-neutral-100 dark:bg-neutral-800 rounded-2xl mb-6 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)]">
+                <ImageIcon className="w-10 h-10 text-neutral-400" />
+              </div>
+
+              <h3 className="text-xl md:text-2xl font-black text-theme-primary uppercase mb-2">
+                NENHUMA FOTO AINDA
+              </h3>
+              <p className="text-theme-secondary font-bold mb-8 max-w-md mx-auto">
+                Envie sua primeira foto para começar a receber avaliações anônimas e honestas
+              </p>
+
+              <Link
+                href="/upload"
+                className="inline-flex items-center gap-2 px-6 py-4 bg-primary-500 text-neutral-950 font-black uppercase rounded-xl shadow-[4px_4px_0px_0px_rgba(163,230,53,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(163,230,53,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                ENVIAR PRIMEIRA FOTO
               </Link>
-            )}
+            </div>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredPhotos.map((photo) => (
-              <PhotoCard
-                key={photo.id}
-                id={photo.id}
-                imageUrl={photo.imageUrl}
-                thumbnailUrl={photo.thumbnailUrl}
-                category={photo.category}
-                status={photo.status}
-                testType={photo.testType}
-                voteCount={photo.voteCount}
-                scores={photo.scores}
-              />
-            ))}
+          /* Photos Grid - Bold Geometric */
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {photos.map((photo) => {
+              const status = statusConfig[photo.status];
+              const StatusIcon = status.icon;
+
+              return (
+                <Link
+                  key={photo.id}
+                  href={`/results/${photo.id}`}
+                  className="group relative overflow-hidden rounded-2xl border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+                >
+                  {/* Image */}
+                  <div className="aspect-[4/5] relative overflow-hidden bg-neutral-200 dark:bg-neutral-800">
+                    <Image
+                      src={photo.thumbnailUrl || photo.imageUrl}
+                      alt="Foto"
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+
+                    {/* Category badge */}
+                    <div className="absolute top-3 left-3">
+                      <span className="px-3 py-1.5 bg-neutral-950 text-white text-xs font-black rounded-lg shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)]">
+                        {categoryLabels[photo.category]}
+                      </span>
+                    </div>
+
+                    {/* Status badge */}
+                    <div className="absolute top-3 right-3">
+                      <span className={cn(
+                        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]',
+                        status.bgLight,
+                        status.bgDark,
+                        status.text
+                      )}>
+                        <StatusIcon className="w-3.5 h-3.5" />
+                        {status.label}
+                      </span>
+                    </div>
+
+                    {/* Bottom info bar */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-neutral-950/90 p-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-white text-sm font-bold">
+                          <Star className="w-4 h-4 text-primary-500" />
+                          <span>{photo.voteCount} VOTOS</span>
+                        </div>
+
+                        {photo.scores?.attraction && (
+                          <div className="flex items-center gap-1">
+                            <span className="text-2xl font-black text-primary-500">
+                              {photo.scores.attraction.toFixed(1)}
+                            </span>
+                            <span className="text-white/50 text-sm font-bold">/10</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

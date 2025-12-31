@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 import { moderateImage } from '@/lib/rekognition';
+import { getAuthenticatedUser } from '@/lib/safe-action';
 
 const KARMA_COST_FREE = 10;
 const CREDITS_COST_PAID = 5;
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const authUser = await getAuthenticatedUser();
+    if (!authUser) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
@@ -35,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     // Check user balance
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+      where: { id: authUser.id },
       select: { karma: true, credits: true },
     });
 
@@ -78,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     // Upload to Cloudinary
     const uploadResult = await uploadToCloudinary(buffer, {
-      folder: `vizu/photos/${session.user.id}`,
+      folder: `vizu/photos/${authUser.id}`,
     });
 
     // Run content moderation
@@ -104,12 +103,12 @@ export async function POST(request: NextRequest) {
       // Deduct karma or credits
       if (testType === 'FREE') {
         await tx.user.update({
-          where: { id: session.user.id },
+          where: { id: authUser.id },
           data: { karma: { decrement: KARMA_COST_FREE } },
         });
       } else {
         await tx.user.update({
-          where: { id: session.user.id },
+          where: { id: authUser.id },
           data: { credits: { decrement: CREDITS_COST_PAID } },
         });
       }
@@ -117,7 +116,7 @@ export async function POST(request: NextRequest) {
       // Create photo record
       return tx.photo.create({
         data: {
-          userId: session.user.id,
+          userId: authUser.id,
           imageUrl: uploadResult.url,
           thumbnailUrl: uploadResult.thumbnailUrl,
           category: category as 'PROFESSIONAL' | 'DATING' | 'SOCIAL',
@@ -150,8 +149,8 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const authUser = await getAuthenticatedUser();
+    if (!authUser) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
@@ -164,7 +163,7 @@ export async function GET(request: NextRequest) {
       userId: string;
       status?: 'PENDING_MODERATION' | 'APPROVED' | 'REJECTED' | 'EXPIRED';
     } = {
-      userId: session.user.id,
+      userId: authUser.id,
     };
 
     if (status && ['PENDING_MODERATION', 'APPROVED', 'REJECTED', 'EXPIRED'].includes(status)) {

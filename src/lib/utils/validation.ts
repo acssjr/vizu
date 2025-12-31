@@ -9,12 +9,21 @@ export const photoUploadSchema = z.object({
   targetAgeMax: z.number().min(18).max(99).optional(),
 });
 
-// Vote submission validation
+// Vote submission validation (0-3 scale: 0=Não, 1=Pouco, 2=Sim, 3=Muito)
 export const voteSchema = z.object({
   photoId: z.string().cuid(),
-  attraction: z.number().int().min(1).max(10),
-  trust: z.number().int().min(1).max(10),
-  intelligence: z.number().int().min(1).max(10),
+  attraction: z.number().int().min(0).max(3),
+  trust: z.number().int().min(0).max(3),
+  intelligence: z.number().int().min(0).max(3),
+  feedback: z.object({
+    feelingTags: z.array(z.string()).default([]),
+    suggestionTags: z.array(z.string()).default([]),
+    customNote: z.string().max(200).optional(),
+  }).optional(),
+  metadata: z.object({
+    votingDurationMs: z.number().int().min(0).optional(),
+    deviceType: z.enum(['mobile', 'desktop']).optional(),
+  }).optional(),
 });
 
 // User profile update validation
@@ -27,7 +36,7 @@ export const userProfileSchema = z.object({
 // Credit package purchase validation
 export const purchaseSchema = z.object({
   packageId: z.string().cuid(),
-  paymentMethod: z.enum(['PIX']), // Checkout transparente a definir
+  paymentMethod: z.enum(['PIX']),
 });
 
 // LGPD consent validation

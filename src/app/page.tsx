@@ -25,15 +25,10 @@ import {
   XCircle,
   ChevronDown,
   Clock,
-  TrendingUp,
   Lock,
   Glasses,
-  Frown,
   Meh,
-  AlertTriangle,
   Quote,
-  Check,
-  HelpCircle,
 } from 'lucide-react';
 
 // Feedback hints with corresponding photos and vote counts
@@ -112,7 +107,7 @@ const faqItems = [
   },
   {
     question: 'E se eu não concordar com a nota?',
-    answer: 'A nota não julga você, julga a foto. Pessoas muito atraentes podem ter fotos ruins (ângulo errado, iluminação ruim). A pergunta que respondemos é: "Essa foto específica funciona nos apps?" — não "Você é bonito?".',
+    answer: 'A nota não julga você, julga a foto. Pessoas muito atraentes podem ter fotos ruins (ângulo errado, iluminação ruim). A pergunta que respondemos é: «Essa foto específica funciona nos apps?» — não «Você é bonito?».',
   },
   {
     question: 'Quanto tempo leva para receber o resultado?',
@@ -817,7 +812,7 @@ export default function Home() {
                       <p className="text-[10px] font-bold text-amber-400 uppercase">Viés social</p>
                     </div>
                   </div>
-                  <p className="text-xs text-neutral-400">Mentem para <span className="text-white font-medium">não te magoar</span>. Preferem dizer "ficou boa" do que arriscar a amizade sendo honestos.</p>
+                  <p className="text-xs text-neutral-400">Mentem para <span className="text-white font-medium">não te magoar</span>. Preferem dizer &quot;ficou boa&quot; do que arriscar a amizade sendo honestos.</p>
                 </div>
 
                 {/* Vizu */}
@@ -1581,7 +1576,7 @@ export default function Home() {
                   className="h-7 md:h-8 w-auto mb-3 md:mb-4"
                 />
                 <p className="text-xs md:text-sm text-neutral-500 mb-4 md:mb-5">
-                  Descubra como suas fotos sao realmente percebidas. Feedback honesto de pessoas reais.
+                  Descubra como suas fotos são realmente percebidas. Feedback honesto de pessoas reais.
                 </p>
                 {/* Trust badges em linha */}
                 <div className="flex items-center gap-3 md:gap-4">

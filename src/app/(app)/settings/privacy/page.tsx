@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { useAuth } from '@/hooks/use-auth';
-import { useToast } from '@/components/ui/toast';
+import { useToastActions } from '@/stores/ui-store';
 
 interface ConsentInfo {
   termsAccepted: boolean;
@@ -26,7 +26,7 @@ interface ExportRequest {
 
 export default function PrivacySettingsPage() {
   const { user, isLoading: authLoading, logout } = useAuth();
-  const { addToast } = useToast();
+  const { addToast } = useToastActions();
   const [consents, setConsents] = useState<ConsentInfo | null>(null);
   const [exportRequests, setExportRequests] = useState<ExportRequest[]>([]);
   const [isLoading, setIsLoading] = useState(true);

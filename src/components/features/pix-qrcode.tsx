@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/toast';
+import { useToastActions } from '@/stores/ui-store';
 
 export interface PixQRCodeProps {
   qrCode: string; // Base64 image
@@ -15,7 +15,7 @@ export interface PixQRCodeProps {
 export function PixQRCode({ qrCode, qrCodeText, amount, expiresAt, onExpired }: PixQRCodeProps) {
   const [copied, setCopied] = useState(false);
   const [expired, setExpired] = useState(false);
-  const { addToast } = useToast();
+  const { addToast } = useToastActions();
 
   const formattedAmount = (amount / 100).toLocaleString('pt-BR', {
     style: 'currency',

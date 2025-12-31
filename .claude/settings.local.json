@@ -22,7 +22,9 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(python3:*)",
       "Bash(node dist/skill-activation-prompt.mjs:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev)"
     ]
   }
 }

@@ -3,19 +3,47 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Light theme - Bold Geometric */
+    --bg-primary: 255 255 255;
+    --bg-secondary: 245 245 245;
+    --bg-card: 255 255 255;
+    --bg-card-hover: 250 250 250;
+    --text-primary: 10 10 10;
+    --text-secondary: 82 82 82;
+    --text-muted: 115 115 115;
+    --border-color: 229 229 229;
+    --shadow-color: 0 0 0;
+  }
+
+  .dark {
+    /* Dark theme - Bold Geometric */
+    --bg-primary: 10 10 10;
+    --bg-secondary: 23 23 23;
+    --bg-card: 23 23 23;
+    --bg-card-hover: 38 38 38;
+    --text-primary: 255 255 255;
+    --text-secondary: 163 163 163;
+    --text-muted: 115 115 115;
+    --border-color: 38 38 38;
+    --shadow-color: 0 0 0;
+  }
+
   html {
     @apply antialiased scroll-smooth;
-    /* Previne zoom em inputs no iOS */
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-neutral-950 text-white overflow-x-hidden;
+    background-color: rgb(var(--bg-primary));
+    color: rgb(var(--text-primary));
+    @apply overflow-x-hidden transition-colors duration-300;
   }
 
   /* Custom selection */
   ::selection {
-    @apply bg-primary-500/30 text-white;
+    @apply bg-primary-500/30;
+    color: rgb(var(--text-primary));
   }
 }
 
@@ -24,12 +52,10 @@
     text-wrap: balance;
   }
 
-  /* Touch target mínimo para acessibilidade (44x44px) */
   .touch-target {
     @apply min-h-[44px] min-w-[44px];
   }
 
-  /* Safe area para iPhones com notch */
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
@@ -37,40 +63,90 @@
   .safe-top {
     padding-top: env(safe-area-inset-top);
   }
+
+  /* Theme-aware backgrounds */
+  .bg-theme-primary {
+    background-color: rgb(var(--bg-primary));
+  }
+
+  .bg-theme-secondary {
+    background-color: rgb(var(--bg-secondary));
+  }
+
+  .bg-theme-card {
+    background-color: rgb(var(--bg-card));
+  }
+
+  /* Theme-aware text */
+  .text-theme-primary {
+    color: rgb(var(--text-primary));
+  }
+
+  .text-theme-secondary {
+    color: rgb(var(--text-secondary));
+  }
+
+  .text-theme-muted {
+    color: rgb(var(--text-muted));
+  }
+
+  /* Theme-aware borders */
+  .border-theme {
+    border-color: rgb(var(--border-color));
+  }
+
+  /* Bold Geometric shadow utilities */
+  .shadow-bold {
+    box-shadow: 4px 4px 0px 0px rgba(var(--shadow-color), 0.15);
+  }
+
+  .shadow-bold-lg {
+    box-shadow: 6px 6px 0px 0px rgba(var(--shadow-color), 0.15);
+  }
+
+  .shadow-bold-xl {
+    box-shadow: 8px 8px 0px 0px rgba(var(--shadow-color), 0.2);
+  }
+
+  .shadow-bold-primary {
+    box-shadow: 4px 4px 0px 0px rgba(163, 230, 53, 0.3);
+  }
+
+  .shadow-bold-hover {
+    box-shadow: 2px 2px 0px 0px rgba(var(--shadow-color), 0.15);
+  }
+
+  /* Hover transform for bold buttons */
+  .hover-lift {
+    @apply transition-all duration-200;
+  }
+
+  .hover-lift:hover {
+    @apply translate-x-[2px] translate-y-[2px];
+  }
 }
 
-/* Custom scrollbar - dark theme */
+/* Custom scrollbar - theme aware */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-neutral-900;
+  background-color: rgb(var(--bg-secondary));
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-neutral-700 rounded-full;
+  @apply bg-neutral-500 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-neutral-600;
+  @apply bg-neutral-400;
 }
 
 /* Focus styles */
 *:focus-visible {
   @apply outline-2 outline-offset-2 outline-primary-500;
-}
-
-/* Glassmorphism utilities */
-@layer utilities {
-  .glass {
-    @apply bg-white/10 backdrop-blur-xl border border-white/20;
-  }
-
-  .glass-dark {
-    @apply bg-black/20 backdrop-blur-xl border border-white/10;
-  }
 }
 
 /* Gradient text animation */
@@ -147,4 +223,18 @@
 
 .animate-pulse-soft {
   animation: pulse-soft 4s ease-in-out infinite;
+}
+
+/* Bold Geometric: Rotate on hover */
+@keyframes wiggle {
+  0%, 100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+.hover-wiggle:hover {
+  animation: wiggle 0.3s ease-in-out;
 }
