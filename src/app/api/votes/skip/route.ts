@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getAuthenticatedUser } from '@/lib/safe-action';
 
 // Track skipped photos per user session (in production, use Redis)
 const skippedPhotos = new Map<string, Set<string>>();
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const authUser = await getAuthenticatedUser();
+    if (!authUser) {
       return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
     }
 
@@ -19,7 +18,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'photoId é obrigatório' }, { status: 400 });
     }
 
-    const userId = session.user.id;
+    const userId = authUser.id;
 
     // Track skipped photo for this user
     if (!skippedPhotos.has(userId)) {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { useToast } from '@/components/ui/toast';
+import { useToastActions } from '@/stores/ui-store';
 
 interface Photo {
   id: string;
@@ -20,7 +20,7 @@ export function useVoting() {
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
   const [noMorePhotos, setNoMorePhotos] = useState(false);
-  const { addToast } = useToast();
+  const { addToast } = useToastActions();
 
   const fetchNextPhoto = useCallback(async () => {
     setIsFetching(true);

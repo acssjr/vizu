@@ -1,15 +1,17 @@
-import { NextResponse } from 'next/server';
-import { getAuthenticatedUser } from '@/lib/safe-action';
+'use server';
+
+import { authenticatedAction } from '@/lib/safe-action';
 import { prisma } from '@/lib/prisma';
+import { z } from 'zod';
+import type { Photo } from '../types';
 
-export async function GET() {
-  try {
-    const authUser = await getAuthenticatedUser();
-    if (!authUser) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
-    }
+// Empty schema since no input is needed
+const emptySchema = z.object({});
 
-    const userId = authUser.id;
+export const getNextPhoto = authenticatedAction
+  .schema(emptySchema)
+  .action(async ({ ctx }): Promise<{ photo: Photo | null; noMorePhotos: boolean }> => {
+    const userId = ctx.user.id;
 
     // Get user info for filter matching (for paid tests)
     const user = await prisma.user.findUnique({
@@ -85,12 +87,15 @@ export async function GET() {
     });
 
     if (!photo) {
-      return NextResponse.json({ error: 'Nenhuma foto disponível' }, { status: 404 });
+      return { photo: null, noMorePhotos: true };
     }
 
-    return NextResponse.json(photo);
-  } catch (error) {
-    console.error('Get next photo error:', error);
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 });
-  }
-}
+    return {
+      photo: {
+        id: photo.id,
+        imageUrl: photo.imageUrl,
+        category: photo.category,
+      },
+      noMorePhotos: false,
+    };
+  });

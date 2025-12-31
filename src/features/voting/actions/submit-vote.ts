@@ -1,37 +1,31 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getAuthenticatedUser } from '@/lib/safe-action';
+'use server';
+
+import { authenticatedAction } from '@/lib/safe-action';
 import { prisma } from '@/lib/prisma';
+import { votingRatelimit } from '@/lib/ratelimit';
+import { voteSchema } from '../schemas';
 import {
   normalizeVote,
   calculateWeightedAverage,
   calculateConfidence,
   type VoterStats,
-} from '@/features/voting/lib/normalization';
+} from '../lib/normalization';
+import { revalidatePath } from 'next/cache';
 
-// Updated to +3 karma per vote (as per new spec)
-const KARMA_REWARD_PER_VOTE = 3;
+const KARMA_REWARD_PER_VOTE = 3; // +3 karma per vote (as per spec)
 const MAX_KARMA = 50;
 
-export async function POST(request: NextRequest) {
-  try {
-    const authUser = await getAuthenticatedUser();
-    if (!authUser) {
-      return NextResponse.json({ error: 'Não autorizado' }, { status: 401 });
+export const submitVote = authenticatedAction
+  .schema(voteSchema)
+  .action(async ({ parsedInput, ctx }) => {
+    const { photoId, attraction, trust, intelligence, feedback, metadata } = parsedInput;
+    const voterId = ctx.user.id;
+
+    // Rate limiting check
+    const { success: rateLimitOk, remaining } = await votingRatelimit.limit(voterId);
+    if (!rateLimitOk) {
+      throw new Error(`Muitas votações. Tente novamente em alguns segundos. (${remaining} restantes)`);
     }
-
-    const body = await request.json();
-    const { photoId, attraction, trust, intelligence, feedback, metadata } = body;
-
-    // Validate ratings (now 0-3 scale)
-    if (!photoId || typeof attraction !== 'number' || typeof trust !== 'number' || typeof intelligence !== 'number') {
-      return NextResponse.json({ error: 'Dados inválidos' }, { status: 400 });
-    }
-
-    if (attraction < 0 || attraction > 3 || trust < 0 || trust > 3 || intelligence < 0 || intelligence > 3) {
-      return NextResponse.json({ error: 'Avaliações devem estar entre 0 e 3' }, { status: 400 });
-    }
-
-    const voterId = authUser.id;
 
     // Check if photo exists and is valid
     const photo = await prisma.photo.findUnique({
@@ -45,19 +39,19 @@ export async function POST(request: NextRequest) {
     });
 
     if (!photo) {
-      return NextResponse.json({ error: 'Foto não encontrada' }, { status: 404 });
+      throw new Error('Foto não encontrada');
     }
 
     if (photo.userId === voterId) {
-      return NextResponse.json({ error: 'Você não pode votar em sua própria foto' }, { status: 400 });
+      throw new Error('Você não pode votar em sua própria foto');
     }
 
     if (photo.status !== 'APPROVED') {
-      return NextResponse.json({ error: 'Esta foto não está disponível para votação' }, { status: 400 });
+      throw new Error('Esta foto não está disponível para votação');
     }
 
     if (photo.expiresAt && photo.expiresAt < new Date()) {
-      return NextResponse.json({ error: 'Esta foto expirou' }, { status: 400 });
+      throw new Error('Esta foto expirou');
     }
 
     // Check if user already voted
@@ -71,7 +65,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingVote) {
-      return NextResponse.json({ error: 'Você já votou nesta foto' }, { status: 400 });
+      throw new Error('Você já votou nesta foto');
     }
 
     // Get voter stats for normalization
@@ -84,7 +78,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Calculate voter statistics (baseline 1.5 for 0-3 scale)
+    // Calculate voter statistics
     const allScores = voterVotes.flatMap((v) => [v.attraction, v.trust, v.intelligence]);
     const totalVotes = voterVotes.length;
     const averageScore = totalVotes > 0 ? allScores.reduce((a, b) => a + b, 0) / allScores.length : 1.5;
@@ -123,11 +117,11 @@ export async function POST(request: NextRequest) {
           normalizedIntelligence: normalizedVote.intelligence,
           voterWeight: normalizedVote.weight,
           voterBias: normalizedVote.bias,
-          // Feedback fields (optional)
+          // Feedback fields
           feedbackFeelingTags: feedback?.feelingTags ?? [],
           feedbackSuggestionTags: feedback?.suggestionTags ?? [],
           feedbackNote: feedback?.customNote ?? null,
-          // Metadata fields (optional)
+          // Metadata fields
           votingDurationMs: metadata?.votingDurationMs ?? null,
           deviceType: metadata?.deviceType ?? null,
         },
@@ -190,13 +184,13 @@ export async function POST(request: NextRequest) {
       return { vote, karmaEarned: karmaToAdd };
     });
 
-    return NextResponse.json({
+    // Revalidate the results page for the photo owner
+    revalidatePath('/results');
+    revalidatePath(`/results/${photoId}`);
+
+    return {
       success: true,
       voteId: result.vote.id,
       karmaEarned: result.karmaEarned,
-    });
-  } catch (error) {
-    console.error('Submit vote error:', error);
-    return NextResponse.json({ error: 'Erro interno do servidor' }, { status: 500 });
-  }
-}
+    };
+  });
