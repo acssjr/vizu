@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="public/logo.svg" alt="Vizu Logo" width="120" height="120" />
+  <img src="public/logo-white.svg" alt="Vizu Logo" width="200" />
 </p>
 
 <h1 align="center">Vizu</h1>

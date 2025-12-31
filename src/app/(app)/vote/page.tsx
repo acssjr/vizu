@@ -147,24 +147,24 @@ function MobileMenu({ isOpen, onClose, karma }: MobileMenuProps) {
 
 type ColumnColor = 'pink' | 'blue' | 'green';
 
-const COLUMN_COLORS: Record<ColumnColor, Record<number, { bg: string; text: string }>> = {
+const COLUMN_COLORS: Record<ColumnColor, Record<number, { bg: string; bgSelected: string; text: string; textSelected: string }>> = {
   pink: { // Atração - Rosa (nossa marca)
-    3: { bg: 'bg-pink-500', text: 'text-pink-950' },
-    2: { bg: 'bg-pink-400', text: 'text-pink-950' },
-    1: { bg: 'bg-pink-300', text: 'text-pink-900' },
-    0: { bg: 'bg-pink-200', text: 'text-pink-900' },
+    3: { bg: 'bg-pink-500', bgSelected: 'bg-pink-700', text: 'text-pink-950', textSelected: 'text-white' },
+    2: { bg: 'bg-pink-400', bgSelected: 'bg-pink-600', text: 'text-pink-950', textSelected: 'text-white' },
+    1: { bg: 'bg-pink-300', bgSelected: 'bg-pink-500', text: 'text-pink-900', textSelected: 'text-white' },
+    0: { bg: 'bg-pink-200', bgSelected: 'bg-pink-400', text: 'text-pink-900', textSelected: 'text-pink-950' },
   },
   blue: { // Confiança - Azul
-    3: { bg: 'bg-blue-500', text: 'text-blue-950' },
-    2: { bg: 'bg-blue-400', text: 'text-blue-950' },
-    1: { bg: 'bg-blue-300', text: 'text-blue-900' },
-    0: { bg: 'bg-blue-200', text: 'text-blue-900' },
+    3: { bg: 'bg-blue-500', bgSelected: 'bg-blue-700', text: 'text-blue-950', textSelected: 'text-white' },
+    2: { bg: 'bg-blue-400', bgSelected: 'bg-blue-600', text: 'text-blue-950', textSelected: 'text-white' },
+    1: { bg: 'bg-blue-300', bgSelected: 'bg-blue-500', text: 'text-blue-900', textSelected: 'text-white' },
+    0: { bg: 'bg-blue-200', bgSelected: 'bg-blue-400', text: 'text-blue-900', textSelected: 'text-blue-950' },
   },
   green: { // Inteligência - Verde
-    3: { bg: 'bg-emerald-500', text: 'text-emerald-950' },
-    2: { bg: 'bg-emerald-400', text: 'text-emerald-950' },
-    1: { bg: 'bg-emerald-300', text: 'text-emerald-900' },
-    0: { bg: 'bg-emerald-200', text: 'text-emerald-900' },
+    3: { bg: 'bg-emerald-500', bgSelected: 'bg-emerald-700', text: 'text-emerald-950', textSelected: 'text-white' },
+    2: { bg: 'bg-emerald-400', bgSelected: 'bg-emerald-600', text: 'text-emerald-950', textSelected: 'text-white' },
+    1: { bg: 'bg-emerald-300', bgSelected: 'bg-emerald-500', text: 'text-emerald-900', textSelected: 'text-white' },
+    0: { bg: 'bg-emerald-200', bgSelected: 'bg-emerald-400', text: 'text-emerald-900', textSelected: 'text-emerald-950' },
   },
 };
 
@@ -206,18 +206,16 @@ function VoteGridCell({ level, label, isSelected, onClick, columnColor, position
         'py-2.5 px-3 transition-all duration-150 relative',
         'text-left text-sm',
         radiusClasses,
-        colors.bg,
-        colors.text,
         isSelected
-          ? 'ring-2 ring-white shadow-lg scale-[1.02] z-10'
-          : 'hover:brightness-90 active:scale-[0.98]'
+          ? cn(colors.bgSelected, colors.textSelected, 'shadow-inner scale-[1.02] z-10')
+          : cn(colors.bg, colors.text, 'hover:brightness-90 active:scale-[0.98]')
       )}
     >
       <span className="font-black text-base">{level}</span>
       <span className="font-semibold ml-1.5">{label}</span>
       {/* Checkmark for selected state */}
       {isSelected && (
-        <span className="absolute right-2 top-1/2 -translate-y-1/2 text-white drop-shadow-md">
+        <span className="absolute right-2 top-1/2 -translate-y-1/2 drop-shadow-md">
           ✓
         </span>
       )}
