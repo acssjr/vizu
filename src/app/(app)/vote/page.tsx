@@ -351,12 +351,12 @@ interface MobileFeedbackContentProps {
 function MobileFeedbackContent({ feedback, onFeedbackChange }: MobileFeedbackContentProps) {
   const [activeTab, setActiveTab] = useState<'feeling' | 'suggestion'>('feeling');
 
-  const toggleTag = (tag: string, type: 'feeling' | 'suggestion') => {
+  // Select only 1 tag per category (like Photofeeler)
+  const selectTag = (tag: string, type: 'feeling' | 'suggestion') => {
     const key = type === 'feeling' ? 'feelingTags' : 'suggestionTags';
     const currentTags = feedback[key];
-    const newTags = currentTags.includes(tag)
-      ? currentTags.filter((t) => t !== tag)
-      : [...currentTags, tag];
+    // If already selected, deselect. Otherwise, replace with this one tag.
+    const newTags = currentTags.includes(tag) ? [] : [tag];
     onFeedbackChange({ ...feedback, [key]: newTags });
   };
 
@@ -387,7 +387,7 @@ function MobileFeedbackContent({ feedback, onFeedbackChange }: MobileFeedbackCon
               : 'bg-white dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700'
           )}
         >
-          Sentimento
+          Vibe
         </button>
         <button
           type="button"
@@ -403,18 +403,18 @@ function MobileFeedbackContent({ feedback, onFeedbackChange }: MobileFeedbackCon
         </button>
       </div>
 
-      {/* Tags */}
-      <div className="flex flex-wrap gap-1.5">
+      {/* Tags - centered and better aligned */}
+      <div className="flex flex-wrap justify-center gap-2">
         {tags.map((tag) => (
           <button
             key={tag}
             type="button"
-            onClick={() => toggleTag(tag, activeTab)}
+            onClick={() => selectTag(tag, activeTab)}
             className={cn(
-              'px-2.5 py-1.5 rounded text-xs font-bold transition-all',
+              'px-3 py-1.5 rounded-full text-xs font-bold transition-all',
               selectedTags.includes(tag)
-                ? 'bg-blue-500 text-white'
-                : 'bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700'
+                ? 'bg-primary-500 text-white shadow-md'
+                : 'bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700 hover:border-primary-300'
             )}
           >
             {tag}
@@ -427,7 +427,7 @@ function MobileFeedbackContent({ feedback, onFeedbackChange }: MobileFeedbackCon
         <textarea
           value={feedback.customNote || ''}
           onChange={(e) => handleNoteChange(e.target.value)}
-          placeholder={activeTab === 'feeling' ? 'Essa pessoa parece...' : 'Seria melhor se...'}
+          placeholder={activeTab === 'feeling' ? 'Essa pessoa passa a vibe de...' : 'Seria melhor se...'}
           className="w-full p-2.5 bg-white dark:bg-neutral-800 rounded-lg text-sm font-medium text-neutral-900 dark:text-white placeholder:text-neutral-400 resize-none border border-neutral-200 dark:border-neutral-700 focus:border-primary-500 focus:outline-none"
           rows={2}
           maxLength={200}
@@ -452,12 +452,12 @@ interface DesktopFeedbackSectionProps {
 function DesktopFeedbackSection({ feedback, onFeedbackChange }: DesktopFeedbackSectionProps) {
   const [activeTab, setActiveTab] = useState<'feeling' | 'suggestion'>('feeling');
 
-  const toggleTag = (tag: string, type: 'feeling' | 'suggestion') => {
+  // Select only 1 tag per category (like Photofeeler)
+  const selectTag = (tag: string, type: 'feeling' | 'suggestion') => {
     const key = type === 'feeling' ? 'feelingTags' : 'suggestionTags';
     const currentTags = feedback[key];
-    const newTags = currentTags.includes(tag)
-      ? currentTags.filter((t) => t !== tag)
-      : [...currentTags, tag];
+    // If already selected, deselect. Otherwise, replace with this one tag.
+    const newTags = currentTags.includes(tag) ? [] : [tag];
     onFeedbackChange({ ...feedback, [key]: newTags });
   };
 
@@ -488,7 +488,7 @@ function DesktopFeedbackSection({ feedback, onFeedbackChange }: DesktopFeedbackS
               : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400'
           )}
         >
-          Sentimento
+          Vibe
         </button>
         <button
           type="button"
@@ -504,18 +504,18 @@ function DesktopFeedbackSection({ feedback, onFeedbackChange }: DesktopFeedbackS
         </button>
       </div>
 
-      {/* Tags */}
-      <div className="flex flex-wrap gap-1.5">
+      {/* Tags - centered and better aligned */}
+      <div className="flex flex-wrap justify-center gap-2">
         {tags.map((tag) => (
           <button
             key={tag}
             type="button"
-            onClick={() => toggleTag(tag, activeTab)}
+            onClick={() => selectTag(tag, activeTab)}
             className={cn(
-              'px-3 py-1.5 rounded text-xs font-bold transition-all',
+              'px-3 py-1.5 rounded-full text-xs font-bold transition-all',
               selectedTags.includes(tag)
-                ? 'bg-blue-500 text-white'
-                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700'
+                ? 'bg-primary-500 text-white shadow-md'
+                : 'bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700 hover:border-primary-300'
             )}
           >
             {tag}
@@ -528,7 +528,7 @@ function DesktopFeedbackSection({ feedback, onFeedbackChange }: DesktopFeedbackS
         <textarea
           value={feedback.customNote || ''}
           onChange={(e) => handleNoteChange(e.target.value)}
-          placeholder={activeTab === 'feeling' ? 'Essa pessoa parece...' : 'Seria melhor se...'}
+          placeholder={activeTab === 'feeling' ? 'Essa pessoa passa a vibe de...' : 'Seria melhor se...'}
           className="w-full p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg text-sm font-medium text-neutral-900 dark:text-white placeholder:text-neutral-400 resize-none border border-neutral-200 dark:border-neutral-700 focus:border-primary-500 focus:outline-none"
           rows={2}
           maxLength={200}
@@ -703,11 +703,14 @@ export default function VotePage() {
           )}
         </div>
 
-        {/* Voting/Feedback Panel - Only show active panel */}
-        <div className="flex-shrink-0 bg-neutral-900 pb-safe px-2 py-2">
-          {mobileStep === 'voting' ? (
-            /* Panel: Voting */
-            <>
+        {/* Voting/Feedback Panel - Sliding panels with smooth transition */}
+        <div className="flex-shrink-0 bg-neutral-900 pb-safe px-2 py-2 overflow-hidden">
+          <div
+            className="flex transition-transform duration-300 ease-out"
+            style={{ transform: mobileStep === 'feedback' ? 'translateX(-100%)' : 'translateX(0)' }}
+          >
+            {/* Panel 1: Voting */}
+            <div className="w-full flex-shrink-0">
               <VoteGrid
                 category={currentPhoto.category}
                 ratings={ratings}
@@ -721,15 +724,15 @@ export default function VotePage() {
                   onSubmit={handleSubmit}
                 />
               </div>
-            </>
-          ) : (
-            /* Panel: Feedback */
-            <>
+            </div>
+
+            {/* Panel 2: Feedback */}
+            <div className="w-full flex-shrink-0">
               {/* Back button */}
               <button
                 type="button"
                 onClick={handleGoBackToVoting}
-                className="flex items-center gap-2 text-sm font-bold text-neutral-500 mb-2 hover:text-neutral-300"
+                className="flex items-center gap-2 text-sm font-bold text-neutral-500 mb-2 hover:text-neutral-300 transition-colors"
               >
                 <span>←</span>
                 <span>Voltar aos votos</span>
@@ -754,8 +757,8 @@ export default function VotePage() {
                   onSubmit={handleSubmit}
                 />
               </div>
-            </>
-          )}
+            </div>
+          </div>
         </div>
       </div>
 
