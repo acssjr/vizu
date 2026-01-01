@@ -568,14 +568,20 @@ export default function VotePage() {
 
   const allRatingsSelected = ratings.attraction >= 0 && ratings.trust >= 0 && ratings.intelligence >= 0;
 
-  // Auto-slide to feedback ONLY when ratings JUST became complete (transition from false to true)
-  // AND user didn't manually go back
+  // Auto-transition to feedback when all ratings are selected
+  // Only trigger when ratings JUST became complete AND user hasn't manually gone back
   useEffect(() => {
-    const justBecameComplete = allRatingsSelected && !prevAllSelectedRef.current;
-    prevAllSelectedRef.current = allRatingsSelected;
+    const wasComplete = prevAllSelectedRef.current;
+    const isNowComplete = allRatingsSelected;
 
-    if (justBecameComplete && mobileStep === 'voting' && !userWentBack) {
-      const timer = setTimeout(() => setMobileStep('feedback'), 400);
+    // Update ref for next render
+    prevAllSelectedRef.current = isNowComplete;
+
+    // Only transition if: just became complete + still on voting step + user didn't go back
+    if (!wasComplete && isNowComplete && mobileStep === 'voting' && !userWentBack) {
+      const timer = setTimeout(() => {
+        setMobileStep('feedback');
+      }, 400);
       return () => clearTimeout(timer);
     }
   }, [allRatingsSelected, mobileStep, userWentBack]);
