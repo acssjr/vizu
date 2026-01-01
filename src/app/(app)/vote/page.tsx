@@ -703,60 +703,69 @@ export default function VotePage() {
           )}
         </div>
 
-        {/* Voting/Feedback Panel - Sliding panels with smooth transition */}
-        <div className="flex-shrink-0 bg-neutral-900 pb-safe px-2 py-2 overflow-hidden">
+        {/* Voting/Feedback Panel - Animated transition */}
+        <div className="flex-shrink-0 bg-neutral-900 pb-safe px-2 py-2">
+          {/* Voting Panel */}
           <div
-            className="flex transition-transform duration-300 ease-out"
-            style={{ transform: mobileStep === 'feedback' ? 'translateX(-100%)' : 'translateX(0)' }}
+            className={cn(
+              'transition-all duration-300 ease-out',
+              mobileStep === 'voting'
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 -translate-x-4 absolute pointer-events-none'
+            )}
           >
-            {/* Panel 1: Voting */}
-            <div className="w-full flex-shrink-0">
-              <VoteGrid
-                category={currentPhoto.category}
-                ratings={ratings}
-                onRatingChange={handleRatingChange}
+            <VoteGrid
+              category={currentPhoto.category}
+              ratings={ratings}
+              onRatingChange={handleRatingChange}
+            />
+            <div className="mt-2">
+              <ActionBar
+                allRatingsSelected={allRatingsSelected}
+                isLoading={isLoading}
+                onSkip={skipPhoto}
+                onSubmit={handleSubmit}
               />
-              <div className="mt-2">
-                <ActionBar
-                  allRatingsSelected={allRatingsSelected}
-                  isLoading={isLoading}
-                  onSkip={skipPhoto}
-                  onSubmit={handleSubmit}
-                />
-              </div>
             </div>
+          </div>
 
-            {/* Panel 2: Feedback */}
-            <div className="w-full flex-shrink-0">
-              {/* Back button */}
-              <button
-                type="button"
-                onClick={handleGoBackToVoting}
-                className="flex items-center gap-2 text-sm font-bold text-neutral-500 mb-2 hover:text-neutral-300 transition-colors"
-              >
-                <span>←</span>
-                <span>Voltar aos votos</span>
-              </button>
+          {/* Feedback Panel */}
+          <div
+            className={cn(
+              'transition-all duration-300 ease-out',
+              mobileStep === 'feedback'
+                ? 'opacity-100 translate-x-0'
+                : 'opacity-0 translate-x-4 absolute pointer-events-none'
+            )}
+          >
+            {/* Back button */}
+            <button
+              type="button"
+              onClick={handleGoBackToVoting}
+              className="flex items-center gap-2 text-sm font-bold text-neutral-500 mb-2 hover:text-neutral-300 transition-colors"
+            >
+              <span>←</span>
+              <span>Voltar aos votos</span>
+            </button>
 
-              {/* Feedback content */}
-              <div className="space-y-2">
-                <div className="flex items-center gap-2 text-emerald-500">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span className="font-bold text-xs">Votos registrados!</span>
-                </div>
-
-                <MobileFeedbackContent
-                  feedback={feedback}
-                  onFeedbackChange={setFeedback}
-                />
-
-                <ActionBar
-                  allRatingsSelected={allRatingsSelected}
-                  isLoading={isLoading}
-                  onSkip={skipPhoto}
-                  onSubmit={handleSubmit}
-                />
+            {/* Feedback content */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 text-emerald-500">
+                <CheckCircle2 className="w-4 h-4" />
+                <span className="font-bold text-xs">Votos registrados!</span>
               </div>
+
+              <MobileFeedbackContent
+                feedback={feedback}
+                onFeedbackChange={setFeedback}
+              />
+
+              <ActionBar
+                allRatingsSelected={allRatingsSelected}
+                isLoading={isLoading}
+                onSkip={skipPhoto}
+                onSubmit={handleSubmit}
+              />
             </div>
           </div>
         </div>
