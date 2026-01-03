@@ -24,7 +24,8 @@
       "Bash(node dist/skill-activation-prompt.mjs:*)",
       "Bash(grep:*)",
       "Bash(npm run build:*)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(npm install:*)"
     ]
   }
 }

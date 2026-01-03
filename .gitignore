@@ -56,3 +56,6 @@ __pycache__/
 
 # Misc artifacts
 nul
+
+# Continuous Claude cache (local only)
+.claude/cache/
