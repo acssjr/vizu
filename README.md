@@ -1,307 +1,81 @@
 <p align="center">
-  <img src="public/logo-white.svg" alt="Vizu Logo" width="200" />
+  <img src="public/logo-white.svg" alt="Vizu" width="180" />
 </p>
 
 <h1 align="center">Vizu</h1>
 
 <p align="center">
-  <strong>Otimize suas fotos com feedback real de pessoas reais</strong>
+  <strong>Descubra quais fotos realmente funcionam nos apps de relacionamento</strong>
 </p>
 
 <p align="center">
-  <a href="#-sobre">Sobre</a> •
-  <a href="#-funcionalidades">Funcionalidades</a> •
-  <a href="#%EF%B8%8F-tech-stack">Tech Stack</a> •
-  <a href="#-rodando-localmente">Instalação</a> •
-  <a href="#-estrutura">Estrutura</a> •
-  <a href="#-roadmap">Roadmap</a>
+  <a href="https://vizu.com.br">🚀 Acessar Plataforma</a>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white" alt="Prisma" />
-  <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis" />
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/status-em_desenvolvimento-yellow?style=flat-square" alt="Status" />
-  <img src="https://img.shields.io/badge/versão-0.1.0-blue?style=flat-square" alt="Versão" />
-  <img src="https://img.shields.io/badge/licença-privado-red?style=flat-square" alt="Licença" />
+  <em>⚠️ Software proprietário — <a href="#licença">Ver licença</a></em>
 </p>
 
 ---
 
-## 📖 Sobre
+## O que é o Vizu?
 
-**Vizu** é uma plataforma brasileira de otimização de imagens sociais, inspirada no [Photofeeler](https://photofeeler.com).
+**Vizu** é a plataforma brasileira que ajuda você a escolher as melhores fotos para seu perfil de relacionamento.
 
-O objetivo é ajudar usuários de apps de relacionamento (Tinder, Bumble, Hinge) a escolherem suas melhores fotos através de feedback anônimo de pessoas reais.
+Enquanto você tenta adivinhar qual foto usar no Tinder, outras pessoas estão recebendo feedback real de usuários reais. O Vizu conecta você a uma comunidade que avalia suas fotos de forma anônima, entregando dados concretos sobre o que funciona.
 
-### 🎯 Como funciona?
+## Como funciona
 
-1. **📤 Upload** — Usuário envia fotos para teste
-2. **🗳️ Votação** — Outros usuários avaliam anonimamente
-3. **📊 Resultados** — Notas normalizadas em 3 eixos: Atração, Inteligência, Confiança
-4. **💡 Insights** — Feedback qualitativo com tags e sugestões
+1. **Envie suas fotos** - Faça upload das fotos que quer testar
+2. **Receba avaliações reais** - Usuários reais votam anonimamente
+3. **Veja seus resultados** - Notas em 3 eixos: Atração, Confiança e Inteligência
+4. **Escolha com dados** - Pare de adivinhar, use os números
 
-### 💰 Modelo de Negócio
+## Por que o Vizu?
 
-| Recurso | Gratuito | Premium |
-|---------|----------|---------|
-| Karma (ganho votando) | ✅ Ilimitado | ✅ Ilimitado |
-| Testes com karma | ✅ Até 3/dia | ✅ Ilimitado |
-| Testes com créditos | ❌ | ✅ Compra via Pix |
-| Filtros de audiência | ❌ | ✅ Idade, gênero, região |
-| Resultados detalhados | ❌ | ✅ Comparativo e histórico |
+| Problema | Solução Vizu |
+|----------|--------------|
+| Amigos dizem que todas suas fotos são boas | Feedback anônimo e honesto de desconhecidos |
+| Você não sabe qual foto passa mais confiança | Métricas separadas por característica |
+| Suas fotos podem ter vieses culturais | Comunidade 100% brasileira |
+| Resultados de outras plataformas são confusos | Sistema de normalização que ajusta vieses de votantes |
 
----
+## Recursos
 
-## ✨ Funcionalidades
+- **Votação anônima** - Ninguém sabe quem votou em quem
+- **3 eixos de avaliação** - Atração, Confiança e Inteligência
+- **Normalização de votos** - Algoritmo que ajusta o rigor de cada votante
+- **Categorias de foto** - Dating, Profissional ou Social
+- **Feedback qualitativo** - Tags e sugestões além das notas
+- **Pagamento via Pix** - Rápido e sem complicação
+- **Conformidade LGPD** - Seus dados, suas regras
 
-### 🟢 Implementado
-- [x] Landing page com design Bold Geometric
-- [x] Autenticação (Google OAuth + Email/Senha)
-- [x] Upload de fotos para 3 categorias (Dating, Profissional, Social)
-- [x] Sistema de votação mobile-first
-- [x] Grid de votação com 4 níveis (0-3)
-- [x] Feedback com tags de sentimentos e sugestões
-- [x] Normalização de votos (ajuste de viés do votador)
-- [x] Páginas do app (Dashboard, Settings, Results, Credits)
+## Acesse
 
-### 🟡 Em Progresso
-- [ ] Sistema de karma completo
-- [ ] Gráficos de resultados
-- [ ] Notificações de novos votos
+**Site:** [vizu.com.br](https://vizu.com.br)
 
-### 🔴 Planejado
-- [ ] Pagamentos via Pix (Abacate Pay)
-- [ ] Moderação com AWS Rekognition
-- [ ] Filtros de audiência premium
-- [ ] PWA para mobile
-- [ ] LGPD: exportação e exclusão de dados
+**Contato:** contato@vizu.com.br
 
 ---
 
-## 🛠️ Tech Stack
+## Licença
 
-### Frontend
-| Tecnologia | Uso |
-|------------|-----|
-| ![Next.js](https://img.shields.io/badge/Next.js_14-000?style=flat-square&logo=nextdotjs) | Framework React com App Router |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) | Tipagem estática |
-| ![Tailwind](https://img.shields.io/badge/Tailwind-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) | Estilização utility-first |
-| ![Zustand](https://img.shields.io/badge/Zustand-433E38?style=flat-square&logo=react) | Gerenciamento de estado |
-| ![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=reactquery&logoColor=white) | Cache e fetching |
+Este repositório contém o código-fonte proprietário da plataforma Vizu.
 
-### Backend
-| Tecnologia | Uso |
-|------------|-----|
-| ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white) | Banco de dados principal |
-| ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white) | ORM type-safe |
-| ![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white) | Cache e rate limiting (Upstash) |
-| ![NextAuth](https://img.shields.io/badge/NextAuth.js-000?style=flat-square&logo=nextdotjs) | Autenticação |
+**Todos os direitos reservados.**
 
-### Serviços
-| Tecnologia | Uso |
-|------------|-----|
-| ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white) | Upload e transformação de imagens |
-| ![AWS](https://img.shields.io/badge/AWS_Rekognition-FF9900?style=flat-square&logo=amazonaws&logoColor=white) | Moderação de conteúdo |
-| ![Vercel](https://img.shields.io/badge/Vercel-000?style=flat-square&logo=vercel) | Deploy e hosting |
+Este software não é open-source. O código está hospedado publicamente apenas para fins de versionamento e deploy. É expressamente proibido:
 
-### Testes
-| Tecnologia | Uso |
-|------------|-----|
-| ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white) | Testes unitários e integração |
+- Copiar, modificar ou distribuir o código
+- Usar o código para criar produtos derivados
+- Fazer fork deste repositório para qualquer finalidade
 
----
-
-## 🚀 Rodando Localmente
-
-### Pré-requisitos
-
-```bash
-node >= 18.0.0
-npm >= 9.0.0
-postgresql >= 15
-```
-
-### 1️⃣ Clone e instale
-
-```bash
-git clone https://github.com/acssjr/vizu.git
-cd vizu
-npm install
-```
-
-### 2️⃣ Configure as variáveis de ambiente
-
-```bash
-cp .env.example .env.local
-```
-
-Edite `.env.local`:
-
-```env
-# 🔐 Database
-DATABASE_URL="postgresql://user:pass@localhost:5432/vizu"
-
-# 🔑 Auth
-NEXTAUTH_SECRET="sua-chave-secreta-aqui"
-NEXTAUTH_URL="http://localhost:3000"
-GOOGLE_CLIENT_ID="..."
-GOOGLE_CLIENT_SECRET="..."
-
-# 📸 Cloudinary
-CLOUDINARY_CLOUD_NAME="..."
-CLOUDINARY_API_KEY="..."
-CLOUDINARY_API_SECRET="..."
-
-# ⚡ Redis (Upstash)
-UPSTASH_REDIS_REST_URL="..."
-UPSTASH_REDIS_REST_TOKEN="..."
-```
-
-### 3️⃣ Configure o banco
-
-```bash
-npm run db:push      # Aplica schema
-npm run db:seed      # Popula dados de teste
-```
-
-### 4️⃣ Inicie o servidor
-
-```bash
-npm run dev
-```
-
-🌐 Acesse **http://localhost:3000**
-
----
-
-## 📁 Estrutura
-
-```
-vizu/
-├── 📂 src/
-│   ├── 📂 app/                    # Next.js App Router
-│   │   ├── 📂 (app)/              # 🔒 Páginas autenticadas
-│   │   │   ├── dashboard/         #    └─ Painel principal
-│   │   │   ├── vote/              #    └─ Votação
-│   │   │   ├── upload/            #    └─ Upload de fotos
-│   │   │   ├── results/           #    └─ Resultados
-│   │   │   ├── credits/           #    └─ Comprar créditos
-│   │   │   └── settings/          #    └─ Configurações
-│   │   ├── 📂 (auth)/             # 🔓 Páginas públicas (login)
-│   │   ├── 📂 api/                # 🔌 API Routes
-│   │   └── page.tsx               # 🏠 Landing page
-│   │
-│   ├── 📂 components/
-│   │   ├── 📂 ui/                 # 🧱 Componentes base
-│   │   ├── 📂 layout/             # 📐 Header, Footer, Nav
-│   │   └── 📂 features/           # ⚡ Componentes de features
-│   │
-│   ├── 📂 features/               # 🎯 Features por domínio
-│   │   └── 📂 voting/             #    └─ Sistema de votação
-│   │       ├── actions/           #        └─ Server actions
-│   │       ├── lib/               #        └─ Normalização
-│   │       └── types.ts           #        └─ Tipos
-│   │
-│   ├── 📂 hooks/                  # 🪝 React Hooks
-│   ├── 📂 stores/                 # 🗃️ Zustand stores
-│   └── 📂 lib/                    # 🔧 Utilitários
-│
-├── 📂 prisma/
-│   ├── schema.prisma              # 📋 Schema do banco
-│   └── seed.ts                    # 🌱 Dados iniciais
-│
-└── 📂 public/                     # 🖼️ Assets estáticos
-```
-
----
-
-## 📜 Scripts
-
-| Comando | Descrição |
-|---------|-----------|
-| `npm run dev` | 🔥 Inicia servidor de desenvolvimento |
-| `npm run build` | 📦 Build de produção |
-| `npm run start` | 🚀 Inicia servidor de produção |
-| `npm run lint` | 🔍 Executa ESLint |
-| `npm run typecheck` | ✅ Verifica tipos TypeScript |
-| `npm run test` | 🧪 Executa testes |
-| `npm run test:watch` | 👁️ Testes em modo watch |
-| `npm run db:push` | 📤 Aplica schema ao banco |
-| `npm run db:studio` | 🎨 Abre Prisma Studio |
-| `npm run db:seed` | 🌱 Popula banco com dados |
-
----
-
-## 🎨 Design System
-
-O projeto segue o estilo **Bold Geometric**:
-
-```css
-/* Cores principais */
---primary: rose-500      /* #f43f5e */
---secondary: orange-500  /* #f97316 */
---accent: fuchsia-500    /* #d946ef */
---neutral: warm-gray     /* #78716c */
-
-/* Sombras offset */
-shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]
-
-/* Tipografia */
-font-black, uppercase, tracking-tight
-```
-
----
-
-## 🗺️ Roadmap
-
-```
-📅 Q1 2025
-├── ✅ MVP com votação básica
-├── ✅ Sistema de autenticação
-├── 🔄 Sistema de karma
-└── 🔄 Resultados com gráficos
-
-📅 Q2 2025
-├── ⏳ Pagamentos via Pix
-├── ⏳ Moderação automática
-└── ⏳ Notificações
-
-📅 Q3 2025
-├── ⏳ PWA mobile
-├── ⏳ Filtros de audiência
-└── ⏳ Analytics avançado
-```
-
----
-
-## 📊 Métricas do Projeto
-
-```
-📁 Arquivos: ~100+
-📝 Linhas de código: ~15,000+
-🧪 Testes: 13 (11 passando)
-📦 Dependências: 25
-```
-
----
-
-## 🔗 Links Úteis
-
-- 🎨 [Figma Design](https://figma.com) *(em breve)*
-- 📚 [Documentação da API](docs/api.md) *(em breve)*
-- 🐛 [Issues](https://github.com/acssjr/vizu/issues)
+Para licenciamento comercial ou parcerias, entre em contato: contato@vizu.com.br
 
 ---
 
 <p align="center">
-  <strong>Vizu</strong> — Otimize suas fotos com feedback real
+  <strong>Vizu</strong> - Feedback real para fotos reais
   <br />
-  <sub>Desenvolvido com ❤️ no Brasil</sub>
+  <sub>Feito no Brasil</sub>
 </p>
