@@ -69,20 +69,6 @@ export const testVoteWithFeedback: Vote = {
   feedbackNote: 'Great photo, try better lighting next time',
 }
 
-export const testVoteBiasedVoter: Vote = {
-  ...testVote,
-  id: 'test-vote-biased',
-  voterId: testUserNoKarma.id,
-  voterBias: 2.5, // Harsh voter
-  voterWeight: 0.7,
-  attraction: 1,
-  trust: 1,
-  intelligence: 1,
-  normalizedAttraction: 5.5, // Adjusted for bias
-  normalizedTrust: 5.5,
-  normalizedIntelligence: 5.5,
-}
-
 export const testVoteFromPremium: Vote = {
   ...testVote,
   id: 'test-vote-premium',

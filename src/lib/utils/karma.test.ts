@@ -146,6 +146,11 @@ describe('Karma System', () => {
       expect(karmaAfterVote(48)).toBe(KARMA_CONFIG.MAX) // 48 + 3 = 51, capped at 50
       expect(karmaAfterVote(50)).toBe(KARMA_CONFIG.MAX)
     })
+
+    it('should handle negative karma inputs', () => {
+      expect(karmaAfterVote(-10)).toBe(0) // Clamped to 0
+      expect(karmaAfterVote(-3)).toBe(0) // Clamped to 0
+    })
   })
 
   describe('karmaAfterFreeTest', () => {

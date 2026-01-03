@@ -31,9 +31,7 @@ export default defineConfig({
     // Pool configuration - use single fork for database tests
     pool: 'forks',
     isolate: false,
-    sequence: {
-      concurrent: false,
-    },
+    maxWorkers: 1,
   },
   resolve: {
     alias: {
