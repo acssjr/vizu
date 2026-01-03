@@ -10,7 +10,8 @@ import {
   calculateConfidence,
   type VoterStats,
 } from '../lib/normalization';
-import { revalidatePath } from 'next/cache';
+// Note: revalidatePath removed - was causing client refresh during voting
+// Photo owner's results page will update on their next visit/refresh
 
 const KARMA_REWARD_PER_VOTE = 3; // +3 karma per vote (as per spec)
 const MAX_KARMA = 50;
@@ -184,9 +185,8 @@ export const submitVote = authenticatedAction
       return { vote, karmaEarned: karmaToAdd };
     });
 
-    // Revalidate the results page for the photo owner
-    revalidatePath('/results');
-    revalidatePath(`/results/${photoId}`);
+    // Note: Removed revalidatePath calls - they were causing client refresh during voting
+    // The photo owner's results page will update naturally on their next visit
 
     return {
       success: true,
