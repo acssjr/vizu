@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Shield, Users, Lock, Eye, EyeOff, ArrowLeft, ArrowRight } from 'lucide-react';
@@ -11,8 +11,6 @@ const trustSignals = [
   { icon: Users, text: 'Votos reais' },
   { icon: Lock, text: 'LGPD' },
 ];
-
-const isDev = process.env.NODE_ENV === 'development';
 
 // Custom V Icon component
 function VizuIcon({ className }: { className?: string }) {
@@ -32,6 +30,12 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<Step>('initial');
   const [error, setError] = useState('');
+  const [isDev, setIsDev] = useState(false);
+
+  // Check if dev mode after mount to avoid hydration mismatch
+  useEffect(() => {
+    setIsDev(process.env.NODE_ENV === 'development');
+  }, []);
 
   const handleGoogleSignIn = () => {
     setIsLoading(true);
