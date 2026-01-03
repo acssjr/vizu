@@ -12,7 +12,8 @@ import {
 } from '../utils/vote-queue';
 
 // Debug flag - set to true to see console logs
-const DEBUG = process.env.NODE_ENV === 'development';
+const DEBUG = false;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const log = (...args: unknown[]) => DEBUG && console.log('[useVoting]', ...args);
 
 // Constants for defensive programming

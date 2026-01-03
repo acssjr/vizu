@@ -15,7 +15,6 @@ import {
   Send,
   CheckCircle2,
   Home,
-  Upload,
   Menu,
   X,
   Settings,
