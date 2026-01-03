@@ -12,8 +12,8 @@ setup('authenticate', async ({ page }) => {
 
   // For E2E tests, we'll use test credentials
   // In a real scenario, you'd use environment variables
-  const testEmail = process.env.E2E_TEST_EMAIL || 'test@example.com'
-  const testPassword = process.env.E2E_TEST_PASSWORD || 'testpassword123'
+  const testEmail = process.env['E2E_TEST_EMAIL'] || 'test@example.com'
+  const testPassword = process.env['E2E_TEST_PASSWORD'] || 'testpassword123'
 
   // Fill login form
   await page.getByLabel(/email/i).fill(testEmail)
