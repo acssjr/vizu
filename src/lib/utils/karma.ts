@@ -75,7 +75,7 @@ export function canVote(_karma: number): boolean {
  * Calcula karma após completar avaliação
  */
 export function karmaAfterVote(currentKarma: number): number {
-  return Math.min(currentKarma + KARMA_CONFIG.PER_VOTE, KARMA_CONFIG.MAX);
+  return Math.max(0, Math.min(currentKarma + KARMA_CONFIG.PER_VOTE, KARMA_CONFIG.MAX));
 }
 
 /**

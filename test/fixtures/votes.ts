@@ -4,7 +4,7 @@
 
 import type { Vote } from '@prisma/client'
 import { testPhoto, testPhotoWithVotes } from './photos'
-import { testUser, testUserFemale, testUserPremium, testUserNoKarma } from './users'
+import { testUserFemale, testUserPremium, testUserNoKarma } from './users'
 
 const baseDate = new Date('2024-01-01T00:00:00Z')
 

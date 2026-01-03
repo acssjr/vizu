@@ -10,10 +10,16 @@ setup('authenticate', async ({ page }) => {
   // Go to login page
   await page.goto('/login')
 
-  // For E2E tests, we'll use test credentials
-  // In a real scenario, you'd use environment variables
-  const testEmail = process.env['E2E_TEST_EMAIL'] || 'test@example.com'
-  const testPassword = process.env['E2E_TEST_PASSWORD'] || 'testpassword123'
+  // Require test credentials from environment
+  const testEmail = process.env['E2E_TEST_EMAIL']
+  const testPassword = process.env['E2E_TEST_PASSWORD']
+
+  if (!testEmail || !testPassword) {
+    throw new Error(
+      'E2E_TEST_EMAIL and E2E_TEST_PASSWORD environment variables are required. ' +
+      'Please set these secrets before running E2E tests.'
+    )
+  }
 
   // Fill login form
   await page.getByLabel(/email/i).fill(testEmail)

@@ -3,7 +3,7 @@
  *
  * Usage in tests:
  * ```
- * import { prismaMock, resetPrismaMock } from '@/test/mocks/prisma'
+ * import { prismaMock, resetPrismaMock } from '../../../test/mocks/prisma'
  *
  * vi.mock('@/lib/prisma', () => ({
  *   prisma: prismaMock,
