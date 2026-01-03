@@ -64,6 +64,12 @@
     padding-top: env(safe-area-inset-top);
   }
 
+  /* Fast touch response - eliminates 300ms tap delay */
+  .touch-action-manipulation {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   /* Theme-aware backgrounds */
   .bg-theme-primary {
     background-color: rgb(var(--bg-primary));
@@ -237,4 +243,37 @@
 
 .hover-wiggle:hover {
   animation: wiggle 0.3s ease-in-out;
+}
+
+/* Mobile Panel Slide Transitions - Voting Page */
+@keyframes panel-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes panel-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-panel-in-left {
+  animation: panel-slide-in-left 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.animate-panel-in-right {
+  animation: panel-slide-in-right 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
