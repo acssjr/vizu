@@ -104,7 +104,12 @@ export const testVoteQuick: Vote = {
   voterWeight: 0.5,
 }
 
-// Factory function for custom votes
+/**
+ * Creates a test Vote by merging the base fixture with provided overrides and assigning a unique id.
+ *
+ * @param overrides - Partial Vote fields to override on the base fixture
+ * @returns The constructed Vote object with a unique id and any applied overrides
+ */
 export function createTestVote(overrides: Partial<Vote> = {}): Vote {
   return {
     ...testVote,
@@ -113,7 +118,12 @@ export function createTestVote(overrides: Partial<Vote> = {}): Vote {
   }
 }
 
-// Create a set of votes for a photo with varying scores
+/**
+ * Generate an array of test votes for a specific photo with scores sampled around a given average.
+ *
+ * @param averageScore - Target average score on the 0–3 scale; used as the center for random variation (default: 2)
+ * @returns An array of Vote objects for the given photo with ids `test-vote-{photoId}-{index}`, scores derived from the sampled value, normalized scores scaled to 0–10, and `createdAt` timestamps spaced one hour apart
+ */
 export function createVotesForPhoto(
   photoId: string,
   count: number,
@@ -140,7 +150,12 @@ export function createVotesForPhoto(
   })
 }
 
-// Create votes simulating different voter biases
+/**
+ * Create three test votes for a photo illustrating harsh, generous, and neutral voter biases.
+ *
+ * @param photoId - The photo id to assign to each generated vote
+ * @returns An array of three Vote objects: a harsh voter (low scores, voterBias 2.0, voterWeight 0.6), a generous voter (high scores, voterBias -1.5, voterWeight 0.8), and a neutral voter (medium scores, voterBias 0.0, voterWeight 1.0)
+ */
 export function createBiasedVotes(photoId: string): Vote[] {
   return [
     // Harsh voter (gives low scores)

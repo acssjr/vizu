@@ -13,7 +13,12 @@ import {
 // Create mock client
 export const rekognitionMock = mockClient(RekognitionClient)
 
-// Setup safe image response (no moderation labels)
+/**
+ * Configure the exported Rekognition mock to simulate a safe image response.
+ *
+ * Sets the mock to return no moderation labels and a single detected face with
+ * a centered bounding box, high confidence, and basic pose/quality attributes.
+ */
 export function mockSafeImage() {
   rekognitionMock.on(DetectModerationLabelsCommand).resolves({
     ModerationLabels: [],
@@ -32,7 +37,11 @@ export function mockSafeImage() {
   })
 }
 
-// Setup unsafe image response (has moderation labels)
+/**
+ * Configure the Rekognition mock to simulate an unsafe image by returning moderation labels.
+ *
+ * @param labels - Array of moderation label names to include; defaults to `['Explicit Nudity']`.
+ */
 export function mockUnsafeImage(labels: string[] = ['Explicit Nudity']) {
   rekognitionMock.on(DetectModerationLabelsCommand).resolves({
     ModerationLabels: labels.map((name) => ({
@@ -43,14 +52,22 @@ export function mockUnsafeImage(labels: string[] = ['Explicit Nudity']) {
   })
 }
 
-// Setup no face detected
+/**
+ * Configure the Rekognition mock to simulate no faces detected in an image.
+ *
+ * Sets the mock response for DetectFacesCommand to return an empty `FaceDetails` array.
+ */
 export function mockNoFaceDetected() {
   rekognitionMock.on(DetectFacesCommand).resolves({
     FaceDetails: [],
   })
 }
 
-// Setup multiple faces detected
+/**
+ * Configures the Rekognition mock to return a response with a specified number of detected faces.
+ *
+ * @param count - Number of FaceDetails entries to include in the mocked DetectFaces response (default 2)
+ */
 export function mockMultipleFaces(count: number = 2) {
   rekognitionMock.on(DetectFacesCommand).resolves({
     FaceDetails: Array(count).fill({
@@ -60,7 +77,12 @@ export function mockMultipleFaces(count: number = 2) {
   })
 }
 
-// Reset all AWS mocks
+/**
+ * Reset the Rekognition mock to a clean state and configure it with a default safe image.
+ *
+ * Clears all previously configured mock responses on the Rekognition mock client and
+ * reinitializes it so subsequent calls simulate a safe image (no moderation labels and a single face).
+ */
 export function resetAwsMocks() {
   rekognitionMock.reset()
   mockSafeImage() // Default to safe image

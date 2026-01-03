@@ -29,6 +29,12 @@ export const cloudinaryMock = {
   },
 }
 
+/**
+ * Reset the Cloudinary upload and destroy mocks to their initial configured states.
+ *
+ * Reinitializes `cloudinaryUploadMock` and `cloudinaryDestroyMock`, clearing call history
+ * and restoring their default resolved values used by tests.
+ */
 export function resetCloudinaryMocks() {
   cloudinaryUploadMock.mockReset()
   cloudinaryUploadMock.mockResolvedValue({
@@ -44,7 +50,9 @@ export function resetCloudinaryMocks() {
   cloudinaryDestroyMock.mockResolvedValue({ result: 'ok' })
 }
 
-// Setup mock
+/**
+ * Instructs Vitest to mock the 'cloudinary' module with the exported test mock.
+ */
 export function setupCloudinaryMock() {
   vi.mock('cloudinary', () => cloudinaryMock)
 }

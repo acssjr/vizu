@@ -97,7 +97,12 @@ export const testPhotoExpired: Photo = {
   expiresAt: new Date('2023-12-01'),
 }
 
-// Factory function for custom photos
+/**
+ * Creates a test Photo object based on the canonical fixture, applying any provided overrides.
+ *
+ * @param overrides - Partial fields to override on the generated Photo; a unique `id` is generated unless `id` is provided in `overrides`.
+ * @returns A Photo object merged from the base test fixture with the generated `id` and any provided overrides
+ */
 export function createTestPhoto(overrides: Partial<Photo> = {}): Photo {
   return {
     ...testPhoto,
@@ -106,7 +111,14 @@ export function createTestPhoto(overrides: Partial<Photo> = {}): Photo {
   }
 }
 
-// Create multiple photos for a user
+/**
+ * Generate an array of test Photo objects for a given user.
+ *
+ * @param userId - User id assigned to each generated photo and used in each photo's id
+ * @param count - Number of photos to generate
+ * @param overrides - Partial Photo fields to apply to every generated photo (overrides default fixture)
+ * @returns An array of `count` Photo objects whose ids are `test-photo-{userId}-{index}` and whose `createdAt`/`updatedAt` timestamps are spaced one day apart starting from `baseDate`
+ */
 export function createTestPhotosForUser(
   userId: string,
   count: number,
