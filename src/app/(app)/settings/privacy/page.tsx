@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { useAuth } from '@/hooks/use-auth';
 import { useToastActions } from '@/stores/ui-store';
+import { VizuInlineLoader } from '@/components/ui/vizu-v-logo';
 
 interface ConsentInfo {
   termsAccepted: boolean;
@@ -147,11 +148,7 @@ export default function PrivacySettingsPage() {
   };
 
   if (authLoading || isLoading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
-      </div>
-    );
+    return <VizuInlineLoader />;
   }
 
   return (

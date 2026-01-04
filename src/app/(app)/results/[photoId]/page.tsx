@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ResultsChart } from '@/components/features/results-chart';
 import { useAuth } from '@/hooks/use-auth';
+import { VizuInlineLoader } from '@/components/ui/vizu-v-logo';
 
 interface PhotoResult {
   id: string;
@@ -82,11 +83,7 @@ export default function PhotoResultPage() {
   }, [user, photoId]);
 
   if (authLoading || isLoading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary-500 border-t-transparent" />
-      </div>
-    );
+    return <VizuInlineLoader />;
   }
 
   if (error) {

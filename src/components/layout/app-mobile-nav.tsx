@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -14,21 +15,7 @@ const navigation = [
   { name: 'Perfil', href: '/settings', icon: User },
 ];
 
-// V Icon Component - using actual VIZU logo V
-function VizuVIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 1000 1000"
-      fill="currentColor"
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M795.41,229.47c23.21,6.25,36.12,26.37,33.1,50.03-3.07,24.08-10.41,46.88-16.78,70.61l-29.67,110.45-51.63,197.6c-8.03,30.75-13.77,59.5-26.71,88.59-15.37,34.53-45.82,63.73-84.82,68.36l-186,22.07c-42.12,5-84.36,7.16-112.17-29.83-10.6-14.11-20.49-29.61-24.77-47.64l-69.35-292.41-13.85-60.77-39.53-167.69c-3.59-15.23-4.95-30.37-4.34-45.68.91-22.74,19.66-36.66,42.31-33.77l116.3,14.84c43.39,5.53,88.24,15.64,108.48,59.74,10.6,23.09,16.23,47.39,19.42,72.73l14.27,113.35c6.57,52.15,12.48,102.76,24.03,153.95.86,3.83,5.22,8.01,7.98,7.97s7.85-4.19,8.58-7.49c5.89-26.88,9.23-51.84,12.95-79.33l23.79-175.78c4.95-36.6,5.11-92.78,53.47-104.15,13.14-3.09,27.57-4.29,41.11-3.05l108,9.85c15.37,1.4,30.18,3.26,45.81,7.47Z" />
-    </svg>
-  );
-}
-
-export function AppMobileNav() {
+export const AppMobileNav = React.memo(function AppMobileNav() {
   const pathname = usePathname();
   const router = useRouter();
   const isVotarActive = pathname === '/vote' || pathname.startsWith('/vote/');
@@ -162,4 +149,4 @@ export function AppMobileNav() {
       </div>
     </nav>
   );
-}
+});
