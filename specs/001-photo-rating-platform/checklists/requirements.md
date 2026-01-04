@@ -50,7 +50,7 @@
 ### Assumptions Made (documented in spec)
 1. Age minimum: 18+ (standard for dating/image apps)
 2. Initial language: Portuguese BR
-3. Minimum votes for results: 20
+3. Minimum votes for results: 10
 4. Karma regeneration: 1/hour up to 50
 5. Biometric data classification under LGPD
 

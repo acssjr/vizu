@@ -139,7 +139,7 @@ export function calculateWeightedAverage(
  */
 export function calculateConfidence(voteCount: number): number {
   // Modelo logarítmico: confiança aumenta rapidamente no início, depois estabiliza
-  // 20 votos = ~70% confiança, 50 votos = ~85%, 100 votos = ~95%
+  // 10 votos = ~40% confiança, 20 votos = ~63%, 50 votos = ~92%, 100 votos = ~99%
   const k = 0.05; // Taxa de crescimento
   return 1 - Math.exp(-k * voteCount);
 }

@@ -106,8 +106,8 @@ export default function PhotoResultPage() {
     return null;
   }
 
-  const hasResults = photo.voteCount >= 20;
-  const votesRemaining = Math.max(0, 20 - photo.voteCount);
+  const hasResults = photo.voteCount >= 10;
+  const votesRemaining = Math.max(0, 10 - photo.voteCount);
 
   return (
     <div className="mx-auto max-w-4xl">

@@ -324,7 +324,7 @@ export default function ResultsPage() {
             </div>
             <div>
               <h2 className="text-xl font-black text-theme-primary uppercase">AGUARDANDO VOTOS</h2>
-              <p className="text-sm font-bold text-theme-muted">Fotos precisam de 20 votos para mostrar resultados</p>
+              <p className="text-sm font-bold text-theme-muted">Fotos precisam de 10 votos para mostrar resultados</p>
             </div>
           </div>
 
@@ -398,7 +398,7 @@ export default function ResultsPage() {
           <div>
             <h3 className="font-black text-neutral-950 uppercase mb-1">COMO FUNCIONA</h3>
             <p className="text-sm font-bold text-neutral-950/80">
-              Suas fotos precisam de pelo menos 20 votos para exibir resultados confiáveis. Quanto mais votos, mais precisos os resultados. Vote em outras fotos para ganhar Karma e enviar mais fotos!
+              Suas fotos precisam de pelo menos 10 votos para exibir resultados confiáveis. Quanto mais votos, mais precisos os resultados. Vote em outras fotos para ganhar Karma e enviar mais fotos!
             </p>
           </div>
         </div>
