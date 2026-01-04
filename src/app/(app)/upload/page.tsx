@@ -369,7 +369,7 @@ export default function UploadPage() {
             {/* Premium Filters */}
             {testType === 'PAID' && (
               <div className="mt-6 p-5 rounded-2xl border-4 border-emerald-500/30 bg-emerald-500/5">
-                <h4 className="font-black text-theme-primary uppercase mb-4">FILTROS DE AUDIENCIA</h4>
+                <h4 className="font-black text-theme-primary uppercase mb-4">FILTROS DE AUDIÊNCIA</h4>
 
                 <div className="space-y-4">
                   <div>
