@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Star, BarChart3, User } from 'lucide-react';
+import { LayoutDashboard, Star, BarChart3, User, Plus } from 'lucide-react';
 
-// Navigation items (4 instead of 5 - Upload moves to FAB)
+// Navigation items (4 items - VOTAR moves to FAB as highlighted action)
 const navigation = [
   { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Votar', href: '/vote', icon: Star },
-  // FAB goes here in the middle
+  { name: 'Upload', href: '/upload', icon: Plus },
+  // FAB (VOTAR) goes here in the middle
   { name: 'Stats', href: '/results', icon: BarChart3 },
   { name: 'Perfil', href: '/settings', icon: User },
 ];
@@ -31,10 +31,10 @@ function VizuVIcon({ className }: { className?: string }) {
 export function AppMobileNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const isUploadActive = pathname === '/upload' || pathname.startsWith('/upload/');
+  const isVotarActive = pathname === '/vote' || pathname.startsWith('/vote/');
 
   const handleFabClick = () => {
-    router.push('/upload');
+    router.push('/vote');
   };
 
   // Split navigation into left and right sides
@@ -86,12 +86,12 @@ export function AppMobileNav() {
               );
             })}
 
-            {/* Central FAB Button - Upload */}
+            {/* Central FAB Button - VOTAR (highlighted action) */}
             <div className="relative -mt-8">
               <button
                 onClick={handleFabClick}
                 className={cn(
-                  'relative flex items-center justify-center w-16 h-16 rounded-2xl transition-all',
+                  'relative flex items-center justify-center w-16 h-16 rounded-2xl transition-all duration-300',
                   'bg-gradient-to-br from-primary-500 via-emerald-500 to-teal-500',
                   'border-4 border-neutral-950 dark:border-neutral-800',
                   'shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
@@ -99,26 +99,24 @@ export function AppMobileNav() {
                   'hover:translate-x-[2px] hover:translate-y-[2px]',
                   'active:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)]',
                   'active:translate-x-[3px] active:translate-y-[3px]',
-                  isUploadActive && 'ring-2 ring-white ring-offset-2 ring-offset-neutral-950'
+                  // Scale + glow animation instead of white ring
+                  isVotarActive && 'scale-110 shadow-[0_0_25px_0px_rgba(219,39,119,0.7),4px_4px_0px_0px_rgba(0,0,0,0.3)]'
                 )}
-                aria-label="Enviar foto"
+                aria-label="Votar em fotos"
               >
                 {/* Inner glow effect */}
                 <div className="absolute inset-0 rounded-xl bg-white/20 opacity-0 hover:opacity-100 transition-opacity" />
 
-                {/* V Icon */}
-                <VizuVIcon className="w-8 h-8 text-neutral-950 relative z-10" />
-
-                {/* Decorative corner accents */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-secondary-500 rounded-full border-2 border-neutral-950" />
+                {/* Star Icon for VOTAR */}
+                <Star className="w-8 h-8 text-neutral-950 relative z-10 fill-neutral-950" />
               </button>
 
               {/* Label below FAB */}
               <span className={cn(
                 'absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase tracking-tight whitespace-nowrap',
-                isUploadActive ? 'text-primary-500' : 'text-neutral-500 dark:text-neutral-400'
+                isVotarActive ? 'text-primary-500' : 'text-neutral-500 dark:text-neutral-400'
               )}>
-                Upload
+                Votar
               </span>
             </div>
 

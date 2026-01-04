@@ -82,7 +82,7 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
   const status = statusConfig[photo.status];
   const StatusIcon = status.icon;
   const category = categoryConfig[photo.category];
-  const hasResults = photo.voteCount >= 20;
+  const hasResults = photo.voteCount >= 10;
 
   // Calculate average as percentage (scores are 0-3 scale)
   const averageScore = photo.scores
@@ -164,7 +164,7 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
           ) : (
             <div className="flex items-center gap-1 text-theme-muted">
               <Clock className="w-4 h-4" />
-              <span className="text-xs font-black uppercase">{20 - photo.voteCount} FALTAM</span>
+              <span className="text-xs font-black uppercase">{10 - photo.voteCount} FALTAM</span>
             </div>
           )}
         </div>
@@ -175,7 +175,7 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
             <div className="relative h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-primary-500 rounded-full transition-all"
-                style={{ width: `${(photo.voteCount / 20) * 100}%` }}
+                style={{ width: `${(photo.voteCount / 10) * 100}%` }}
               />
             </div>
           </div>
@@ -232,8 +232,8 @@ export default function ResultsPage() {
     }
   }, [user]);
 
-  const photosWithResults = photos.filter((p) => p.voteCount >= 20 && p.status === 'APPROVED');
-  const photosWaiting = photos.filter((p) => p.voteCount < 20 && p.status === 'APPROVED');
+  const photosWithResults = photos.filter((p) => p.voteCount >= 10 && p.status === 'APPROVED');
+  const photosWaiting = photos.filter((p) => p.voteCount < 10 && p.status === 'APPROVED');
   const photosPending = photos.filter((p) => p.status === 'PENDING_MODERATION');
 
   if (authLoading || isLoading) {

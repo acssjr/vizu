@@ -330,7 +330,7 @@ export default function CreditsPage() {
                 {checkingPayment && (
                   <div className="flex items-center justify-center gap-2 text-sm font-bold text-theme-muted">
                     <div className="w-4 h-4 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
-                    Aguardando confirmacao...
+                    Aguardando confirmação...
                   </div>
                 )}
               </div>
@@ -428,7 +428,7 @@ export default function CreditsPage() {
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
                       <Check className="w-4 h-4 text-emerald-500" />
-                      Filtros de audiencia
+                      Filtros de audiência
                     </li>
                     <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
                       <Check className="w-4 h-4 text-emerald-500" />

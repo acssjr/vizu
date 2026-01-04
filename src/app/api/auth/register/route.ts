@@ -6,12 +6,13 @@ import { z } from 'zod';
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(8, 'Senha deve ter no mínimo 8 caracteres'),
+  name: z.string().min(2, 'Nome deve ter no mínimo 2 caracteres').optional(),
 });
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password } = schema.parse(body);
+    const { email, password, name } = schema.parse(body);
 
     const normalizedEmail = email.toLowerCase();
 
@@ -45,6 +46,7 @@ export async function POST(request: Request) {
       data: {
         email: normalizedEmail,
         password: hashedPassword,
+        name: name || null,
         karma: 50,
         credits: 0,
       },
