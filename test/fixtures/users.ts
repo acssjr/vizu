@@ -61,7 +61,12 @@ export const testUserNewbie: User = {
   updatedAt: new Date(),
 }
 
-// Factory function for custom users
+/**
+ * Create a test User object from the base fixture with a generated unique id.
+ *
+ * @param overrides - Partial fields to override on the base test user
+ * @returns A User object based on the base test fixture with a generated unique id and any provided overrides applied
+ */
 export function createTestUser(overrides: Partial<User> = {}): User {
   return {
     ...testUser,

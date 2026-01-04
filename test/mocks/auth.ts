@@ -52,7 +52,12 @@ export const signInMock = vi.fn(() => Promise.resolve({ ok: true, error: null })
 // Mock for signOut
 export const signOutMock = vi.fn(() => Promise.resolve({ url: '/' }))
 
-// Setup function for authenticated user
+/**
+ * Configure test mocks to represent an authenticated session, merging any provided user fields into the default mock user.
+ *
+ * @param user - Partial user fields to merge into the default mock session's user
+ * @returns The Session object that was set on the mocks
+ */
 export function mockAuthenticatedUser(user?: Partial<Session['user']>) {
   const session: Session = {
     ...mockSession,
@@ -72,7 +77,12 @@ export function mockAuthenticatedUser(user?: Partial<Session['user']>) {
   return session
 }
 
-// Setup function for unauthenticated state
+/**
+ * Configure auth mocks to simulate an unauthenticated session.
+ *
+ * Sets the server session mock to resolve `null` and updates the `useSession` mock
+ * to return `{ data: null, status: 'unauthenticated', update: vi.fn() }`.
+ */
 export function mockUnauthenticated() {
   getServerSessionMock.mockResolvedValue(null)
   useSessionMock.mockReturnValue({
@@ -82,7 +92,11 @@ export function mockUnauthenticated() {
   })
 }
 
-// Setup function for loading state
+/**
+ * Configure the useSession mock to represent a loading session state.
+ *
+ * After calling, `useSessionMock` will return an object with `data: null`, `status: 'loading'`, and a mock `update` function.
+ */
 export function mockLoadingSession() {
   useSessionMock.mockReturnValue({
     data: null,
@@ -91,7 +105,15 @@ export function mockLoadingSession() {
   })
 }
 
-// Reset all auth mocks
+/**
+ * Reset all authentication-related mocks to their default test values.
+ *
+ * Resets the vi mocks and restores their default behaviors:
+ * - `getServerSessionMock` resolves to `mockSession`.
+ * - `useSessionMock` returns `{ data: mockSession, status: 'authenticated', update: vi.fn() }`.
+ * - `signInMock` resolves to `{ ok: true, error: null }`.
+ * - `signOutMock` resolves to `{ url: '/' }`.
+ */
 export function resetAuthMocks() {
   getServerSessionMock.mockReset()
   getServerSessionMock.mockResolvedValue(mockSession)
@@ -110,7 +132,11 @@ export function resetAuthMocks() {
   signOutMock.mockResolvedValue({ url: '/' })
 }
 
-// Vi.mock setup helper - call this at module level
+/**
+ * Configure Vi module mocks so NextAuth imports resolve to the provided test mocks.
+ *
+ * Call at module scope in tests to ensure `getServerSession`, `useSession`, `signIn`, `signOut`, and `SessionProvider` are replaced with the mock implementations.
+ */
 export function setupAuthMocks() {
   vi.mock('next-auth', () => ({
     getServerSession: getServerSessionMock,

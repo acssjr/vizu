@@ -20,12 +20,23 @@
 
 import { vi } from 'vitest'
 
-// Create a deep mock function factory
+/**
+ * Creates a Vitest mock function that resolves to null by default.
+ *
+ * @returns A Vitest mock function which resolves to `null` when invoked.
+ */
 function createMockFn() {
   return vi.fn().mockResolvedValue(null)
 }
 
-// Create mock for a Prisma model
+/**
+ * Creates a mock object that simulates a Prisma model with common query and mutation methods.
+ *
+ * @returns An object whose properties are Vitest mock functions for typical Prisma model operations
+ * (findUnique, findUniqueOrThrow, findFirst, findFirstOrThrow, findMany, create, createMany,
+ * update, updateMany, upsert, delete, deleteMany, count, aggregate, groupBy). Each mock is configured
+ * to resolve to `null` by default.
+ */
 function createModelMock() {
   return {
     findUnique: createMockFn(),
@@ -74,7 +85,11 @@ export const prismaMock = {
   $queryRaw: vi.fn().mockResolvedValue([]),
 }
 
-// Reset all mocks
+/**
+ * Restore all Prisma model mocks to a clean default state for tests.
+ *
+ * Resets each model method mock (clearing call history) and sets their default resolved value to `null`. Reinitializes `prismaMock.$transaction` to invoke a callback with `prismaMock` when given a function, or to resolve an iterable via `Promise.all` when given an array/iterable of operations.
+ */
 export function resetPrismaMock() {
   const resetModel = (model: ReturnType<typeof createModelMock>) => {
     Object.values(model).forEach((fn) => {
