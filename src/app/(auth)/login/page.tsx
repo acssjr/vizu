@@ -23,6 +23,16 @@ function VizuIcon({ className }: { className?: string }) {
 
 type Step = 'initial' | 'password' | 'create-password';
 
+/**
+ * Render the login page UI that handles sign-in, account creation, and related flows.
+ *
+ * Renders a multi-step authentication card with Google sign-in, email-based
+ * continuation, existing-user password entry, new-account creation (including
+ * optional display name), development-only quick login, error display, loading
+ * states, and trust/legal links.
+ *
+ * @returns The login page as a React element.
+ */
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');

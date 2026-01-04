@@ -15,6 +15,13 @@ const navigation = [
   { name: 'Perfil', href: '/settings', icon: User },
 ];
 
+/**
+ * Renders the mobile bottom navigation bar with two side navigation groups and a central "Votar" FAB.
+ *
+ * The central FAB navigates to `/vote` when pressed and visually indicates activity for `/vote` routes.
+ *
+ * @returns The JSX element for the fixed bottom navigation containing left and right navigation items and the centered FAB.
+ */
 export const AppMobileNav = React.memo(function AppMobileNav() {
   const pathname = usePathname();
   const router = useRouter();
@@ -86,6 +93,9 @@ export const AppMobileNav = React.memo(function AppMobileNav() {
                   'hover:translate-x-[2px] hover:translate-y-[2px]',
                   'active:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)]',
                   'active:translate-x-[3px] active:translate-y-[3px]',
+                  // Keyboard focus indicator - high contrast for accessibility
+                  'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2',
+                  'focus-visible:ring-yellow-400 focus-visible:ring-offset-neutral-950 dark:focus-visible:ring-offset-neutral-800',
                   // Scale + glow animation instead of white ring
                   isVotarActive && 'scale-110 shadow-[0_0_25px_0px_rgba(219,39,119,0.7),4px_4px_0px_0px_rgba(0,0,0,0.3)]'
                 )}

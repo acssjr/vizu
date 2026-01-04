@@ -79,6 +79,12 @@ const categoryConfig = {
   },
 };
 
+/**
+ * Renders an interactive card linking to a photo's results page that displays the photo image, category and status badges, vote count, progress toward the minimum votes, and summary scores when available.
+ *
+ * @param photo - The photo to render. Used fields: `id`, `thumbnailUrl`/`imageUrl`, `category`, `status`, `voteCount`, and optionally `scores` for average and trait percentages.
+ * @returns A JSX element representing the photo result card linking to `/results/{photo.id}`.
+ */
 function PhotoResultCard({ photo }: { photo: Photo }) {
   const status = statusConfig[photo.status];
   const StatusIcon = status.icon;
@@ -206,6 +212,13 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
   );
 }
 
+/**
+ * Render the results dashboard that displays the user's photos grouped into available results, awaiting votes, and pending moderation.
+ *
+ * Fetches photos from the API when a user is authenticated and shows a loading state while authentication or data is in progress. Photos with at least 10 votes and an `APPROVED` status are shown under "RESULTADOS DISPONÍVEIS"; approved photos with fewer than 10 votes appear under "AGUARDANDO VOTOS"; photos with `PENDING_MODERATION` appear under "EM ANÁLISE". When there are no photos, an empty state with an upload CTA is rendered. A tip section explains the 10-vote threshold and encourages voting.
+ *
+ * @returns The page's React element containing the header, categorized photo grids (or empty state), and informational tip.
+ */
 export default function ResultsPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [photos, setPhotos] = useState<Photo[]>([]);

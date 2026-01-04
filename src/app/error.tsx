@@ -4,6 +4,13 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
+/**
+ * Renders a full-screen error UI with branding, a descriptive message, optional error code, and actions to retry or return home.
+ *
+ * @param error - The error that occurred; if `error.digest` is present it is displayed as a visible error code.
+ * @param reset - Callback invoked when the user requests a retry.
+ * @returns The React element rendering the error interface.
+ */
 export default function Error({
   error,
   reset,

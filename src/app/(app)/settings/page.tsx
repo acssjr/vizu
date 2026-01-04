@@ -131,6 +131,15 @@ function SettingRow({
   );
 }
 
+/**
+ * Renders the account settings page for managing user profile, preferences, privacy, and session actions.
+ *
+ * The page fetches and displays the current user's profile, allows updating name, gender, and birth date,
+ * toggling simple preference flags, initiating a data download (placeholder), signing out, and initiating account deletion.
+ * UI includes confirmation modals for logout and account deletion and shows toast notifications for action results.
+ *
+ * @returns The rendered settings page element.
+ */
 export default function SettingsPage() {
   const { user, isLoading: authLoading, logout } = useAuth();
   
