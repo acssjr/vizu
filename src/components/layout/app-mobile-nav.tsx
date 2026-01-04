@@ -28,6 +28,13 @@ function VizuVIcon({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Renders the mobile bottom navigation bar with two side navigation groups and a central "Votar" FAB.
+ *
+ * The central FAB navigates to `/vote` when pressed and visually indicates activity for `/vote` routes.
+ *
+ * @returns The JSX element for the fixed bottom navigation containing left and right navigation items and the centered FAB.
+ */
 export function AppMobileNav() {
   const pathname = usePathname();
   const router = useRouter();

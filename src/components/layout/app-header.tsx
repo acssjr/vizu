@@ -26,6 +26,13 @@ const navigation = [
   { name: 'Upload', href: '/upload', icon: Plus },
 ];
 
+/**
+ * Render the application's fixed top header with branding, navigation, theme toggle, and profile actions.
+ *
+ * The header includes a bold geometric logo area, a responsive desktop navigation (with an emphasized "Votar" highlight), a theme toggle, profile/settings access, user avatar with logout, and decorative corner elements.
+ *
+ * @returns The header element containing navigation, theme/profile controls, and decorative elements.
+ */
 export function AppHeader() {
   const pathname = usePathname();
   const { user, logout } = useAuth();

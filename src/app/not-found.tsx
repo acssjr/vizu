@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+/**
+ * Renders a styled 404 ("Página não encontrada") page with a header logo, explanatory text, prominent 404 indicator, and navigation actions.
+ *
+ * @returns A JSX element representing the full 404 page UI, including links to the home page and dashboard, and decorative accents.
+ */
 export default function NotFound() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-950 px-4">
