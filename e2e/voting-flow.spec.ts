@@ -98,43 +98,36 @@ test.describe('Voting Flow', () => {
     }
   })
 
-  test('should handle voting with all ratings', async ({ page }) => {
+  test('should handle voting with varied ratings', async ({ page }) => {
     await page.goto('/vote')
 
     // Wait for photo to load
     const photo = page.getByRole('img', { name: /foto/i }).first()
     await expect(photo).toBeVisible({ timeout: 10000 })
 
-    // Select different ratings for variety
+    // Select different ratings for each axis
     // ATRAENTE - "Muito" (3)
-    const muitoButtons = page.getByRole('button', { name: /^3\s*muito$/i })
-    if (await muitoButtons.count() > 0) {
-      await muitoButtons.first().click()
-    }
+    const muitoButton = page.getByRole('button', { name: /^3\s*muito$/i }).first()
+    await expect(muitoButton).toBeVisible({ timeout: 5000 })
+    await muitoButton.click()
 
-    // INTELIGENTE - "Sim" (2)
+    // INTELIGENTE - "Sim" (2) - second column
     const simButtons = page.getByRole('button', { name: /^2\s*sim$/i })
-    if (await simButtons.count() > 1) {
-      await simButtons.nth(1).click()
-    }
+    await expect(simButtons.nth(1)).toBeVisible({ timeout: 5000 })
+    await simButtons.nth(1).click()
 
-    // CONFIÁVEL - "Pouco" (1)
+    // CONFIÁVEL - "Pouco" (1) - third column
     const poucoButtons = page.getByRole('button', { name: /^1\s*pouco$/i })
-    if (await poucoButtons.count() > 2) {
-      await poucoButtons.nth(2).click()
-    }
+    await expect(poucoButtons.nth(2)).toBeVisible({ timeout: 5000 })
+    await poucoButtons.nth(2).click()
 
-    // Verify submit button becomes enabled after selecting all ratings
+    // Submit button must become enabled after all 3 ratings are selected
     const submitButton = page.getByRole('button', { name: /enviar/i })
-    // Note: button may require all 3 ratings to be selected
-    await page.waitForTimeout(500) // Small wait for state update
+    await expect(submitButton).toBeEnabled({ timeout: 5000 })
 
-    // Check if we can submit
-    if (await submitButton.isEnabled()) {
-      await submitButton.click()
-      // Wait for next photo
-      await expect(photo).toBeVisible({ timeout: 10000 })
-    }
+    // Submit and wait for next photo
+    await submitButton.click()
+    await expect(photo).toBeVisible({ timeout: 10000 })
   })
 })
 
