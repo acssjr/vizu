@@ -71,31 +71,27 @@ test.describe('Voting Flow', () => {
     ).toBeVisible({ timeout: 10000 })
   })
 
-  test('should show karma in mobile menu', async ({ page, isMobile }) => {
+  test('should show action bar with voting controls', async ({ page }) => {
     await page.goto('/vote')
 
     // Wait for page to load
     const photo = page.getByRole('img', { name: /foto/i }).first()
     await expect(photo).toBeVisible({ timeout: 10000 })
 
-    if (isMobile) {
-      // On mobile, karma is in the hamburger menu
-      const menuButton = page.getByRole('button', { name: /menu/i }).or(
-        page.locator('button').filter({ has: page.locator('svg') }).first()
-      )
+    // Action bar contains: Pular button, karma progress (X/30), Enviar button
+    // Verify the action bar is functional by checking its buttons
+    const skipButton = page.getByRole('button', { name: /pular/i }).first()
+    const submitButton = page.getByRole('button', { name: /enviar/i })
 
-      if (await menuButton.isVisible()) {
-        await menuButton.click()
-        // Karma is displayed as "{number} karma" in the menu
-        await expect(page.getByText(/\d+\s*karma/i)).toBeVisible({ timeout: 3000 })
-      }
-    } else {
-      // On desktop, karma may be in the header or action bar
-      // The page shows karma progress somewhere
-      const karmaDisplay = page.getByText(/karma/i)
-      // Just verify the page loaded successfully if karma isn't visible
-      await expect(photo).toBeVisible()
-    }
+    // Scroll to ensure action bar is in view
+    await submitButton.scrollIntoViewIfNeeded()
+
+    // Both action buttons should be visible
+    await expect(skipButton).toBeVisible({ timeout: 5000 })
+    await expect(submitButton).toBeVisible({ timeout: 5000 })
+
+    // Submit should be disabled until ratings are selected
+    await expect(submitButton).toBeDisabled()
   })
 
   test('should handle voting with varied ratings', async ({ page }) => {
