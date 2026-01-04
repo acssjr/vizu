@@ -137,6 +137,9 @@ export function createBiasedVotes(photoId: string): Vote[] {
       attraction: 1,
       trust: 0,
       intelligence: 1,
+      normalizedAttraction: 3.33, // (1/3)*10
+      normalizedTrust: 0.0, // (0/3)*10
+      normalizedIntelligence: 3.33, // (1/3)*10
       voterBias: 2.0,
       voterWeight: 0.6,
     }),
@@ -148,6 +151,9 @@ export function createBiasedVotes(photoId: string): Vote[] {
       attraction: 3,
       trust: 3,
       intelligence: 3,
+      normalizedAttraction: 10.0, // (3/3)*10
+      normalizedTrust: 10.0, // (3/3)*10
+      normalizedIntelligence: 10.0, // (3/3)*10
       voterBias: -1.5,
       voterWeight: 0.8,
     }),
