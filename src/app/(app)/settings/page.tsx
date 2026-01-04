@@ -61,9 +61,9 @@ function Toggle({
     >
       <span
         className={`
-          absolute top-0.5 w-5 h-5 rounded-full bg-neutral-950 dark:bg-white
-          transition-transform shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]
-          ${enabled ? 'translate-x-6' : 'translate-x-0.5'}
+          absolute top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-neutral-950 dark:bg-white
+          transition-all shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]
+          ${enabled ? 'left-[calc(100%-24px)]' : 'left-1'}
         `}
       />
     </button>

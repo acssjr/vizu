@@ -193,7 +193,7 @@ Um novo usuário deseja começar a usar a plataforma. Ele se cadastra com email 
 1. **Idade mínima**: Plataforma restrita a maiores de 18 anos (padrão para apps de namoro/imagem pessoal)
 2. **Idioma inicial**: Interface em português brasileiro, com suporte a inglês como segundo idioma planejado
 3. **Moderação**: Rejeição automática de conteúdo NSFW é suficiente para lançamento; moderação humana pode ser adicionada posteriormente
-4. **Votos mínimos**: Uma foto precisa de pelo menos 20 votos para exibir resultados confiáveis
+4. **Votos mínimos**: Uma foto precisa de pelo menos 10 votos para exibir resultados confiáveis
 5. **Karma inicial**: Novos usuários recebem Karma suficiente para submeter 1 foto gratuita e avaliar 10 fotos
 6. **Regeneração de Karma**: Taxa base de 1 Karma por hora, até máximo de 50
 7. **Autenticação**: Login social (Google) é suficiente; Apple Sign-In será adicionado para iOS

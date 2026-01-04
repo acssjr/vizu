@@ -19,12 +19,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'picsum.photos',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'randomuser.me',
+        hostname: 'images.pexels.com',
         pathname: '/**',
       },
     ],

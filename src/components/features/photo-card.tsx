@@ -125,7 +125,7 @@ export function PhotoCard({
           </div>
         ) : status === 'APPROVED' ? (
           <div className="mt-3 text-center text-sm text-gray-500">
-            {20 - voteCount} votos restantes para resultados
+            {10 - voteCount} votos restantes para resultados
           </div>
         ) : null}
       </div>

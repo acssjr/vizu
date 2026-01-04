@@ -177,23 +177,29 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Credits Card */}
-        <div className="bg-theme-card dark:bg-neutral-900 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-          <div className="flex items-center gap-2 text-theme-muted text-xs font-black uppercase mb-2">
-            <Zap className="w-4 h-4 text-primary-500" />
-            CRÉDITOS
-          </div>
-          <div className="text-3xl md:text-4xl font-black text-theme-primary">
-            {stats?.credits ?? 0}
-          </div>
-          <Link
-            href="/credits"
-            className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-primary-500 hover:text-primary-600 uppercase transition-colors"
-          >
-            COMPRAR
-            <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
+        {/* Premium Tests Card */}
+        {(() => {
+          const premiumTests = Math.floor((stats?.credits ?? 0) / 5);
+          const hasPremium = premiumTests > 0;
+          return (
+            <div className={`${hasPremium ? 'bg-primary-500' : 'bg-theme-card dark:bg-neutral-900'} rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all`}>
+              <div className={`flex items-center gap-2 ${hasPremium ? 'text-neutral-950/70' : 'text-theme-muted'} text-xs font-black uppercase mb-2`}>
+                <Zap className={`w-4 h-4 ${hasPremium ? 'text-neutral-950' : 'text-primary-500'}`} />
+                TESTES PREMIUM
+              </div>
+              <div className={`text-3xl md:text-4xl font-black ${hasPremium ? 'text-neutral-950' : 'text-theme-primary'}`}>
+                {hasPremium ? premiumTests : 'GRÁTIS'}
+              </div>
+              <Link
+                href="/credits"
+                className={`mt-1 inline-flex items-center gap-1 text-xs font-bold ${hasPremium ? 'text-neutral-950/70 hover:text-neutral-950' : 'text-primary-500 hover:text-primary-600'} uppercase transition-colors`}
+              >
+                {hasPremium ? 'COMPRAR MAIS' : 'EXPERIMENTAR'}
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          );
+        })()}
 
         {/* Photos Card */}
         <div className="bg-secondary-500 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
@@ -209,23 +215,31 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Votes Card */}
-        <div className="bg-theme-card dark:bg-neutral-900 rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all">
-          <div className="flex items-center gap-2 text-theme-muted text-xs font-black uppercase mb-2">
-            <Star className="w-4 h-4 text-emerald-500" />
-            VOTOS
-          </div>
-          <div className="text-3xl md:text-4xl font-black text-theme-primary">
-            {stats?.voteCount ?? 0}
-          </div>
-          <Link
-            href="/vote"
-            className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-emerald-500 hover:text-emerald-600 uppercase transition-colors"
-          >
-            VOTAR
-            <ArrowRight className="w-3 h-3" />
-          </Link>
-        </div>
+        {/* Active Tests Card */}
+        {(() => {
+          const activeTests = photos.filter(
+            (p) => p.status === 'APPROVED' && p.voteCount < 10
+          ).length;
+          const hasActiveTests = activeTests > 0;
+          return (
+            <div className={`${hasActiveTests ? 'bg-emerald-500' : 'bg-theme-card dark:bg-neutral-900'} rounded-2xl p-4 md:p-5 border-4 border-neutral-950 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.15)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.15)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all`}>
+              <div className={`flex items-center gap-2 ${hasActiveTests ? 'text-neutral-950/70' : 'text-theme-muted'} text-xs font-black uppercase mb-2`}>
+                <Clock className={`w-4 h-4 ${hasActiveTests ? 'text-neutral-950' : 'text-emerald-500'}`} />
+                TESTES ATIVOS
+              </div>
+              <div className={`text-3xl md:text-4xl font-black ${hasActiveTests ? 'text-neutral-950' : 'text-theme-primary'}`}>
+                {activeTests}
+              </div>
+              <Link
+                href="/results"
+                className={`mt-1 inline-flex items-center gap-1 text-xs font-bold ${hasActiveTests ? 'text-neutral-950/70 hover:text-neutral-950' : 'text-emerald-500 hover:text-emerald-600'} uppercase transition-colors`}
+              >
+                VER STATUS
+                <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          );
+        })()}
       </section>
 
       {/* Quick Actions - Bold Geometric */}

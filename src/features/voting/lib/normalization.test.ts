@@ -233,10 +233,10 @@ describe('Vote Normalization', () => {
       expect(calculateConfidence(5)).toBeLessThan(0.3)
     })
 
-    it('should return medium confidence around 20 votes', () => {
-      const conf20 = calculateConfidence(20)
-      expect(conf20).toBeGreaterThan(0.6)
-      expect(conf20).toBeLessThan(0.7)
+    it('should return medium confidence around 10 votes', () => {
+      const conf10 = calculateConfidence(10)
+      expect(conf10).toBeGreaterThan(0.35)
+      expect(conf10).toBeLessThan(0.45)
     })
 
     it('should return high confidence for many votes', () => {
