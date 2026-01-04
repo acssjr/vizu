@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -14,7 +15,6 @@ const navigation = [
   { name: 'Perfil', href: '/settings', icon: User },
 ];
 
-
 /**
  * Renders the mobile bottom navigation bar with two side navigation groups and a central "Votar" FAB.
  *
@@ -22,7 +22,7 @@ const navigation = [
  *
  * @returns The JSX element for the fixed bottom navigation containing left and right navigation items and the centered FAB.
  */
-export function AppMobileNav() {
+export const AppMobileNav = React.memo(function AppMobileNav() {
   const pathname = usePathname();
   const router = useRouter();
   const isVotarActive = pathname === '/vote' || pathname.startsWith('/vote/');
@@ -159,4 +159,4 @@ export function AppMobileNav() {
       </div>
     </nav>
   );
-}
+});

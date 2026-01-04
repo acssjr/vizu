@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -33,7 +34,7 @@ const navigation = [
  *
  * @returns The header element containing navigation, theme/profile controls, and decorative elements.
  */
-export function AppHeader() {
+export const AppHeader = React.memo(function AppHeader() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const { theme, toggleTheme, mounted } = useTheme();
@@ -159,4 +160,4 @@ export function AppHeader() {
       <div className="absolute -bottom-3 right-16 w-6 h-6 bg-accent-500 rounded-full hidden md:block" />
     </header>
   );
-}
+});

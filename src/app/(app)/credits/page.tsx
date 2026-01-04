@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
 import { useToastActions } from '@/stores/ui-store';
+import { VizuInlineLoader, VizuVLogo } from '@/components/ui/vizu-v-logo';
 import { cn } from '@/lib/utils';
 import {
   Zap,
@@ -204,15 +205,7 @@ export default function CreditsPage() {
   };
 
   if (authLoading || isLoading) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="relative">
-          <div className="w-16 h-16 bg-primary-500 rounded-2xl animate-pulse shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-secondary-500 rounded-full animate-bounce" />
-          <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-accent-500 rotate-45" />
-        </div>
-      </div>
-    );
+    return <VizuInlineLoader />;
   }
 
   return (
@@ -337,7 +330,7 @@ export default function CreditsPage() {
 
                 {checkingPayment && (
                   <div className="flex items-center justify-center gap-2 text-sm font-bold text-theme-muted">
-                    <div className="w-4 h-4 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
+                    <VizuVLogo size="sm" className="text-primary-500" />
                     Aguardando confirmação...
                   </div>
                 )}
@@ -418,7 +411,7 @@ export default function CreditsPage() {
                   >
                     {isProcessing && selectedPackage === pkg.id ? (
                       <>
-                        <div className="w-5 h-5 border-2 border-current/30 border-t-current rounded-full animate-spin" />
+                        <VizuVLogo size="sm" />
                         PROCESSANDO...
                       </>
                     ) : (

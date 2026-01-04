@@ -73,7 +73,7 @@ def load_api_key() -> str:
     for path in [Path.home() / ".claude", Path.cwd(), *Path.cwd().parents]:
         env_file = path / ".env"
         if env_file.exists():
-            with open(env_file) as f:
+            with open(env_file, encoding="utf-8", errors="ignore") as f:
                 for line in f:
                     if line.startswith("BRAINTRUST_API_KEY="):
                         key = line.strip().split("=", 1)[1].strip('"\'')

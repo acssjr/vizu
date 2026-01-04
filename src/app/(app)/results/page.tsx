@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { VizuInlineLoader } from '@/components/ui/vizu-v-logo';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/hooks/use-auth';
@@ -250,15 +251,7 @@ export default function ResultsPage() {
   const photosPending = photos.filter((p) => p.status === 'PENDING_MODERATION');
 
   if (authLoading || isLoading) {
-    return (
-      <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="relative">
-          <div className="w-16 h-16 bg-primary-500 rounded-2xl animate-pulse shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)]" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-secondary-500 rounded-full animate-bounce" />
-          <div className="absolute -bottom-1 -left-1 w-4 h-4 bg-accent-500 rotate-45" />
-        </div>
-      </div>
-    );
+    return <VizuInlineLoader />;
   }
 
   return (
