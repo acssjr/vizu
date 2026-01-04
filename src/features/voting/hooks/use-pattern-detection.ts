@@ -3,7 +3,6 @@
 import { useState, useCallback, useRef } from 'react';
 import {
   detectLowRigorPattern,
-  shouldShowWarning,
   calculateKarmaWithPenalty,
   type RecentVote,
 } from '../lib/pattern-detection';
@@ -29,7 +28,7 @@ interface UsePatternDetectionReturn {
  * e gerenciar o sistema de avisos e penalidades
  */
 export function usePatternDetection(): UsePatternDetectionReturn {
-  const [recentVotes, setRecentVotes] = useState<RecentVote[]>([]);
+  const [, setRecentVotes] = useState<RecentVote[]>([]);
   const [warningShownThisSession, setWarningShownThisSession] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [isPenalized, setIsPenalized] = useState(false);
