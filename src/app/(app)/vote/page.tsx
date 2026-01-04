@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useVoting, CATEGORY_TRAITS, FEELING_TAGS, SUGGESTION_TAGS } from '@/features/voting';
 import type { VoteData, FeedbackData, Photo } from '@/features/voting';
+import { usePatternDetection } from '@/features/voting/hooks/use-pattern-detection';
+import { VotingPatternWarning } from '@/components/features/voting-pattern-warning';
 import { useKarma } from '@/hooks/use-karma';
 import { cn } from '@/lib/utils';
 import { LoadingScreen } from '@/components/ui/loading-screen';
@@ -671,6 +673,7 @@ interface VotingFormProps {
   karmaProgress: number;
   karma: number;
   isLoading?: boolean;
+  isPenalized?: boolean;
 }
 
 function VotingForm({ photo, nextPhoto, onSubmit, onSkip, karmaProgress, karma, isLoading = false }: VotingFormProps) {
@@ -805,9 +808,9 @@ function VotingForm({ photo, nextPhoto, onSubmit, onSkip, karmaProgress, karma, 
 
         {/* Stacked Photos Container */}
         <div className="relative flex-1 min-h-0 bg-neutral-950 overflow-hidden">
-          {/* Next photo behind - already loaded */}
+          {/* Next photo behind - already loaded (hidden until transition) */}
           {nextPhoto && (
-            <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 z-0 bg-neutral-950 opacity-0">
               <Image
                 src={nextPhoto.imageUrl}
                 alt="Próxima foto"
@@ -980,18 +983,37 @@ export default function VotePage() {
   const { currentPhoto, nextPhoto, isFetching, isLoading, noMorePhotos, submitVote, skipPhoto } = useVoting();
   const { karma } = useKarma();
   const [sessionKarmaProgress, setSessionKarmaProgress] = useState(0);
+  const {
+    trackVote,
+    showWarning,
+    acknowledgeWarning,
+    getKarmaGain,
+    isPenalized,
+  } = usePatternDetection();
 
   const handleSubmit = useCallback((
     photoId: string,
     data: { ratings: VoteData; feedback?: FeedbackData; metadata: { votingDurationMs: number; deviceType: 'mobile' | 'desktop' } }
   ) => {
+    // Track vote for pattern detection
+    trackVote({
+      attraction: data.ratings.attraction,
+      trust: data.ratings.trust,
+      intelligence: data.ratings.intelligence,
+    });
+
     submitVote(photoId, {
       ...data.ratings,
       feedback: data.feedback,
       metadata: data.metadata,
     });
-    setSessionKarmaProgress((prev) => Math.min(prev + 1, MAX_DAILY_KARMA));
-  }, [submitVote]);
+
+    // Only increment karma progress if not penalized
+    const karmaGain = getKarmaGain();
+    if (karmaGain > 0) {
+      setSessionKarmaProgress((prev) => Math.min(prev + 1, MAX_DAILY_KARMA));
+    }
+  }, [submitVote, trackVote, getKarmaGain]);
 
   const handleSkip = useCallback(() => {
     skipPhoto();
@@ -1031,15 +1053,19 @@ export default function VotePage() {
 
   // Use key prop to reset VotingForm state when photo changes
   return (
-    <VotingForm
-      key={currentPhoto.id}
-      photo={currentPhoto}
-      nextPhoto={nextPhoto}
-      onSubmit={handleSubmit}
-      onSkip={handleSkip}
-      karmaProgress={sessionKarmaProgress}
-      karma={karma}
-      isLoading={isLoading || isFetching}
-    />
+    <>
+      <VotingForm
+        key={currentPhoto.id}
+        photo={currentPhoto}
+        nextPhoto={nextPhoto}
+        onSubmit={handleSubmit}
+        onSkip={handleSkip}
+        karmaProgress={sessionKarmaProgress}
+        karma={karma}
+        isLoading={isLoading || isFetching}
+        isPenalized={isPenalized}
+      />
+      <VotingPatternWarning isOpen={showWarning} onClose={acknowledgeWarning} />
+    </>
   );
 }
