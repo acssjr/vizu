@@ -95,7 +95,7 @@ export function AppMobileNav() {
                   'active:translate-x-[3px] active:translate-y-[3px]',
                   // Keyboard focus indicator - high contrast for accessibility
                   'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2',
-                  'focus-visible:ring-yellow-400 focus-visible:ring-offset-neutral-950',
+                  'focus-visible:ring-yellow-400 focus-visible:ring-offset-neutral-950 dark:focus-visible:ring-offset-neutral-800',
                   // Scale + glow animation instead of white ring
                   isVotarActive && 'scale-110 shadow-[0_0_25px_0px_rgba(219,39,119,0.7),4px_4px_0px_0px_rgba(0,0,0,0.3)]'
                 )}
