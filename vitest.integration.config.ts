@@ -30,11 +30,8 @@ export default defineConfig({
 
     // Pool configuration - use single fork for database tests
     pool: 'forks',
-    poolOptions: {
-      forks: {
-        singleFork: true,
-      },
-    },
+    isolate: false,
+    maxWorkers: 1,
   },
   resolve: {
     alias: {
