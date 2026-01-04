@@ -78,11 +78,17 @@ const categoryConfig = {
   },
 };
 
+/**
+ * Renders an interactive card linking to a photo's results page that displays the photo image, category and status badges, vote count, progress toward the minimum votes, and summary scores when available.
+ *
+ * @param photo - The photo to render. Used fields: `id`, `thumbnailUrl`/`imageUrl`, `category`, `status`, `voteCount`, and optionally `scores` for average and trait percentages.
+ * @returns A JSX element representing the photo result card linking to `/results/{photo.id}`.
+ */
 function PhotoResultCard({ photo }: { photo: Photo }) {
   const status = statusConfig[photo.status];
   const StatusIcon = status.icon;
   const category = categoryConfig[photo.category];
-  const hasResults = photo.voteCount >= 20;
+  const hasResults = photo.voteCount >= 10;
 
   // Calculate average as percentage (scores are 0-3 scale)
   const averageScore = photo.scores
@@ -164,7 +170,7 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
           ) : (
             <div className="flex items-center gap-1 text-theme-muted">
               <Clock className="w-4 h-4" />
-              <span className="text-xs font-black uppercase">{20 - photo.voteCount} FALTAM</span>
+              <span className="text-xs font-black uppercase">{10 - photo.voteCount} FALTAM</span>
             </div>
           )}
         </div>
@@ -175,7 +181,7 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
             <div className="relative h-2 bg-neutral-200 dark:bg-neutral-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-primary-500 rounded-full transition-all"
-                style={{ width: `${(photo.voteCount / 20) * 100}%` }}
+                style={{ width: `${(photo.voteCount / 10) * 100}%` }}
               />
             </div>
           </div>
@@ -205,6 +211,13 @@ function PhotoResultCard({ photo }: { photo: Photo }) {
   );
 }
 
+/**
+ * Render the results dashboard that displays the user's photos grouped into available results, awaiting votes, and pending moderation.
+ *
+ * Fetches photos from the API when a user is authenticated and shows a loading state while authentication or data is in progress. Photos with at least 10 votes and an `APPROVED` status are shown under "RESULTADOS DISPONÍVEIS"; approved photos with fewer than 10 votes appear under "AGUARDANDO VOTOS"; photos with `PENDING_MODERATION` appear under "EM ANÁLISE". When there are no photos, an empty state with an upload CTA is rendered. A tip section explains the 10-vote threshold and encourages voting.
+ *
+ * @returns The page's React element containing the header, categorized photo grids (or empty state), and informational tip.
+ */
 export default function ResultsPage() {
   const { user, isLoading: authLoading } = useAuth();
   const [photos, setPhotos] = useState<Photo[]>([]);
@@ -232,8 +245,8 @@ export default function ResultsPage() {
     }
   }, [user]);
 
-  const photosWithResults = photos.filter((p) => p.voteCount >= 20 && p.status === 'APPROVED');
-  const photosWaiting = photos.filter((p) => p.voteCount < 20 && p.status === 'APPROVED');
+  const photosWithResults = photos.filter((p) => p.voteCount >= 10 && p.status === 'APPROVED');
+  const photosWaiting = photos.filter((p) => p.voteCount < 10 && p.status === 'APPROVED');
   const photosPending = photos.filter((p) => p.status === 'PENDING_MODERATION');
 
   if (authLoading || isLoading) {

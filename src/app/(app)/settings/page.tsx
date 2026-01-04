@@ -4,15 +4,13 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/hooks/use-auth';
-import { useTheme } from '@/components/providers/theme-provider';
+
 import { useToastActions } from '@/stores/ui-store';
 import {
   User,
   Mail,
   Calendar,
   Users,
-  Sun,
-  Moon,
   Globe,
   Bell,
   Shield,
@@ -26,6 +24,7 @@ import {
   Camera,
   Check,
   ChevronRight,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface UserProfile {
@@ -131,9 +130,18 @@ function SettingRow({
   );
 }
 
+/**
+ * Renders the account settings page for managing user profile, preferences, privacy, and session actions.
+ *
+ * The page fetches and displays the current user's profile, allows updating name, gender, and birth date,
+ * toggling simple preference flags, initiating a data download (placeholder), signing out, and initiating account deletion.
+ * UI includes confirmation modals for logout and account deletion and shows toast notifications for action results.
+ *
+ * @returns The rendered settings page element.
+ */
 export default function SettingsPage() {
   const { user, isLoading: authLoading, logout } = useAuth();
-  const { theme, toggleTheme, mounted } = useTheme();
+  
   const { addToast } = useToastActions();
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -207,7 +215,7 @@ export default function SettingsPage() {
   const handleLogout = async () => {
     try {
       await logout();
-      addToast({ type: 'success', message: 'Ate logo!' });
+      addToast({ type: 'success', message: 'Até logo!' });
     } catch {
       addToast({ type: 'error', message: 'Erro ao sair' });
     }
@@ -397,7 +405,7 @@ export default function SettingsPage() {
             ) : (
               <>
                 <Check className="w-5 h-5" />
-                SALVAR ALTERACOES
+                SALVAR ALTERAÇÕES
               </>
             )}
           </button>
@@ -405,25 +413,12 @@ export default function SettingsPage() {
       </SettingsCard>
 
       {/* Preferences Section */}
-      <SettingsCard title="Preferencias" icon={Globe} iconBg="bg-amber-500">
-        {/* Theme Toggle */}
-        <SettingRow
-          icon={mounted && theme === 'dark' ? Moon : Sun}
-          label="Tema"
-          description={mounted ? (theme === 'dark' ? 'Modo escuro ativado' : 'Modo claro ativado') : 'Carregando...'}
-        >
-          <Toggle
-            enabled={mounted ? theme === 'dark' : false}
-            onChange={() => toggleTheme()}
-            disabled={!mounted}
-          />
-        </SettingRow>
-
+      <SettingsCard title="Preferências" icon={Globe} iconBg="bg-amber-500">
         {/* Language */}
         <SettingRow
           icon={Globe}
           label="Idioma"
-          description="Portugues (Brasil)"
+          description="Português (Brasil)"
         >
           <span className="px-3 py-1.5 bg-neutral-200 dark:bg-neutral-700 rounded-lg text-xs font-black text-theme-muted uppercase">
             PT-BR
@@ -433,7 +428,7 @@ export default function SettingsPage() {
         {/* Notifications */}
         <SettingRow
           icon={Bell}
-          label="Notificacoes"
+          label="Notificações"
           description="Receber email quando foto tiver votos suficientes"
         >
           <Toggle
@@ -474,37 +469,10 @@ export default function SettingsPage() {
           <ChevronRight className="w-5 h-5 text-neutral-400" />
         </button>
 
-        {/* Delete Account */}
-        <button
-          onClick={() => setShowDeleteConfirm(true)}
-          className="w-full flex items-center justify-between p-4 bg-red-50 dark:bg-red-950/30 rounded-xl border-4 border-red-500 dark:border-red-700 shadow-[3px_3px_0px_0px_rgba(239,68,68,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(239,68,68,0.3)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-red-500 rounded-xl flex items-center justify-center">
-              <Trash2 className="w-5 h-5 text-white" />
-            </div>
-            <div className="text-left">
-              <p className="font-black text-red-600 dark:text-red-400 text-sm uppercase">Excluir Conta</p>
-              <p className="text-xs text-red-500/70">Acao irreversivel</p>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 text-red-400" />
-        </button>
       </SettingsCard>
 
       {/* About Section */}
       <SettingsCard title="Sobre" icon={Info} iconBg="bg-purple-500">
-        {/* Version */}
-        <SettingRow
-          icon={Info}
-          label="Versão"
-          description="Vizu App"
-        >
-          <span className="px-3 py-1.5 bg-primary-500 rounded-lg text-xs font-black text-neutral-950 uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)]">
-            v1.0.0
-          </span>
-        </SettingRow>
-
         {/* Links */}
         <Link
           href="/terms"
@@ -527,7 +495,7 @@ export default function SettingsPage() {
             <div className="w-8 h-8 bg-neutral-200 dark:bg-neutral-700 rounded-lg flex items-center justify-center">
               <Lock className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
             </div>
-            <p className="font-bold text-theme-primary text-sm uppercase">Politica de Privacidade</p>
+            <p className="font-bold text-theme-primary text-sm uppercase">Política de Privacidade</p>
           </div>
           <ChevronRight className="w-5 h-5 text-neutral-400" />
         </Link>
@@ -550,15 +518,48 @@ export default function SettingsPage() {
       </SettingsCard>
 
       {/* Session Section */}
-      <SettingsCard title="Sessão" icon={LogOut} iconBg="bg-red-500">
+      <SettingsCard title="Sessão" icon={LogOut} iconBg="bg-neutral-500">
         <button
           onClick={() => setShowLogoutConfirm(true)}
-          className="w-full flex items-center justify-center gap-3 p-4 bg-red-500 text-white rounded-xl border-4 border-neutral-950 dark:border-red-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+          className="w-full flex items-center justify-center gap-3 p-4 bg-neutral-200 dark:bg-neutral-700 text-theme-primary rounded-xl border-4 border-neutral-950 dark:border-neutral-600 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
         >
           <LogOut className="w-5 h-5" />
           <span className="font-black uppercase">Sair da Conta</span>
         </button>
       </SettingsCard>
+
+
+      {/* DANGER ZONE - Subtle until hover */}
+      <div className="bg-theme-card dark:bg-neutral-900 rounded-2xl border-4 border-neutral-300 dark:border-neutral-700 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)] overflow-hidden">
+        <div className="flex items-center gap-3 p-4 md:p-5 border-b-4 border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800">
+          <div className="w-10 h-10 bg-neutral-300 dark:bg-neutral-600 rounded-xl flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,0.1)]">
+            <AlertTriangle className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
+          </div>
+          <h2 className="text-lg font-black text-neutral-500 dark:text-neutral-400 uppercase tracking-tight">
+            Zona de Perigo
+          </h2>
+        </div>
+        <div className="p-4 md:p-5 space-y-4">
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+            Ações nesta seção são permanentes e não podem ser desfeitas.
+          </p>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="w-full flex items-center justify-between p-4 bg-white dark:bg-neutral-800 rounded-xl border-2 border-neutral-200 dark:border-neutral-700 shadow-[3px_3px_0px_0px_rgba(0,0,0,0.08)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.08)] hover:translate-x-[1px] hover:translate-y-[1px] hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-neutral-200 dark:bg-neutral-700 group-hover:bg-red-500 rounded-xl flex items-center justify-center transition-colors">
+                <Trash2 className="w-5 h-5 text-neutral-500 dark:text-neutral-400 group-hover:text-white transition-colors" />
+              </div>
+              <div className="text-left">
+                <p className="font-bold text-neutral-600 dark:text-neutral-300 group-hover:text-red-600 dark:group-hover:text-red-400 text-sm transition-colors">Excluir Minha Conta</p>
+                <p className="text-xs text-neutral-400 dark:text-neutral-500">Todos os dados serão permanentemente removidos</p>
+              </div>
+            </div>
+            <ChevronRight className="w-5 h-5 text-neutral-400 group-hover:text-red-400 transition-colors" />
+          </button>
+        </div>
+      </div>
 
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (

@@ -23,10 +23,21 @@ function VizuIcon({ className }: { className?: string }) {
 
 type Step = 'initial' | 'password' | 'create-password';
 
+/**
+ * Render the login page UI that handles sign-in, account creation, and related flows.
+ *
+ * Renders a multi-step authentication card with Google sign-in, email-based
+ * continuation, existing-user password entry, new-account creation (including
+ * optional display name), development-only quick login, error display, loading
+ * states, and trust/legal links.
+ *
+ * @returns The login page as a React element.
+ */
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState<Step>('initial');
   const [error, setError] = useState('');
@@ -120,7 +131,7 @@ export default function LoginPage() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, name: name || undefined }),
       });
 
       if (!res.ok) {
@@ -149,6 +160,7 @@ export default function LoginPage() {
   const goBack = () => {
     setStep('initial');
     setPassword('');
+    setName('');
     setError('');
   };
 
@@ -345,6 +357,24 @@ export default function LoginPage() {
             {/* Step: Create Password (new user) */}
             {step === 'create-password' && (
               <form onSubmit={handleCreateAccount}>
+                {/* Name field */}
+                <div className="mb-4">
+                  <label htmlFor="name" className="block text-xs font-black text-white/70 mb-2 uppercase">
+                    Seu nome
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Como quer ser chamado?"
+                    autoFocus
+                    autoComplete="name"
+                    className="w-full bg-white/10 border-2 border-white/20 rounded-xl py-3.5 px-4 text-white placeholder:text-white/40 focus:outline-none focus:border-primary-500 focus:bg-white/15 transition-all font-bold"
+                  />
+                </div>
+
+                {/* Password field */}
                 <div className="mb-5">
                   <label htmlFor="new-password" className="block text-xs font-black text-white/70 mb-2 uppercase">
                     Crie uma senha
@@ -358,7 +388,6 @@ export default function LoginPage() {
                       placeholder="Mínimo 8 caracteres"
                       required
                       minLength={8}
-                      autoFocus
                       autoComplete="new-password"
                       className="w-full bg-white/10 border-2 border-white/20 rounded-xl py-3.5 px-4 pr-12 text-white placeholder:text-white/40 focus:outline-none focus:border-primary-500 focus:bg-white/15 transition-all font-bold"
                     />
@@ -370,7 +399,6 @@ export default function LoginPage() {
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
-                  <p className="text-xs text-white/40 mt-2 font-bold">Use letras, números e símbolos</p>
                 </div>
 
                 <button

@@ -49,6 +49,13 @@ const categories = [
 const KARMA_COST_FREE = 10;
 const CREDITS_COST_PAID = 5;
 
+/**
+ * Render the upload page UI for submitting a photo, choosing a category, selecting a test type (free or paid), and optionally specifying audience filters.
+ *
+ * The component manages file selection and preview, fetches the user's karma and credits, enforces submission eligibility (karma for free tests, credits for paid tests), and invokes the photo upload flow which redirects to the dashboard on success.
+ *
+ * @returns The React element that renders the photo upload interface.
+ */
 export default function UploadPage() {
   const router = useRouter();
   const { user, isLoading: authLoading } = useAuth();
@@ -369,7 +376,7 @@ export default function UploadPage() {
             {/* Premium Filters */}
             {testType === 'PAID' && (
               <div className="mt-6 p-5 rounded-2xl border-4 border-emerald-500/30 bg-emerald-500/5">
-                <h4 className="font-black text-theme-primary uppercase mb-4">FILTROS DE AUDIENCIA</h4>
+                <h4 className="font-black text-theme-primary uppercase mb-4">FILTROS DE AUDIÊNCIA</h4>
 
                 <div className="space-y-4">
                   <div>

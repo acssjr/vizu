@@ -3,38 +3,32 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Star, BarChart3, User } from 'lucide-react';
+import { LayoutDashboard, Star, BarChart3, User, Plus } from 'lucide-react';
 
-// Navigation items (4 instead of 5 - Upload moves to FAB)
+// Navigation items (4 items - VOTAR moves to FAB as highlighted action)
 const navigation = [
   { name: 'Home', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Votar', href: '/vote', icon: Star },
-  // FAB goes here in the middle
+  { name: 'Upload', href: '/upload', icon: Plus },
+  // FAB (VOTAR) goes here in the middle
   { name: 'Stats', href: '/results', icon: BarChart3 },
   { name: 'Perfil', href: '/settings', icon: User },
 ];
 
-// V Icon Component - using actual VIZU logo V
-function VizuVIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 1000 1000"
-      fill="currentColor"
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M795.41,229.47c23.21,6.25,36.12,26.37,33.1,50.03-3.07,24.08-10.41,46.88-16.78,70.61l-29.67,110.45-51.63,197.6c-8.03,30.75-13.77,59.5-26.71,88.59-15.37,34.53-45.82,63.73-84.82,68.36l-186,22.07c-42.12,5-84.36,7.16-112.17-29.83-10.6-14.11-20.49-29.61-24.77-47.64l-69.35-292.41-13.85-60.77-39.53-167.69c-3.59-15.23-4.95-30.37-4.34-45.68.91-22.74,19.66-36.66,42.31-33.77l116.3,14.84c43.39,5.53,88.24,15.64,108.48,59.74,10.6,23.09,16.23,47.39,19.42,72.73l14.27,113.35c6.57,52.15,12.48,102.76,24.03,153.95.86,3.83,5.22,8.01,7.98,7.97s7.85-4.19,8.58-7.49c5.89-26.88,9.23-51.84,12.95-79.33l23.79-175.78c4.95-36.6,5.11-92.78,53.47-104.15,13.14-3.09,27.57-4.29,41.11-3.05l108,9.85c15.37,1.4,30.18,3.26,45.81,7.47Z" />
-    </svg>
-  );
-}
 
+/**
+ * Renders the mobile bottom navigation bar with two side navigation groups and a central "Votar" FAB.
+ *
+ * The central FAB navigates to `/vote` when pressed and visually indicates activity for `/vote` routes.
+ *
+ * @returns The JSX element for the fixed bottom navigation containing left and right navigation items and the centered FAB.
+ */
 export function AppMobileNav() {
   const pathname = usePathname();
   const router = useRouter();
-  const isUploadActive = pathname === '/upload' || pathname.startsWith('/upload/');
+  const isVotarActive = pathname === '/vote' || pathname.startsWith('/vote/');
 
   const handleFabClick = () => {
-    router.push('/upload');
+    router.push('/vote');
   };
 
   // Split navigation into left and right sides
@@ -86,12 +80,12 @@ export function AppMobileNav() {
               );
             })}
 
-            {/* Central FAB Button - Upload */}
+            {/* Central FAB Button - VOTAR (highlighted action) */}
             <div className="relative -mt-8">
               <button
                 onClick={handleFabClick}
                 className={cn(
-                  'relative flex items-center justify-center w-16 h-16 rounded-2xl transition-all',
+                  'relative flex items-center justify-center w-16 h-16 rounded-2xl transition-all duration-300',
                   'bg-gradient-to-br from-primary-500 via-emerald-500 to-teal-500',
                   'border-4 border-neutral-950 dark:border-neutral-800',
                   'shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)]',
@@ -99,26 +93,27 @@ export function AppMobileNav() {
                   'hover:translate-x-[2px] hover:translate-y-[2px]',
                   'active:shadow-[1px_1px_0px_0px_rgba(0,0,0,0.3)]',
                   'active:translate-x-[3px] active:translate-y-[3px]',
-                  isUploadActive && 'ring-2 ring-white ring-offset-2 ring-offset-neutral-950'
+                  // Keyboard focus indicator - high contrast for accessibility
+                  'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2',
+                  'focus-visible:ring-yellow-400 focus-visible:ring-offset-neutral-950 dark:focus-visible:ring-offset-neutral-800',
+                  // Scale + glow animation instead of white ring
+                  isVotarActive && 'scale-110 shadow-[0_0_25px_0px_rgba(219,39,119,0.7),4px_4px_0px_0px_rgba(0,0,0,0.3)]'
                 )}
-                aria-label="Enviar foto"
+                aria-label="Votar em fotos"
               >
                 {/* Inner glow effect */}
                 <div className="absolute inset-0 rounded-xl bg-white/20 opacity-0 hover:opacity-100 transition-opacity" />
 
-                {/* V Icon */}
-                <VizuVIcon className="w-8 h-8 text-neutral-950 relative z-10" />
-
-                {/* Decorative corner accents */}
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-secondary-500 rounded-full border-2 border-neutral-950" />
+                {/* Star Icon for VOTAR */}
+                <Star className="w-8 h-8 text-neutral-950 relative z-10 fill-neutral-950" />
               </button>
 
               {/* Label below FAB */}
               <span className={cn(
                 'absolute -bottom-5 left-1/2 -translate-x-1/2 text-[10px] font-black uppercase tracking-tight whitespace-nowrap',
-                isUploadActive ? 'text-primary-500' : 'text-neutral-500 dark:text-neutral-400'
+                isVotarActive ? 'text-primary-500' : 'text-neutral-500 dark:text-neutral-400'
               )}>
-                Upload
+                Votar
               </span>
             </div>
 

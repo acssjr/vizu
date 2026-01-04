@@ -59,6 +59,14 @@ const benefits = [
   },
 ];
 
+/**
+ * Renders the credits purchase page with package selection, PIX payment flow, user balances, and benefits.
+ *
+ * Displays available credit packages, handles PIX QR code creation and polling for payment confirmation,
+ * provides clipboard copying for PIX payloads, and shows current Karma and credit balances.
+ *
+ * @returns The JSX element for the credits purchase page.
+ */
 export default function CreditsPage() {
   const { user, isLoading: authLoading } = useAuth();
   const { addToast } = useToastActions();
@@ -330,7 +338,7 @@ export default function CreditsPage() {
                 {checkingPayment && (
                   <div className="flex items-center justify-center gap-2 text-sm font-bold text-theme-muted">
                     <div className="w-4 h-4 border-2 border-primary-500/30 border-t-primary-500 rounded-full animate-spin" />
-                    Aguardando confirmacao...
+                    Aguardando confirmação...
                   </div>
                 )}
               </div>
@@ -428,7 +436,7 @@ export default function CreditsPage() {
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
                       <Check className="w-4 h-4 text-emerald-500" />
-                      Filtros de audiencia
+                      Filtros de audiência
                     </li>
                     <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
                       <Check className="w-4 h-4 text-emerald-500" />
