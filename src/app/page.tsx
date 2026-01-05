@@ -94,7 +94,7 @@ const faqItems = [
       '25 votos: Certeza estatística para decisões (±12% de margem)',
       '50 votos: Máxima precisão para otimização completa (±8% de margem)',
     ],
-    footnote: 'Recomendamos 25 votos para a maioria dos casos.',
+    footnote: 'Recomendamos 10 votos para a maioria dos casos.',
   },
   {
     question: 'Por que não comparam duas fotos lado a lado?',
@@ -104,10 +104,6 @@ const faqItems = [
       'O que cada foto comunica (atração, confiança, interesse)',
       'Feedback específico para melhorar',
     ],
-  },
-  {
-    question: 'E se eu não concordar com a nota?',
-    answer: 'A nota não julga você, julga a foto. Pessoas muito atraentes podem ter fotos ruins (ângulo errado, iluminação ruim). A pergunta que respondemos é: «Essa foto específica funciona nos apps?» — não «Você é bonito?».',
   },
   {
     question: 'Quanto tempo leva para receber o resultado?',
@@ -1071,117 +1067,126 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl font-black text-white">
                 Quanto vale descobrir a verdade?
               </h2>
+              <p className="text-neutral-400 max-w-xl mx-auto">
+                Cada voto e uma avaliacao de uma pessoa real. Mais votos = resultado mais preciso.
+              </p>
             </div>
 
-            {/* Pricing Cards - Estilo Mobbin */}
+            {/* Pricing Cards */}
             <div className="grid md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto items-start">
-              {/* Básico */}
+              {/* BASICO */}
               <div className="group bg-neutral-800 rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 transition-all">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-black text-white">Básico</h3>
-                </div>
-                <p className="text-xs text-neutral-400 mb-4">Para testar algumas fotos</p>
+                <h3 className="text-xl font-black text-white mb-2">BASICO</h3>
+                <p className="text-2xl font-black text-white mb-1">20 CREDITOS</p>
 
                 <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-4xl font-black text-white">R$14</span>
-                  <span className="text-xl font-black text-neutral-500">,90</span>
+                  <span className="text-4xl font-black text-primary-500">R$19</span>
+                  <span className="text-xl font-black text-primary-400/60">,90</span>
+                </div>
+
+                <ul className="space-y-2 mb-4">
+                  {['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico'].map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-neutral-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="pt-4 border-t border-white/10 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-primary-500/20 rounded-full text-[10px] font-black text-primary-400 uppercase tracking-wider">
+                      Use como quiser
+                    </span>
+                  </div>
+                  <p className="text-xs font-bold text-neutral-500 uppercase mb-1">Nossa recomendacao</p>
+                  <p className="text-base font-black text-white">2 fotos x 10 votos</p>
                 </div>
 
                 <Link
                   href="/login"
-                  className="block w-full py-3 text-center font-bold text-neutral-950 bg-white rounded-xl hover:bg-neutral-100 transition-all text-sm mb-5"
+                  className="block w-full py-3 text-center font-black text-neutral-950 bg-white rounded-xl hover:bg-neutral-100 transition-all text-sm"
                 >
-                  TESTAR FOTOS
+                  COMPRAR
                 </Link>
-
-                <ul className="space-y-3">
-                  {[
-                    { icon: Camera, text: '3 fotos simultâneas' },
-                    { icon: Users, text: '10 avaliações por foto' },
-                    { icon: Target, text: 'Filtro idade e gênero' },
-                    { icon: Zap, text: 'Fila prioritária' },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm text-neutral-300">
-                      <item.icon className="w-4 h-4 text-neutral-500 flex-shrink-0" />
-                      <span>{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
 
-              {/* Recomendado - Destacado */}
+              {/* POPULAR - Destacado */}
               <div className="group bg-neutral-800 rounded-2xl p-5 md:p-8 border-2 border-primary-500 relative md:scale-105 hover:shadow-[0_0_40px_rgba(244,63,94,0.3)] transition-all duration-300">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg md:text-xl font-black text-primary-500">Pro</h3>
-                  <span className="px-2 py-0.5 bg-primary-500 rounded text-[10px] font-black text-white">
-                    Popular
-                  </span>
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-secondary-500 rounded-full text-xs font-black text-neutral-950 flex items-center gap-1">
+                  <Star className="w-3 h-3" />
+                  MAIS POPULAR
                 </div>
-                <p className="text-xs text-neutral-400 mb-4">Melhor custo-benefício</p>
+                <h3 className="text-xl font-black text-primary-500 mt-2 mb-2">POPULAR</h3>
+                <p className="text-2xl font-black text-white mb-1">50 CREDITOS</p>
 
                 <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-4xl md:text-5xl font-black text-primary-500">R$34</span>
+                  <span className="text-4xl md:text-5xl font-black text-primary-500">R$39</span>
                   <span className="text-xl md:text-2xl font-black text-primary-400/60">,90</span>
                 </div>
 
-                <Link
-                  href="/login"
-                  className="block w-full py-3 md:py-4 text-center font-black text-white bg-primary-500 rounded-xl hover:bg-primary-400 hover:shadow-[0_0_20px_rgba(244,63,94,0.5)] transition-all text-sm md:text-base mb-5"
-                >
-                  COMEÇAR OS TESTES
-                </Link>
-
-                <ul className="space-y-3">
-                  {[
-                    { icon: Camera, text: '5 fotos simultâneas' },
-                    { icon: Users, text: '25 avaliações por foto' },
-                    { icon: Target, text: 'Filtros avançados' },
-                    { icon: Zap, text: 'Alta prioridade' },
-                    { icon: BarChart3, text: 'Comparação de fotos' },
-                    { icon: Eye, text: 'Relatório PDF' },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm text-neutral-300">
-                      <item.icon className="w-4 h-4 text-primary-500 flex-shrink-0" />
-                      <span>{item.text}</span>
+                <ul className="space-y-2 mb-4">
+                  {['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise da equipe'].map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-neutral-300">
+                      <CheckCircle2 className="w-4 h-4 text-primary-500 flex-shrink-0" />
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
+
+                <div className="pt-4 border-t border-white/10 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-primary-500/20 rounded-full text-[10px] font-black text-primary-400 uppercase tracking-wider">
+                      Use como quiser
+                    </span>
+                  </div>
+                  <p className="text-xs font-bold text-neutral-500 uppercase mb-1">Nossa recomendacao</p>
+                  <p className="text-base font-black text-white">5 fotos x 10 votos</p>
+                </div>
+
+                <Link
+                  href="/login"
+                  className="block w-full py-3 md:py-4 text-center font-black text-white bg-primary-500 rounded-xl hover:bg-primary-400 hover:shadow-[0_0_20px_rgba(244,63,94,0.5)] transition-all text-sm md:text-base"
+                >
+                  COMPRAR
+                </Link>
               </div>
 
-              {/* Power */}
+              {/* ELITE */}
               <div className="group bg-neutral-800 rounded-2xl p-5 md:p-6 border border-white/10 hover:border-white/20 transition-all">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-black text-white">Power</h3>
-                </div>
-                <p className="text-xs text-neutral-400 mb-4">Para otimização completa</p>
+                <h3 className="text-xl font-black text-white mb-2">ELITE</h3>
+                <p className="text-2xl font-black text-white mb-1">100 CREDITOS</p>
 
                 <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-4xl font-black text-white">R$69</span>
-                  <span className="text-xl font-black text-neutral-500">,90</span>
+                  <span className="text-4xl font-black text-primary-500">R$79</span>
+                  <span className="text-xl font-black text-primary-400/60">,90</span>
+                </div>
+
+                <ul className="space-y-2 mb-4">
+                  {['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise detalhada da equipe', 'Suporte prioritario'].map((item, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-neutral-300">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="pt-4 border-t border-white/10 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="px-2 py-0.5 bg-primary-500/20 rounded-full text-[10px] font-black text-primary-400 uppercase tracking-wider">
+                      Use como quiser
+                    </span>
+                  </div>
+                  <p className="text-xs font-bold text-neutral-500 uppercase mb-1">Nossa recomendacao</p>
+                  <p className="text-base font-black text-white">10 fotos x 10 votos</p>
                 </div>
 
                 <Link
                   href="/login"
-                  className="block w-full py-3 text-center font-bold text-neutral-950 bg-white rounded-xl hover:bg-neutral-100 transition-all text-sm mb-5"
+                  className="block w-full py-3 text-center font-black text-neutral-950 bg-white rounded-xl hover:bg-neutral-100 transition-all text-sm"
                 >
-                  TESTAR FOTOS
+                  COMPRAR
                 </Link>
-
-                <ul className="space-y-3">
-                  {[
-                    { icon: Camera, text: '8 fotos simultâneas' },
-                    { icon: Users, text: '50 avaliações por foto' },
-                    { icon: Target, text: 'Todos os filtros' },
-                    { icon: Zap, text: 'Prioridade VIP' },
-                    { icon: BarChart3, text: 'Relatórios ilimitados' },
-                    { icon: MessageCircle, text: 'Suporte prioritário' },
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm text-neutral-300">
-                      <item.icon className="w-4 h-4 text-neutral-500 flex-shrink-0" />
-                      <span>{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
 
@@ -1598,6 +1603,7 @@ export default function Home() {
                   {[
                     { label: 'Termos de Uso', href: '/terms' },
                     { label: 'Privacidade', href: '/privacy' },
+                    { label: 'FAQ', href: '/faq' },
                   ].map((item, i) => (
                     <li key={i}>
                       <Link href={item.href} className="text-xs md:text-sm text-neutral-500 hover:text-white transition-colors">
