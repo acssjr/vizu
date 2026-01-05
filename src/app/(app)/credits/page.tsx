@@ -27,7 +27,9 @@ interface CreditPackage {
   credits: number;
   price: number;
   popular?: boolean;
-  discount?: number;
+  features: string[];
+  suggestion: string;
+  examples: string[];
 }
 
 interface PixCharge {
@@ -83,19 +85,40 @@ export default function CreditsPage() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [packagesRes, statsRes] = await Promise.all([
-          fetch('/api/payments/packages'),
-          fetch('/api/user/stats'),
-        ]);
+        const statsRes = await fetch('/api/user/stats');
 
-        if (packagesRes.ok) {
-          const data = await packagesRes.json();
-          setPackages(data.packages || [
-            { id: '1', name: 'STARTER', credits: 10, price: 9.90 },
-            { id: '2', name: 'POPULAR', credits: 25, price: 19.90, popular: true, discount: 20 },
-            { id: '3', name: 'PRO', credits: 50, price: 34.90, discount: 30 },
-          ]);
-        }
+        // Always use hardcoded packages with new pricing structure
+        // API packages are ignored to ensure consistent pricing display
+        setPackages([
+          {
+            id: '1',
+            name: 'BASICO',
+            credits: 20,
+            price: 19.90,
+            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico'],
+            suggestion: '2 fotos x 10 votos',
+            examples: ['1 foto com 20 votos', '4 fotos com 5 votos cada'],
+          },
+          {
+            id: '2',
+            name: 'POPULAR',
+            credits: 50,
+            price: 39.90,
+            popular: true,
+            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise da equipe'],
+            suggestion: '5 fotos x 10 votos',
+            examples: ['2 fotos com 25 votos', '1 foto com 50 votos', '10 fotos com 5 votos'],
+          },
+          {
+            id: '3',
+            name: 'ELITE',
+            credits: 100,
+            price: 79.90,
+            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise detalhada da equipe', 'Suporte prioritario'],
+            suggestion: '10 fotos x 10 votos',
+            examples: ['4 fotos com 25 votos', '2 fotos com 50 votos', '20 fotos com 5 votos'],
+          },
+        ]);
 
         if (statsRes.ok) {
           const data = await statsRes.json();
@@ -105,9 +128,34 @@ export default function CreditsPage() {
         console.error('Failed to fetch data:', error);
         // Fallback packages
         setPackages([
-          { id: '1', name: 'STARTER', credits: 10, price: 9.90 },
-          { id: '2', name: 'POPULAR', credits: 25, price: 19.90, popular: true, discount: 20 },
-          { id: '3', name: 'PRO', credits: 50, price: 34.90, discount: 30 },
+          {
+            id: '1',
+            name: 'BASICO',
+            credits: 20,
+            price: 19.90,
+            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico'],
+            suggestion: '2 fotos x 10 votos',
+            examples: ['1 foto com 20 votos', '4 fotos com 5 votos cada'],
+          },
+          {
+            id: '2',
+            name: 'POPULAR',
+            credits: 50,
+            price: 39.90,
+            popular: true,
+            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise da equipe'],
+            suggestion: '5 fotos x 10 votos',
+            examples: ['2 fotos com 25 votos', '1 foto com 50 votos', '10 fotos com 5 votos'],
+          },
+          {
+            id: '3',
+            name: 'ELITE',
+            credits: 100,
+            price: 79.90,
+            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise detalhada da equipe', 'Suporte prioritario'],
+            suggestion: '10 fotos x 10 votos',
+            examples: ['4 fotos com 25 votos', '2 fotos com 50 votos', '20 fotos com 5 votos'],
+          },
         ]);
       } finally {
         setIsLoading(false);
@@ -350,20 +398,20 @@ export default function CreditsPage() {
             <h2 className="text-xl font-black text-theme-primary uppercase">ESCOLHA UM PACOTE</h2>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3 items-start">
             {packages.map((pkg) => (
               <div
                 key={pkg.id}
                 className={cn(
                   'relative bg-theme-card dark:bg-neutral-900 rounded-2xl border-4 overflow-hidden transition-all',
                   pkg.popular
-                    ? 'border-primary-500 shadow-[6px_6px_0px_0px_rgba(163,230,53,0.4)]'
+                    ? 'border-primary-500 shadow-[6px_6px_0px_0px_rgba(163,230,53,0.4)] md:scale-105'
                     : 'border-neutral-950 dark:border-neutral-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,0.15)]'
                 )}
               >
                 {/* Popular badge */}
                 {pkg.popular && (
-                  <div className="absolute top-0 right-0 px-4 py-1 bg-primary-500 text-neutral-950 font-black text-xs uppercase rounded-bl-xl border-l-4 border-b-4 border-neutral-950">
+                  <div className="absolute top-0 right-0 px-4 py-1 bg-secondary-500 text-neutral-950 font-black text-xs uppercase rounded-bl-xl border-l-4 border-b-4 border-neutral-950">
                     <div className="flex items-center gap-1">
                       <Crown className="w-3 h-3" />
                       POPULAR
@@ -373,29 +421,41 @@ export default function CreditsPage() {
 
                 <div className="p-6 space-y-4">
                   {/* Package name */}
-                  <div>
-                    <h3 className="text-lg font-black text-theme-primary uppercase">{pkg.name}</h3>
-                    {pkg.discount && (
-                      <span className="text-xs font-black text-emerald-500 uppercase">
-                        {pkg.discount}% OFF
-                      </span>
-                    )}
-                  </div>
+                  <h3 className="text-2xl font-black text-theme-primary uppercase">{pkg.name}</h3>
 
                   {/* Credits */}
-                  <div className="flex items-end gap-2">
-                    <span className="text-5xl font-black text-theme-primary">{pkg.credits}</span>
-                    <span className="text-lg font-black text-theme-muted uppercase pb-2">créditos</span>
+                  <div>
+                    <span className="text-4xl font-black text-theme-primary">{pkg.credits} CREDITOS</span>
                   </div>
 
                   {/* Price */}
                   <div>
-                    <span className="text-2xl font-black text-theme-primary">
-                      R$ {pkg.price.toFixed(2).replace('.', ',')}
+                    <span className="text-5xl font-black text-primary-500">
+                      R${pkg.price.toFixed(2).replace('.', ',')}
                     </span>
-                    <span className="text-sm font-bold text-theme-muted ml-2">
-                      (R$ {(pkg.price / pkg.credits).toFixed(2).replace('.', ',')}/crédito)
-                    </span>
+                  </div>
+
+                  {/* Features */}
+                  <ul className="space-y-2">
+                    {(pkg.features || ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico']).map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
+                        <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Usage section - Clean design */}
+                  <div className="pt-4 border-t-2 border-neutral-200 dark:border-neutral-700">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="px-2 py-0.5 bg-primary-500/10 dark:bg-primary-500/20 rounded-full text-[10px] font-black text-primary-500 uppercase tracking-wider">
+                        Use como quiser
+                      </span>
+                    </div>
+                    <p className="text-xs font-bold text-theme-muted uppercase mb-1">Nossa recomendacao</p>
+                    <p className="text-lg font-black text-theme-primary">
+                      {pkg.suggestion || `${Math.floor(pkg.credits / 10)} fotos x 10 votos`}
+                    </p>
                   </div>
 
                   {/* Buy button */}
@@ -422,24 +482,6 @@ export default function CreditsPage() {
                       </>
                     )}
                   </button>
-                </div>
-
-                {/* Features */}
-                <div className="p-4 bg-neutral-100 dark:bg-neutral-800 border-t-4 border-neutral-950 dark:border-neutral-700">
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
-                      <Check className="w-4 h-4 text-emerald-500" />
-                      Filtros de audiência
-                    </li>
-                    <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
-                      <Check className="w-4 h-4 text-emerald-500" />
-                      Sem limite de karma
-                    </li>
-                    <li className="flex items-center gap-2 text-sm font-bold text-theme-secondary">
-                      <Check className="w-4 h-4 text-emerald-500" />
-                      Resultados detalhados
-                    </li>
-                  </ul>
                 </div>
               </div>
             ))}
