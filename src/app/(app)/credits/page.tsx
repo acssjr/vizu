@@ -82,81 +82,80 @@ export default function CreditsPage() {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
+  // Feature flag: set to false to use hardcoded packages instead of API
+  const USE_API_PRICING = true;
+
+  // Default fallback packages with correct Portuguese accents
+  const DEFAULT_PACKAGES: CreditPackage[] = [
+    {
+      id: '1',
+      name: 'BÁSICO',
+      credits: 20,
+      price: 19.90,
+      features: ['Filtros de audiência', 'Resultados detalhados', 'Resumo automático'],
+      suggestion: '2 fotos x 10 votos',
+      examples: ['1 foto com 20 votos', '4 fotos com 5 votos cada'],
+    },
+    {
+      id: '2',
+      name: 'POPULAR',
+      credits: 50,
+      price: 39.90,
+      popular: true,
+      features: ['Filtros de audiência', 'Resultados detalhados', 'Resumo automático', 'Análise da equipe'],
+      suggestion: '5 fotos x 10 votos',
+      examples: ['2 fotos com 25 votos', '1 foto com 50 votos', '10 fotos com 5 votos'],
+    },
+    {
+      id: '3',
+      name: 'ELITE',
+      credits: 100,
+      price: 79.90,
+      features: ['Filtros de audiência', 'Resultados detalhados', 'Resumo automático', 'Análise detalhada da equipe', 'Suporte prioritário'],
+      suggestion: '10 fotos x 10 votos',
+      examples: ['4 fotos com 25 votos', '2 fotos com 50 votos', '20 fotos com 5 votos'],
+    },
+  ];
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const statsRes = await fetch('/api/user/stats');
-
-        // Always use hardcoded packages with new pricing structure
-        // API packages are ignored to ensure consistent pricing display
-        setPackages([
-          {
-            id: '1',
-            name: 'BASICO',
-            credits: 20,
-            price: 19.90,
-            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico'],
-            suggestion: '2 fotos x 10 votos',
-            examples: ['1 foto com 20 votos', '4 fotos com 5 votos cada'],
-          },
-          {
-            id: '2',
-            name: 'POPULAR',
-            credits: 50,
-            price: 39.90,
-            popular: true,
-            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise da equipe'],
-            suggestion: '5 fotos x 10 votos',
-            examples: ['2 fotos com 25 votos', '1 foto com 50 votos', '10 fotos com 5 votos'],
-          },
-          {
-            id: '3',
-            name: 'ELITE',
-            credits: 100,
-            price: 79.90,
-            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise detalhada da equipe', 'Suporte prioritario'],
-            suggestion: '10 fotos x 10 votos',
-            examples: ['4 fotos com 25 votos', '2 fotos com 50 votos', '20 fotos com 5 votos'],
-          },
+        const [packagesRes, statsRes] = await Promise.all([
+          USE_API_PRICING ? fetch('/api/payments/packages') : Promise.resolve(null),
+          fetch('/api/user/stats'),
         ]);
+
+        // Try to use API packages first, fall back to defaults
+        let packagesToUse = DEFAULT_PACKAGES;
+
+        if (USE_API_PRICING && packagesRes) {
+          if (packagesRes.ok) {
+            try {
+              const apiPackages = await packagesRes.json();
+              // Validate API response has required structure
+              if (Array.isArray(apiPackages) && apiPackages.length > 0 &&
+                  apiPackages.every((pkg: CreditPackage) => pkg.id && pkg.name && typeof pkg.credits === 'number' && typeof pkg.price === 'number')) {
+                packagesToUse = apiPackages;
+              } else {
+                console.warn('[Credits] API returned invalid package structure, using fallback');
+              }
+            } catch (parseError) {
+              console.error('[Credits] Failed to parse API packages:', parseError);
+            }
+          } else {
+            console.warn(`[Credits] API packages request failed (${packagesRes.status}), using fallback`);
+          }
+        }
+
+        setPackages(packagesToUse);
 
         if (statsRes.ok) {
           const data = await statsRes.json();
           setUserCredits({ karma: data.karma, credits: data.credits });
         }
       } catch (error) {
-        console.error('Failed to fetch data:', error);
-        // Fallback packages
-        setPackages([
-          {
-            id: '1',
-            name: 'BASICO',
-            credits: 20,
-            price: 19.90,
-            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico'],
-            suggestion: '2 fotos x 10 votos',
-            examples: ['1 foto com 20 votos', '4 fotos com 5 votos cada'],
-          },
-          {
-            id: '2',
-            name: 'POPULAR',
-            credits: 50,
-            price: 39.90,
-            popular: true,
-            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise da equipe'],
-            suggestion: '5 fotos x 10 votos',
-            examples: ['2 fotos com 25 votos', '1 foto com 50 votos', '10 fotos com 5 votos'],
-          },
-          {
-            id: '3',
-            name: 'ELITE',
-            credits: 100,
-            price: 79.90,
-            features: ['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise detalhada da equipe', 'Suporte prioritario'],
-            suggestion: '10 fotos x 10 votos',
-            examples: ['4 fotos com 25 votos', '2 fotos com 50 votos', '20 fotos com 5 votos'],
-          },
-        ]);
+        console.error('[Credits] Failed to fetch data:', error);
+        setPackages(DEFAULT_PACKAGES);
       } finally {
         setIsLoading(false);
       }
