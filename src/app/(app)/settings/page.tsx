@@ -494,7 +494,7 @@ export default function SettingsPage() {
         </Link>
 
         <a
-          href="mailto:suporte@vizu.app"
+          href="mailto:suporte@meuvizu.app"
           className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-800 rounded-xl border-2 border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 transition-colors"
         >
           <div className="flex items-center gap-3">
@@ -503,7 +503,7 @@ export default function SettingsPage() {
             </div>
             <div>
               <p className="font-bold text-theme-primary text-sm uppercase">Suporte</p>
-              <p className="text-xs text-theme-muted">suporte@vizu.app</p>
+              <p className="text-xs text-theme-muted">suporte@meuvizu.app</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 text-neutral-400" />
