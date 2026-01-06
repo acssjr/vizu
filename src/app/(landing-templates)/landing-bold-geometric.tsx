@@ -431,7 +431,7 @@ export default function LandingBoldGeometric() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 md:mb-20">
             <span className="inline-block px-4 py-2 bg-neutral-950 rounded-full text-sm font-bold text-white mb-6">
-              PRECOS ACESSIVEIS
+              PREÇOS ACESSÍVEIS
             </span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight">
               ESCOLHA SEU PLANO

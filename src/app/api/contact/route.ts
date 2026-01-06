@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const CONTACT_EMAIL = 'contato@meuvizu.app';
 
-interface ContactFormData {
-  name: string;
-  email: string;
-  category: string;
-  message: string;
-}
+const ContactFormSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório'),
+  email: z.string().email('E-mail inválido'),
+  category: z.string().min(1, 'Categoria é obrigatória'),
+  message: z.string().min(1, 'Mensagem é obrigatória'),
+});
 
 const categoryLabels: Record<string, string> = {
   technical: 'Problema técnico',
@@ -22,41 +23,33 @@ const categoryLabels: Record<string, string> = {
 
 export async function POST(request: Request) {
   try {
-    const body: ContactFormData = await request.json();
+    const body = await request.json();
 
-    // Validate required fields
-    if (!body.name || !body.email || !body.category || !body.message) {
-      return NextResponse.json(
-        { error: 'Todos os campos são obrigatórios' },
-        { status: 400 }
-      );
+    // Validate using Zod schema
+    const parseResult = ContactFormSchema.safeParse(body);
+    if (!parseResult.success) {
+      const firstError = parseResult.error.errors[0]?.message || 'Dados inválidos';
+      return NextResponse.json({ error: firstError }, { status: 400 });
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json(
-        { error: 'E-mail inválido' },
-        { status: 400 }
-      );
-    }
+    const validatedData = parseResult.data;
 
     // Get category label
-    const categoryLabel = categoryLabels[body.category] || body.category;
+    const categoryLabel = categoryLabels[validatedData.category] || validatedData.category;
 
     // Build email content
-    const emailSubject = `[Vizu Contato] ${categoryLabel} - ${body.name}`;
+    const emailSubject = `[Vizu Contato] ${categoryLabel} - ${validatedData.name}`;
     const emailBody = `
 Nova mensagem de contato do Vizu
 
 ---
-Nome: ${body.name}
-E-mail: ${body.email}
+Nome: ${validatedData.name}
+E-mail: ${validatedData.email}
 Assunto: ${categoryLabel}
 ---
 
 Mensagem:
-${body.message}
+${validatedData.message}
 
 ---
 Enviado em: ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}
@@ -75,7 +68,7 @@ Enviado em: ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo'
     // await resend.emails.send({
     //   from: 'Vizu <noreply@meuvizu.app>',
     //   to: CONTACT_EMAIL,
-    //   replyTo: body.email,
+    //   replyTo: validatedData.email,
     //   subject: emailSubject,
     //   text: emailBody,
     // });

@@ -21,12 +21,12 @@ Paths de usuário podem conter acentos (ex: `C:\Users\José\`). O encoding padr�
 ## Exemplo
 
 ```python
-# ERRADO - falha no Windows com paths acentuados
+# BAD - fails on Windows with accented user paths
 with open(env_file) as f:
     for line in f:
         ...
 
-# CORRETO - encoding UTF-8 explícito
+# GOOD - explicit UTF-8 encoding
 with open(env_file, encoding="utf-8", errors="ignore") as f:
     for line in f:
         ...

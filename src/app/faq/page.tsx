@@ -146,7 +146,7 @@ const faqData: FAQCategory[] = [
       },
       {
         question: 'Como entro em contato com o suporte?',
-        answer: 'Para dúvidas, sugestões ou problemas, envie um e-mail para contato@meuvizu.app. Respondemos em até 48 horas úteis.',
+        answer: 'Para dúvidas, sugestões ou problemas, envie um e-mail para contato@meuvizu.app. Respondemos em até 24 horas úteis.',
       },
     ],
   },
