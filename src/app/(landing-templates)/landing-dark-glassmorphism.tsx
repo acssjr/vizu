@@ -617,8 +617,8 @@ export default function Home() {
               <h4 className="font-semibold mb-4 md:mb-6 text-sm md:text-base">Contato</h4>
               <ul className="space-y-2 md:space-y-3">
                 <li>
-                  <a href="mailto:contato@vizu.com.br" className="text-neutral-500 hover:text-white text-xs md:text-sm transition-colors break-all">
-                    contato@vizu.com.br
+                  <a href="mailto:contato@meuvizu.app" className="text-neutral-500 hover:text-white text-xs md:text-sm transition-colors break-all">
+                    contato@meuvizu.app
                   </a>
                 </li>
               </ul>

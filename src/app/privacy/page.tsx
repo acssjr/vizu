@@ -205,10 +205,10 @@ export default function PrivacyPage() {
             <p>
               Dúvidas sobre privacidade? Nosso Encarregado de Dados (DPO) está disponível em{' '}
               <a
-                href="mailto:privacidade@vizu.app"
+                href="mailto:privacidade@meuvizu.app"
                 className="text-primary-500 hover:text-primary-400 transition-colors"
               >
-                privacidade@vizu.app
+                privacidade@meuvizu.app
               </a>
             </p>
           </section>

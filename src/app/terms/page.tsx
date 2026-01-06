@@ -157,10 +157,10 @@ export default function TermsPage() {
             <p>
               Dúvidas sobre estes termos? Fale conosco em{' '}
               <a
-                href="mailto:contato@vizu.app"
+                href="mailto:contato@meuvizu.app"
                 className="text-primary-500 hover:text-primary-400 transition-colors"
               >
-                contato@vizu.app
+                contato@meuvizu.app
               </a>
             </p>
           </section>

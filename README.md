@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://vizu.com.br">🚀 Acessar Plataforma</a>
+  <a href="https://meuvizu.app">🚀 Acessar Plataforma</a>
 </p>
 
 <p align="center">
@@ -52,9 +52,9 @@ Enquanto você tenta adivinhar qual foto usar no Tinder, outras pessoas estão r
 
 ## Acesse
 
-**Site:** [vizu.com.br](https://vizu.com.br)
+**Site:** [meuvizu.app](https://meuvizu.app)
 
-**Contato:** contato@vizu.com.br
+**Contato:** contato@meuvizu.app
 
 ---
 
@@ -70,7 +70,7 @@ Este software não é open-source. O código está hospedado publicamente apenas
 - Usar o código para criar produtos derivados
 - Fazer fork deste repositório para qualquer finalidade
 
-Para licenciamento comercial ou parcerias, entre em contato: contato@vizu.com.br
+Para licenciamento comercial ou parcerias, entre em contato: contato@meuvizu.app
 
 ---
 

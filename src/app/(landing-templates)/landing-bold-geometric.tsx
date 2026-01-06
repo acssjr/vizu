@@ -438,85 +438,121 @@ export default function LandingBoldGeometric() {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-            {/* Free Plan */}
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-6xl mx-auto items-start">
+            {/* Basico Plan */}
             <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]">
-              <h3 className="text-xl font-black text-neutral-950">GRÁTIS</h3>
-              <div className="mt-4">
-                <span className="text-5xl md:text-6xl font-black text-neutral-950">R$0</span>
-                <span className="text-neutral-500 ml-2 font-bold">/sempre</span>
+              <h3 className="text-2xl font-black text-neutral-950">BASICO</h3>
+              <div className="mt-2">
+                <span className="text-4xl font-black text-neutral-950">20 CREDITOS</span>
               </div>
-              <p className="mt-4 text-neutral-600 text-sm font-medium">
-                Perfeito para começar e testar o serviço
-              </p>
-              <ul className="mt-8 space-y-4">
-                {['50 karma inicial', 'Ganhe karma votando', 'Upload ilimitado', 'Resultados básicos'].map((item, i) => (
+              <div className="mt-4">
+                <span className="text-5xl md:text-6xl font-black text-primary-500">R$19,90</span>
+              </div>
+
+              <ul className="mt-6 space-y-3">
+                {['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-700">
                     <CheckCircle2 className="w-5 h-5 text-accent-500 flex-shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
+
+              <div className="mt-6 pt-6 border-t-2 border-neutral-200">
+                <p className="text-sm font-black text-neutral-950 uppercase mb-2">USE COMO QUISER:</p>
+                <p className="text-sm text-neutral-700 font-medium">2 fotos x 10 votos</p>
+                <p className="text-xs text-neutral-500 mt-2 font-medium">Ou distribua diferente:</p>
+                <ul className="mt-1 text-xs text-neutral-500 space-y-1">
+                  <li>* 1 foto com 20 votos</li>
+                  <li>* 4 fotos com 5 votos cada</li>
+                </ul>
+              </div>
+
               <Link
                 href="/login"
-                className="mt-8 block w-full py-4 text-center font-black text-neutral-950 bg-neutral-100 border-2 border-neutral-950 rounded-xl hover:bg-neutral-200 transition-colors"
+                className="mt-6 block w-full py-4 text-center font-black text-neutral-950 bg-neutral-100 border-2 border-neutral-950 rounded-xl hover:bg-neutral-200 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px]"
               >
-                COMEÇAR GRÁTIS
+                COMPRAR
               </Link>
             </div>
 
             {/* Popular Plan */}
-            <div className="bg-neutral-950 rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] md:scale-105 relative">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-secondary-500 rounded-full text-sm font-black text-neutral-950">
+            <div className="bg-neutral-950 rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(255,255,255,0.2)] md:scale-105 relative border-4 border-primary-500">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-secondary-500 rounded-full text-sm font-black text-neutral-950 flex items-center gap-1">
+                <Star className="w-4 h-4" />
                 MAIS POPULAR
               </div>
-              <h3 className="text-xl font-black text-white mt-2">TURBO</h3>
-              <div className="mt-4">
-                <span className="text-5xl md:text-6xl font-black text-primary-500">R$9,90</span>
-                <span className="text-neutral-500 ml-2 font-bold">/100 créditos</span>
+              <h3 className="text-2xl font-black text-white mt-2">POPULAR</h3>
+              <div className="mt-2">
+                <span className="text-4xl font-black text-white">50 CREDITOS</span>
               </div>
-              <p className="mt-4 text-neutral-400 text-sm font-medium">
-                Para quem quer resultados rápidos
-              </p>
-              <ul className="mt-8 space-y-4">
-                {['100 créditos para votos', 'Prioridade na fila', 'Insights demográficos', 'Pagamento via Pix'].map((item, i) => (
+              <div className="mt-4">
+                <span className="text-5xl md:text-6xl font-black text-primary-500">R$39,90</span>
+              </div>
+
+              <ul className="mt-6 space-y-3">
+                {['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise da equipe'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-300">
                     <CheckCircle2 className="w-5 h-5 text-primary-500 flex-shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
+
+              <div className="mt-6 pt-6 border-t-2 border-neutral-700">
+                <p className="text-sm font-black text-white uppercase mb-2">USE COMO QUISER:</p>
+                <p className="text-sm text-neutral-300 font-medium">5 fotos x 10 votos</p>
+                <p className="text-xs text-neutral-500 mt-2 font-medium">Ou distribua diferente:</p>
+                <ul className="mt-1 text-xs text-neutral-500 space-y-1">
+                  <li>* 2 fotos com 25 votos</li>
+                  <li>* 1 foto com 50 votos</li>
+                  <li>* 10 fotos com 5 votos</li>
+                </ul>
+              </div>
+
               <Link
                 href="/login"
-                className="mt-8 block w-full py-4 text-center font-black text-neutral-950 bg-primary-500 rounded-xl hover:bg-primary-400 transition-colors"
+                className="mt-6 block w-full py-4 text-center font-black text-neutral-950 bg-primary-500 rounded-xl hover:bg-primary-400 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-[2px] hover:translate-y-[2px]"
               >
-                COMPRAR CRÉDITOS
+                COMPRAR
               </Link>
             </div>
 
-            {/* Pro Plan */}
+            {/* Elite Plan */}
             <div className="bg-white rounded-3xl p-6 md:p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)]">
-              <h3 className="text-xl font-black text-neutral-950">PACOTE PRO</h3>
-              <div className="mt-4">
-                <span className="text-5xl md:text-6xl font-black text-neutral-950">R$4,90</span>
-                <span className="text-neutral-500 ml-2 font-bold">/50 créditos</span>
+              <h3 className="text-2xl font-black text-neutral-950">ELITE</h3>
+              <div className="mt-2">
+                <span className="text-4xl font-black text-neutral-950">100 CREDITOS</span>
               </div>
-              <p className="mt-4 text-neutral-600 text-sm font-medium">
-                Ideal para testes rápidos
-              </p>
-              <ul className="mt-8 space-y-4">
-                {['50 créditos para votos', 'Prioridade na fila', 'Resultados detalhados', 'Pagamento via Pix'].map((item, i) => (
+              <div className="mt-4">
+                <span className="text-5xl md:text-6xl font-black text-primary-500">R$79,90</span>
+              </div>
+
+              <ul className="mt-6 space-y-3">
+                {['Filtros de audiencia', 'Resultados detalhados', 'Resumo automatico', 'Analise detalhada da equipe', 'Suporte prioritario'].map((item, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-700">
                     <CheckCircle2 className="w-5 h-5 text-accent-500 flex-shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}
               </ul>
+
+              <div className="mt-6 pt-6 border-t-2 border-neutral-200">
+                <p className="text-sm font-black text-neutral-950 uppercase mb-2">USE COMO QUISER:</p>
+                <p className="text-sm text-neutral-700 font-medium">10 fotos x 10 votos</p>
+                <p className="text-xs text-neutral-500 mt-2 font-medium">Ou distribua diferente:</p>
+                <ul className="mt-1 text-xs text-neutral-500 space-y-1">
+                  <li>* 4 fotos com 25 votos</li>
+                  <li>* 2 fotos com 50 votos</li>
+                  <li>* 20 fotos com 5 votos</li>
+                </ul>
+              </div>
+
               <Link
                 href="/login"
-                className="mt-8 block w-full py-4 text-center font-black text-neutral-950 bg-neutral-100 border-2 border-neutral-950 rounded-xl hover:bg-neutral-200 transition-colors"
+                className="mt-6 block w-full py-4 text-center font-black text-neutral-950 bg-neutral-100 border-2 border-neutral-950 rounded-xl hover:bg-neutral-200 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] hover:translate-x-[2px] hover:translate-y-[2px]"
               >
-                COMPRAR CRÉDITOS
+                COMPRAR
               </Link>
             </div>
           </div>
@@ -607,8 +643,8 @@ export default function LandingBoldGeometric() {
               <h4 className="font-black mb-6 text-sm">CONTATO</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="mailto:contato@vizu.com.br" className="text-neutral-500 hover:text-white text-sm font-medium transition-colors break-all">
-                    contato@vizu.com.br
+                  <a href="mailto:contato@meuvizu.app" className="text-neutral-500 hover:text-white text-sm font-medium transition-colors break-all">
+                    contato@meuvizu.app
                   </a>
                 </li>
               </ul>
